@@ -1,0 +1,170 @@
+import {
+  NextResponse,
+} from "next/server";
+
+import bcrypt from "bcryptjs";
+
+import {
+  prisma,
+} from "@/lib/prisma";
+
+import {
+  crearSesion,
+} from "@/lib/session";
+
+export async function POST(
+  request: Request
+) {
+  try {
+    const body =
+      await request.json();
+
+    const email =
+      String(
+        body.email ??
+          ""
+      )
+        .trim()
+        .toLowerCase();
+
+    const password =
+      String(
+        body.password ??
+          ""
+      );
+
+    if (
+      !email ||
+      !password
+    ) {
+      return NextResponse.json(
+        {
+          ok: false,
+
+          error:
+            "Introduzca el email y la contraseña.",
+        },
+        {
+          status: 400,
+        }
+      );
+    }
+
+    const usuario =
+      await prisma.usuario.findUnique({
+        where: {
+          email,
+        },
+
+        include: {
+          centro: true,
+        },
+      });
+
+    /*
+     * Utilizamos el mismo mensaje cuando
+     * el email no existe o la contraseña
+     * es incorrecta.
+     *
+     * Así no revelamos qué emails están
+     * registrados en la plataforma.
+     */
+
+    if (
+      !usuario ||
+      !usuario.activo ||
+      !usuario.centro.activo
+    ) {
+      return NextResponse.json(
+        {
+          ok: false,
+
+          error:
+            "Email o contraseña incorrectos.",
+        },
+        {
+          status: 401,
+        }
+      );
+    }
+
+    const passwordCorrecta =
+      await bcrypt.compare(
+        password,
+        usuario.passwordHash
+      );
+
+    if (
+      !passwordCorrecta
+    ) {
+      return NextResponse.json(
+        {
+          ok: false,
+
+          error:
+            "Email o contraseña incorrectos.",
+        },
+        {
+          status: 401,
+        }
+      );
+    }
+
+    await crearSesion({
+      usuarioId:
+        usuario.id,
+
+      centroId:
+        usuario.centroId,
+
+      nombre:
+        usuario.nombre,
+
+      email:
+        usuario.email,
+    });
+
+    return NextResponse.json({
+      ok: true,
+
+      usuario: {
+        id:
+          usuario.id,
+
+        nombre:
+          usuario.nombre,
+
+        email:
+          usuario.email,
+      },
+
+      centro: {
+        id:
+          usuario.centro.id,
+
+        nombre:
+          usuario.centro.nombre,
+
+        codigo:
+          usuario.centro.codigo,
+      },
+    });
+  } catch (error) {
+    console.error(
+      "Error iniciando sesión:",
+      error
+    );
+
+    return NextResponse.json(
+      {
+        ok: false,
+
+        error:
+          "No se ha podido iniciar sesión.",
+      },
+      {
+        status: 500,
+      }
+    );
+  }
+}
