@@ -1,3 +1,9 @@
+import {
+  rm,
+} from "node:fs/promises";
+
+import path from "node:path";
+
 import { NextResponse } from "next/server";
 
 import { prisma } from "@/lib/prisma";
@@ -398,7 +404,58 @@ export async function PATCH(
 
 /* =========================================================
    DELETE
-   ELIMINAR CURSO ACADÉMICO Y TODOS SUS DATOS
+   ELIMINAR CURSO ACADÉMICO
+   =========================================================
+
+   COMPORTAMIENTO DE ESTA ELIMINACIÓN
+   ----------------------------------
+
+   1) Elimina los DATOS OPERATIVOS del curso:
+      - CursoAcademico
+      - Matrículas
+      - Asistencias
+      - AsistenciaDia
+      - Convalidadas
+      - relaciones operativas que dependan del curso
+
+   2) NO elimina las EVIDENCIAS DE FIRMA.
+      Aunque el curso desaparezca de la gestión, se conservan:
+      - EnvioFirma
+      - DocumentoFirma
+      - FirmaDocumento
+      - FirmanteEnvio
+      - RechazoDocumentoFirma
+      - EventoFirma
+      - CSV
+      - SHA-256
+      - firmante
+      - DNI
+      - fecha/hora
+      - trazabilidad
+
+      Esto es posible porque EnvioFirma -> CursoAcademico usa
+      onDelete: SetNull. Al borrar el curso, cursoAcademicoId
+      pasa a NULL y el histórico de firma permanece.
+
+   3) SÍ elimina los PDF físicos asociados al curso si el centro
+      elimina el curso:
+      - PDF originales
+      - PDF firmados
+
+      La evidencia permanece aunque los archivos ya no estén.
+
+   4) La eliminación de los PDF se registra en DocumentoFirma:
+      - pdfEliminadoEn
+      - motivoEliminacionPdf = "ELIMINACION_CURSO"
+
+   5) La evidencia debe conservarse hasta completar 5 años desde
+      la firma. Este DELETE NO borra esa evidencia.
+
+   6) Independientemente del borrado manual del curso, los PDF
+      podrán eliminarse automáticamente al cumplir 6 meses desde
+      la firma mediante el proceso de limpieza que añadiremos
+      después.
+
    ========================================================= */
 
 export async function DELETE(
@@ -434,7 +491,8 @@ export async function DELETE(
       !Number.isInteger(
         cursoId
       ) ||
-      cursoId <= 0
+      cursoId <=
+        0
     ) {
       return NextResponse.json(
         {
@@ -547,31 +605,186 @@ export async function DELETE(
       );
     }
 
-    /*
-     * El schema utiliza borrado en cascada:
-     *
-     * CursoAcademico
-     *   -> Matricula
-     *      -> Asistencia
-     *         -> AsistenciaDia
-     *      -> MatriculaAsignaturaConvalidada
-     *
-     * El registro base de Alumno NO se elimina.
-     */
+    /* =====================================================
+       LOCALIZAR DOCUMENTOS DE FIRMA DEL CURSO
+       =====================================================
 
-    await prisma.cursoAcademico.delete({
-      where: {
-        id:
-          cursoId,
-      },
-    });
+       Importante:
+       estos registros NO se van a eliminar.
+
+       Solo necesitamos localizar sus PDF para poder borrarlos
+       físicamente y dejar constancia de que ya no están
+       disponibles.
+    */
+
+    const documentosFirma =
+      await prisma.documentoFirma.findMany({
+        where: {
+          envioFirma: {
+            centroId:
+              sesion.centroId,
+
+            cursoAcademicoId:
+              cursoId,
+          },
+        },
+
+        select: {
+          id: true,
+
+          archivoOriginalKey:
+            true,
+
+          archivoFirmadoKey:
+            true,
+        },
+      });
+
+    const ahora =
+      new Date();
+
+    /* =====================================================
+       PRIMERO BORRAMOS LOS PDF FÍSICOS
+       =====================================================
+
+       Si un archivo ya no existe, no consideramos que sea un
+       error. Puede haberse eliminado previamente por haber
+       cumplido su plazo de 6 meses.
+    */
+
+    let archivosEliminados =
+      0;
+
+    for (
+      const documento of
+        documentosFirma
+    ) {
+      const claves = [
+        documento
+          .archivoOriginalKey,
+
+        documento
+          .archivoFirmadoKey,
+      ].filter(
+        (
+          valor
+        ): valor is string =>
+          Boolean(
+            valor
+          )
+      );
+
+      for (
+        const key of
+          claves
+      ) {
+        const ruta =
+          resolverRutaFirma(
+            key
+          );
+
+        try {
+          await rm(
+            ruta,
+            {
+              force:
+                true,
+            }
+          );
+
+          archivosEliminados +=
+            1;
+        } catch (
+          error
+        ) {
+          console.error(
+            "No se ha podido eliminar un PDF del curso:",
+            ruta,
+            error
+          );
+        }
+      }
+    }
+
+    /* =====================================================
+       TRANSACCIÓN DE BASE DE DATOS
+       =====================================================
+
+       1. Dejamos constancia de que los PDF ya no están.
+       2. Vaciamos las rutas físicas.
+       3. Conservamos CSV, hashes y evidencias.
+       4. Eliminamos el curso académico y sus datos operativos.
+
+       EnvioFirma queda vivo y su cursoAcademicoId pasará a NULL
+       por el SetNull definido en schema.prisma.
+    */
+
+    await prisma.$transaction(
+      async (
+        tx
+      ) => {
+        if (
+          documentosFirma.length >
+          0
+        ) {
+          await tx.documentoFirma.updateMany({
+            where: {
+              id: {
+                in:
+                  documentosFirma.map(
+                    (
+                      documento
+                    ) =>
+                      documento.id
+                  ),
+              },
+            },
+
+            data: {
+              archivoOriginalKey:
+                null,
+
+              archivoFirmadoKey:
+                null,
+
+              pdfEliminadoEn:
+                ahora,
+
+              motivoEliminacionPdf:
+                "ELIMINACION_CURSO",
+            },
+          });
+        }
+
+        await tx.cursoAcademico.delete({
+          where: {
+            id:
+              cursoId,
+          },
+        });
+      }
+    );
 
     return NextResponse.json({
       ok: true,
+
       mensaje:
-        `Curso académico ${curso.nombre} y todos sus datos asociados eliminados correctamente.`,
+        `Curso académico ${curso.nombre} eliminado correctamente. Los datos operativos y los PDF asociados se han eliminado, pero las evidencias de firma se conservarán durante su periodo de retención.`,
+
+      resumen: {
+        documentosFirmaConservados:
+          documentosFirma.length,
+
+        archivosPdfEliminados:
+          archivosEliminados,
+
+        evidenciasFirmaEliminadas:
+          0,
+      },
     });
-  } catch (error) {
+  } catch (
+    error
+  ) {
     console.error(
       "Error eliminando curso académico:",
       error
@@ -580,6 +793,7 @@ export async function DELETE(
     return NextResponse.json(
       {
         ok: false,
+
         error:
           "No se ha podido eliminar el curso académico.",
       },
@@ -588,4 +802,61 @@ export async function DELETE(
       }
     );
   }
+}
+
+/* =========================================================
+   FUNCIONES AUXILIARES
+   ========================================================= */
+
+function resolverRutaFirma(
+  key:
+    string
+) {
+  const keyNormalizada =
+    key
+      .replaceAll(
+        "\\",
+        "/"
+      )
+      .replace(
+        /^\/+/,
+        ""
+      );
+
+  if (
+    !keyNormalizada.startsWith(
+      "storage/firmas/"
+    )
+  ) {
+    throw new Error(
+      `La ubicación del archivo no pertenece al almacenamiento de firmas: ${key}`
+    );
+  }
+
+  const raiz =
+    path.resolve(
+      process.cwd(),
+      "storage",
+      "firmas"
+    );
+
+  const ruta =
+    path.resolve(
+      process.cwd(),
+      keyNormalizada
+    );
+
+  if (
+    ruta ===
+      raiz ||
+    !ruta.startsWith(
+      `${raiz}${path.sep}`
+    )
+  ) {
+    throw new Error(
+      `La ubicación física del archivo de firma no es segura: ${key}`
+    );
+  }
+
+  return ruta;
 }

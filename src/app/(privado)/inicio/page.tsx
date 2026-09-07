@@ -202,7 +202,7 @@ export default function InicioPage() {
                 "#303b50",
             }}
           >
-            Manual de usuario
+            Manual de usuario v2 · Con módulo de firmas
           </h2>
 
           <p
@@ -227,12 +227,15 @@ export default function InicioPage() {
             completo de la aplicación,
             el orden recomendado de
             trabajo y las principales
-            opciones disponibles.
+            opciones disponibles, incluida la preparación, firma y verificación de los Anexos I y V.
+          </p>
+          <p style={{ margin: "10px 0 0", fontSize: "11px" }}>
+            <a href="/documentos/Manual_Gestor_Becas_v1.0.pdf" target="_blank" rel="noopener noreferrer" style={{ color: "#455166" }}>Consultar manual v1 · Sin módulo de firmas</a>
           </p>
         </div>
 
         <a
-          href="/documentos/Manual_Gestor_Becas_v1.0.pdf"
+          href="/documentos/Manual_Gestor_Becas_v2.0.pdf"
           target="_blank"
           rel="noopener noreferrer"
           style={{
@@ -270,7 +273,7 @@ export default function InicioPage() {
               "nowrap",
           }}
         >
-          VER / DESCARGAR MANUAL
+          VER / DESCARGAR MANUAL V2
         </a>
       </section>
 
@@ -506,6 +509,11 @@ export default function InicioPage() {
               Anexos V, Anexo I o
               expedientes completos.
             </p>
+          </div>
+          <div style={pasoStyle}>
+            <div style={numeroStyle}>6</div>
+            <div style={tituloPasoStyle}>FIRMAS</div>
+            <p style={textoPasoStyle}>Prepare los envíos, comparta los enlaces personales y supervise las firmas de profesores y director. Descargue los documentos finales.</p>
           </div>
         </div>
       </section>

@@ -145,6 +145,7 @@ export async function GET(
               nombre: true,
               apellidos: true,
               dni: true,
+              email: true,
             },
           },
         },
@@ -428,16 +429,42 @@ export async function POST(
           .trim()
           .toUpperCase();
 
+      const profesorEmail =
+        String(
+          body.profesorEmail ??
+            ""
+        )
+          .trim()
+          .toLowerCase();
+
       if (
         !profesorNombre ||
         !profesorApellidos ||
-        !profesorDni
+        !profesorDni ||
+        !profesorEmail
       ) {
         return NextResponse.json(
           {
             ok: false,
             error:
-              "Debe completar nombre, apellidos y DNI/NIE del nuevo profesor.",
+              "Debe completar nombre, apellidos, DNI/NIE y email del nuevo profesor.",
+          },
+          {
+            status: 400,
+          }
+        );
+      }
+
+      if (
+        !emailValido(
+          profesorEmail
+        )
+      ) {
+        return NextResponse.json(
+          {
+            ok: false,
+            error:
+              "El email del profesor no tiene un formato válido.",
           },
           {
             status: 400,
@@ -481,6 +508,9 @@ export async function POST(
                 apellidos:
                   profesorApellidos,
 
+                email:
+                  profesorEmail,
+
                 activo:
                   true,
               },
@@ -519,6 +549,9 @@ export async function POST(
 
               dni:
                 profesorDni,
+
+              email:
+                profesorEmail,
 
               activo:
                 true,
@@ -574,6 +607,7 @@ export async function POST(
               nombre: true,
               apellidos: true,
               dni: true,
+              email: true,
             },
           },
         },
@@ -609,4 +643,12 @@ export async function POST(
       }
     );
   }
+}
+
+function emailValido(
+  email: string
+) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
+    email
+  );
 }

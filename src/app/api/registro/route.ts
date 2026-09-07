@@ -113,7 +113,7 @@ export async function POST(
         .trim();
 
     const usuarioExistente =
-      await prisma.usuario.findUnique({
+      await prisma.usuario.findFirst({
         where: {
           email:
             emailNormalizado,

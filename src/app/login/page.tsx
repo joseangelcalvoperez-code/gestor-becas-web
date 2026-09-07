@@ -57,6 +57,14 @@ export default function LoginPage() {
             ""
         );
 
+      const codigoCentro =
+        String(
+          form.get(
+            "codigoCentro"
+          ) ??
+            ""
+        );
+
       const password =
         String(
           form.get(
@@ -84,6 +92,7 @@ export default function LoginPage() {
               body:
                 JSON.stringify({
                   email,
+                  codigoCentro,
                   password,
                 }),
             }
@@ -386,6 +395,64 @@ export default function LoginPage() {
                   "uppercase",
               }}
             >
+              Código de centro
+            </span>
+
+            <input
+              required
+              type="text"
+              name="codigoCentro"
+              autoComplete="off"
+
+              style={{
+                minHeight:
+                  "42px",
+
+                border:
+                  "1px solid #cbd3df",
+
+                padding:
+                  "0 11px",
+
+                fontSize:
+                  "13px",
+
+                outline:
+                  "none",
+              }}
+            />
+          </label>
+
+          <label
+            style={{
+              display:
+                "flex",
+
+              flexDirection:
+                "column",
+
+              gap:
+                "7px",
+
+              marginTop:
+                "17px",
+            }}
+          >
+            <span
+              style={{
+                fontSize:
+                  "10px",
+
+                fontWeight:
+                  700,
+
+                color:
+                  "#566176",
+
+                textTransform:
+                  "uppercase",
+              }}
+            >
               Contraseña
             </span>
 
@@ -413,6 +480,36 @@ export default function LoginPage() {
               }}
             />
           </label>
+
+          <div
+            style={{
+              marginTop:
+                "10px",
+
+              textAlign:
+                "right",
+            }}
+          >
+            <Link
+              href="/recuperar-clave"
+
+              style={{
+                color:
+                  "#e9423a",
+
+                fontSize:
+                  "11px",
+
+                fontWeight:
+                  700,
+
+                textDecoration:
+                  "none",
+              }}
+            >
+              ¿Ha olvidado su contraseña?
+            </Link>
+          </div>
 
           {mensaje && (
             <div

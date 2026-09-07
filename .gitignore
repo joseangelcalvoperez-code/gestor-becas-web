@@ -43,18 +43,22 @@ next-env.d.ts
 
 /src/generated/prisma
 
-# Herramientas y asistentes de desarrollo
-/.agents/
-/.claude/
-/.windsurf/
-AGENTS.md
-CLAUDE.md
-skills-lock.json
+# Documentos privados del sistema de firma
+/storage/firmas/
+/storage/centros/
 
-# Documentación local
-/Manual_Gestor_Becas_v1.0.docx
-
-# Copias/exportaciones de base de datos
-*.sql
+# Almacenamiento privado, copias y temporales
+/storage/
+/tmp/
+/output/
+/backups/
 *.dump
 *.bak
+*.sqlite
+*.sqlite3
+*.db
+*.p12
+*.pfx
+*.key
+*.sql
+!prisma/migrations/**/migration.sql

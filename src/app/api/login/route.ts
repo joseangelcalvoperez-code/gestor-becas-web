@@ -27,6 +27,12 @@ export async function POST(
         .trim()
         .toLowerCase();
 
+    const codigoCentro =
+      String(
+        body.codigoCentro ??
+          ""
+      ).trim();
+
     const password =
       String(
         body.password ??
@@ -35,14 +41,14 @@ export async function POST(
 
     if (
       !email ||
+      !codigoCentro ||
       !password
     ) {
       return NextResponse.json(
         {
           ok: false,
-
           error:
-            "Introduzca el email y la contraseña.",
+            "Introduzca el email, el código de centro y la contraseña.",
         },
         {
           status: 400,
@@ -50,42 +56,52 @@ export async function POST(
       );
     }
 
+    /*
+     * El código identifica primero el centro al que el usuario
+     * quiere acceder. Esto permite que una misma dirección de
+     * email pueda gestionar varios centros diferentes.
+     */
+    const centro =
+      await prisma.centro.findUnique({
+        where: {
+          codigo:
+            codigoCentro,
+        },
+        select: {
+          id: true,
+          nombre: true,
+          codigo: true,
+          activo: true,
+        },
+      });
+
+    if (
+      !centro ||
+      !centro.activo
+    ) {
+      return credencialesIncorrectas();
+    }
+
     const usuario =
       await prisma.usuario.findUnique({
         where: {
-          email,
-        },
-
-        include: {
-          centro: true,
+          centroId_email: {
+            centroId:
+              centro.id,
+            email,
+          },
         },
       });
 
     /*
-     * Utilizamos el mismo mensaje cuando
-     * el email no existe o la contraseña
-     * es incorrecta.
-     *
-     * Así no revelamos qué emails están
-     * registrados en la plataforma.
+     * Mantenemos una respuesta genérica para no revelar si
+     * falla el email, el centro o la contraseña.
      */
-
     if (
       !usuario ||
-      !usuario.activo ||
-      !usuario.centro.activo
+      !usuario.activo
     ) {
-      return NextResponse.json(
-        {
-          ok: false,
-
-          error:
-            "Email o contraseña incorrectos.",
-        },
-        {
-          status: 401,
-        }
-      );
+      return credencialesIncorrectas();
     }
 
     const passwordCorrecta =
@@ -94,59 +110,40 @@ export async function POST(
         usuario.passwordHash
       );
 
-    if (
-      !passwordCorrecta
-    ) {
-      return NextResponse.json(
-        {
-          ok: false,
-
-          error:
-            "Email o contraseña incorrectos.",
-        },
-        {
-          status: 401,
-        }
-      );
+    if (!passwordCorrecta) {
+      return credencialesIncorrectas();
     }
 
     await crearSesion({
       usuarioId:
         usuario.id,
-
       centroId:
         usuario.centroId,
-
       nombre:
         usuario.nombre,
-
       email:
         usuario.email,
     });
 
     return NextResponse.json({
       ok: true,
-
       usuario: {
         id:
           usuario.id,
-
         nombre:
           usuario.nombre,
-
+        apellidos:
+          usuario.apellidos,
         email:
           usuario.email,
       },
-
       centro: {
         id:
-          usuario.centro.id,
-
+          centro.id,
         nombre:
-          usuario.centro.nombre,
-
+          centro.nombre,
         codigo:
-          usuario.centro.codigo,
+          centro.codigo,
       },
     });
   } catch (error) {
@@ -158,7 +155,6 @@ export async function POST(
     return NextResponse.json(
       {
         ok: false,
-
         error:
           "No se ha podido iniciar sesión.",
       },
@@ -167,4 +163,17 @@ export async function POST(
       }
     );
   }
+}
+
+function credencialesIncorrectas() {
+  return NextResponse.json(
+    {
+      ok: false,
+      error:
+        "Datos de acceso incorrectos.",
+    },
+    {
+      status: 401,
+    }
+  );
 }

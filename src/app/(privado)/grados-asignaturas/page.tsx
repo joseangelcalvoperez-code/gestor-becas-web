@@ -25,6 +25,7 @@ interface Profesor {
   nombre: string;
   apellidos: string;
   dni: string;
+  email: string | null;
 
   _count: {
     asignaturas: number;
@@ -36,6 +37,7 @@ interface ProfesorAsignatura {
   nombre: string;
   apellidos: string;
   dni: string;
+  email: string | null;
 }
 
 interface Asignatura {
@@ -68,6 +70,18 @@ export default function GradosAsignaturasPage() {
     useState<Profesor[]>(
       []
     );
+
+  const [
+    mostrarProfesores,
+    setMostrarProfesores,
+  ] =
+    useState(false);
+
+  const [
+    busquedaProfesor,
+    setBusquedaProfesor,
+  ] =
+    useState("");
 
   const [
     asignaturas,
@@ -157,6 +171,50 @@ export default function GradosAsignaturasPage() {
     setProfesorDni,
   ] =
     useState("");
+
+  const [
+    profesorEmail,
+    setProfesorEmail,
+  ] =
+    useState("");
+
+  const [
+    profesorEditandoId,
+    setProfesorEditandoId,
+  ] =
+    useState<number | null>(
+      null
+    );
+
+  const [
+    profesorEditNombre,
+    setProfesorEditNombre,
+  ] =
+    useState("");
+
+  const [
+    profesorEditApellidos,
+    setProfesorEditApellidos,
+  ] =
+    useState("");
+
+  const [
+    profesorEditDni,
+    setProfesorEditDni,
+  ] =
+    useState("");
+
+  const [
+    profesorEditEmail,
+    setProfesorEditEmail,
+  ] =
+    useState("");
+
+  const [
+    guardandoProfesor,
+    setGuardandoProfesor,
+  ] =
+    useState(false);
 
   const [
     cargando,
@@ -775,6 +833,10 @@ const eliminarGrado =
         ""
       );
 
+      setProfesorEmail(
+        ""
+      );
+
       setMostrarNuevaAsignatura(
         false
       );
@@ -827,6 +889,8 @@ const eliminarGrado =
           profesorApellidos,
 
           profesorDni,
+
+          profesorEmail,
         };
 
         const respuesta =
@@ -979,6 +1043,222 @@ const eliminarGrado =
         );
       }
     };
+
+  /* =========================================================
+     EDITAR PROFESOR
+     ========================================================= */
+
+  const abrirEditarProfesor =
+    (
+      profesor:
+        Profesor
+    ) => {
+      setProfesorEditandoId(
+        profesor.id
+      );
+
+      setProfesorEditNombre(
+        profesor.nombre
+      );
+
+      setProfesorEditApellidos(
+        profesor.apellidos
+      );
+
+      setProfesorEditDni(
+        profesor.dni
+      );
+
+      setProfesorEditEmail(
+        profesor.email ??
+          ""
+      );
+
+      setMensaje("");
+      setTipoMensaje("");
+    };
+
+  const cancelarEditarProfesor =
+    () => {
+      setProfesorEditandoId(
+        null
+      );
+
+      setProfesorEditNombre(
+        ""
+      );
+
+      setProfesorEditApellidos(
+        ""
+      );
+
+      setProfesorEditDni(
+        ""
+      );
+
+      setProfesorEditEmail(
+        ""
+      );
+    };
+
+  const guardarProfesor =
+    async (
+      event:
+        FormEvent<HTMLFormElement>
+    ) => {
+      event.preventDefault();
+
+      if (
+        !profesorEditandoId
+      ) {
+        return;
+      }
+
+      const nombre =
+        profesorEditNombre.trim();
+
+      const apellidos =
+        profesorEditApellidos.trim();
+
+      const dni =
+        profesorEditDni
+          .trim()
+          .toUpperCase();
+
+      const email =
+        profesorEditEmail
+          .trim()
+          .toLowerCase();
+
+      if (
+        !nombre ||
+        !apellidos ||
+        !dni
+      ) {
+        setTipoMensaje(
+          "error"
+        );
+
+        setMensaje(
+          "Complete nombre, apellidos y DNI/NIE del profesor."
+        );
+
+        return;
+      }
+
+      try {
+        setGuardandoProfesor(
+          true
+        );
+
+        setMensaje("");
+        setTipoMensaje("");
+
+        const respuesta =
+          await fetch(
+            `/api/profesores/${profesorEditandoId}`,
+            {
+              method:
+                "PATCH",
+
+              headers: {
+                "Content-Type":
+                  "application/json",
+              },
+
+              body:
+                JSON.stringify({
+                  nombre,
+                  apellidos,
+                  dni,
+                  email,
+                }),
+            }
+          );
+
+        const resultado =
+          await respuesta.json();
+
+        if (
+          !respuesta.ok
+        ) {
+          setTipoMensaje(
+            "error"
+          );
+
+          setMensaje(
+            resultado.error ??
+              "No se ha podido actualizar el profesor."
+          );
+
+          return;
+        }
+
+        cancelarEditarProfesor();
+
+        setTipoMensaje(
+          "success"
+        );
+
+        setMensaje(
+          "✓ Profesor actualizado correctamente"
+        );
+
+        await Promise.all([
+          cargarProfesores(),
+
+          gradoSeleccionadoId
+            ? cargarAsignaturas(
+                gradoSeleccionadoId,
+                curso
+              )
+            : Promise.resolve(),
+        ]);
+      } catch {
+        setTipoMensaje(
+          "error"
+        );
+
+        setMensaje(
+          "No se ha podido conectar con el servidor."
+        );
+      } finally {
+        setGuardandoProfesor(
+          false
+        );
+      }
+    };
+
+  const profesoresFiltrados =
+    profesores.filter(
+      (
+        profesor
+      ) => {
+        const busqueda =
+          busquedaProfesor
+            .trim()
+            .toLowerCase();
+
+        if (!busqueda) {
+          return true;
+        }
+
+        const texto =
+          [
+            profesor.nombre,
+            profesor.apellidos,
+            profesor.dni,
+            profesor.email ??
+              "",
+          ]
+            .join(" ")
+            .toLowerCase();
+
+        return texto.includes(
+          busqueda
+        );
+      }
+    );
 
   const gradoSeleccionado =
     grados.find(
@@ -1832,6 +2112,9 @@ const eliminarGrado =
                                   {
                                     profesor.dni
                                   }
+                                  {profesor.email
+                                    ? ` - ${profesor.email}`
+                                    : " - SIN EMAIL"}
                                 </option>
                               )
                             )}
@@ -1892,6 +2175,24 @@ const eliminarGrado =
                           onChange={
                             setProfesorDni
                           }
+
+                          required
+                        />
+
+                        <Campo
+                          label="Email"
+
+                          value={
+                            profesorEmail
+                          }
+
+                          onChange={
+                            setProfesorEmail
+                          }
+
+                          placeholder="profesor@centro.es"
+
+                          type="email"
 
                           required
                         />
@@ -2132,6 +2433,555 @@ const eliminarGrado =
           )}
         </section>
       </div>
+
+      {/* GESTIÓN DE PROFESORES */}
+
+      <section
+        style={{
+          marginTop:
+            "18px",
+
+          border:
+            "1px solid #d7dde5",
+        }}
+      >
+        <button
+          type="button"
+
+          onClick={() =>
+            setMostrarProfesores(
+              (
+                valor
+              ) =>
+                !valor
+            )
+          }
+
+          style={{
+            width:
+              "100%",
+
+            minHeight:
+              "56px",
+
+            padding:
+              "12px 16px",
+
+            border:
+              "none",
+
+            background:
+              "#f8fafc",
+
+            display:
+              "flex",
+
+            alignItems:
+              "center",
+
+            justifyContent:
+              "space-between",
+
+            gap:
+              "20px",
+
+            cursor:
+              "pointer",
+
+            textAlign:
+              "left",
+          }}
+        >
+          <div>
+            <div
+              style={{
+                color:
+                  "#303b50",
+
+                fontSize:
+                  "11px",
+
+                fontWeight:
+                  700,
+              }}
+            >
+              PROFESORES
+            </div>
+
+            <div
+              style={{
+                marginTop:
+                  "4px",
+
+                color:
+                  "#8793a5",
+
+                fontSize:
+                  "9px",
+              }}
+            >
+              Gestione los datos de los profesores y su email para los procesos de firma.
+            </div>
+          </div>
+
+          <div
+            style={{
+              display:
+                "flex",
+
+              alignItems:
+                "center",
+
+              gap:
+                "12px",
+            }}
+          >
+            <span
+              style={{
+                color:
+                  "#8793a5",
+
+                fontSize:
+                  "9px",
+
+                fontWeight:
+                  700,
+              }}
+            >
+              {
+                profesores.length
+              }{" "}
+              PROFESOR
+              {
+                profesores.length ===
+                1
+                  ? ""
+                  : "ES"
+              }
+            </span>
+
+            <span
+              style={{
+                color:
+                  "#455166",
+
+                fontSize:
+                  "14px",
+
+                lineHeight:
+                  1,
+              }}
+            >
+              {mostrarProfesores
+                ? "▲"
+                : "▼"}
+            </span>
+          </div>
+        </button>
+
+        {mostrarProfesores && (
+          <div
+            style={{
+              borderTop:
+                "1px solid #d7dde5",
+            }}
+          >
+            <div
+              style={{
+                padding:
+                  "14px 16px",
+
+                borderBottom:
+                  "1px solid #d7dde5",
+
+                background:
+                  "#ffffff",
+              }}
+            >
+              <div
+                style={{
+                  maxWidth:
+                    "520px",
+                }}
+              >
+                <div
+                  style={{
+                    marginBottom:
+                      "6px",
+
+                    color:
+                      "#65758d",
+
+                    fontSize:
+                      "8px",
+
+                    fontWeight:
+                      700,
+                  }}
+                >
+                  BUSCAR PROFESOR
+                </div>
+
+                <input
+                  type="text"
+
+                  value={
+                    busquedaProfesor
+                  }
+
+                  onChange={(
+                    event
+                  ) =>
+                    setBusquedaProfesor(
+                      event.target.value
+                    )
+                  }
+
+                  placeholder="Nombre, apellidos, DNI/NIE o email"
+
+                  style={{
+                    ...inputStyle,
+
+                    width:
+                      "100%",
+
+                    boxSizing:
+                      "border-box",
+                  }}
+                />
+              </div>
+
+              {busquedaProfesor.trim() && (
+                <div
+                  style={{
+                    marginTop:
+                      "8px",
+
+                    color:
+                      "#8793a5",
+
+                    fontSize:
+                      "8px",
+                  }}
+                >
+                  {
+                    profesoresFiltrados.length
+                  }{" "}
+                  resultado
+                  {
+                    profesoresFiltrados.length ===
+                    1
+                      ? ""
+                      : "s"
+                  }
+                </div>
+              )}
+            </div>
+
+            {profesores.length ===
+            0 ? (
+              <div
+                style={
+                  textoVacio
+                }
+              >
+                Todavía no hay profesores registrados.
+              </div>
+            ) : profesoresFiltrados.length ===
+              0 ? (
+              <div
+                style={
+                  textoVacio
+                }
+              >
+                No hay profesores que coincidan con la búsqueda.
+              </div>
+            ) : (
+              <>
+                <div
+                  style={{
+                    display:
+                      "grid",
+
+                    gridTemplateColumns:
+                      "1.5fr 130px 1.5fr 100px 100px",
+
+                    background:
+                      "#e1e5eb",
+
+                    color:
+                      "#455166",
+
+                    fontSize:
+                      "9px",
+
+                    fontWeight:
+                      700,
+                  }}
+                >
+                  <Celda>
+                    PROFESOR
+                  </Celda>
+
+                  <Celda>
+                    DNI/NIE
+                  </Celda>
+
+                  <Celda>
+                    EMAIL
+                  </Celda>
+
+                  <Celda>
+                    ASIGNATURAS
+                  </Celda>
+
+                  <Celda>
+                    ACCIONES
+                  </Celda>
+                </div>
+
+                {profesoresFiltrados.map(
+                  (
+                    profesor
+                  ) => (
+                    <div
+                      key={
+                        profesor.id
+                      }
+                    >
+                      <div
+                        style={{
+                          display:
+                            "grid",
+
+                          gridTemplateColumns:
+                            "1.5fr 130px 1.5fr 100px 100px",
+
+                          borderTop:
+                            "1px solid #d7dde5",
+
+                          background:
+                            "#ffffff",
+
+                          color:
+                            "#4b576b",
+
+                          fontSize:
+                            "10px",
+                        }}
+                      >
+                        <Celda>
+                          <strong
+                            style={{
+                              color:
+                                "#303b50",
+                            }}
+                          >
+                            {
+                              profesor.nombre
+                            }{" "}
+                            {
+                              profesor.apellidos
+                            }
+                          </strong>
+                        </Celda>
+
+                        <Celda>
+                          {
+                            profesor.dni
+                          }
+                        </Celda>
+
+                        <Celda>
+                          {profesor.email ? (
+                            profesor.email
+                          ) : (
+                            <span
+                              style={{
+                                color:
+                                  "#e9423a",
+
+                                fontWeight:
+                                  700,
+                              }}
+                            >
+                              SIN EMAIL
+                            </span>
+                          )}
+                        </Celda>
+
+                        <Celda>
+                          {
+                            profesor
+                              ._count
+                              .asignaturas
+                          }
+                        </Celda>
+
+                        <Celda>
+                          <button
+                            type="button"
+
+                            onClick={() =>
+                              abrirEditarProfesor(
+                                profesor
+                              )
+                            }
+
+                            style={
+                              botonEditarTexto
+                            }
+                          >
+                            EDITAR
+                          </button>
+                        </Celda>
+                      </div>
+
+                      {profesorEditandoId ===
+                        profesor.id && (
+                        <form
+                          onSubmit={
+                            guardarProfesor
+                          }
+
+                          style={{
+                            padding:
+                              "16px",
+
+                            borderTop:
+                              "1px solid #d7dde5",
+
+                            background:
+                              "#f8fafc",
+                          }}
+                        >
+                          <div
+                            style={{
+                              display:
+                                "grid",
+
+                              gridTemplateColumns:
+                                "1fr 1.3fr 1fr 1.6fr",
+
+                              gap:
+                                "14px",
+                            }}
+                          >
+                            <Campo
+                              label="Nombre"
+
+                              value={
+                                profesorEditNombre
+                              }
+
+                              onChange={
+                                setProfesorEditNombre
+                              }
+
+                              required
+                            />
+
+                            <Campo
+                              label="Apellidos"
+
+                              value={
+                                profesorEditApellidos
+                              }
+
+                              onChange={
+                                setProfesorEditApellidos
+                              }
+
+                              required
+                            />
+
+                            <Campo
+                              label="DNI / NIE"
+
+                              value={
+                                profesorEditDni
+                              }
+
+                              onChange={
+                                setProfesorEditDni
+                              }
+
+                              required
+                            />
+
+                            <Campo
+                              label="Email"
+
+                              value={
+                                profesorEditEmail
+                              }
+
+                              onChange={
+                                setProfesorEditEmail
+                              }
+
+                              placeholder="profesor@centro.es"
+
+                              type="email"
+                            />
+                          </div>
+
+                          <div
+                            style={{
+                              marginTop:
+                                "14px",
+
+                              display:
+                                "flex",
+
+                              justifyContent:
+                                "flex-end",
+
+                              gap:
+                                "10px",
+                            }}
+                          >
+                            <button
+                              type="button"
+
+                              onClick={
+                                cancelarEditarProfesor
+                              }
+
+                              style={
+                                botonGris
+                              }
+                            >
+                              CANCELAR
+                            </button>
+
+                            <button
+                              type="submit"
+
+                              disabled={
+                                guardandoProfesor
+                              }
+
+                              style={
+                                botonRojo
+                              }
+                            >
+                              {guardandoProfesor
+                                ? "GUARDANDO..."
+                                : "GUARDAR CAMBIOS"}
+                            </button>
+                          </div>
+                        </form>
+                      )}
+                    </div>
+                  )
+                )}
+              </>
+            )}
+          </div>
+        )}
+      </section>
+
     </div>
   );
 }
@@ -2146,6 +2996,7 @@ function Campo({
   onChange,
   placeholder = "",
   required = false,
+  type = "text",
 }: {
   label: string;
   value: string;
@@ -2156,6 +3007,7 @@ function Campo({
     ) => void;
   placeholder?: string;
   required?: boolean;
+  type?: string;
 }) {
   return (
     <label>
@@ -2168,6 +3020,10 @@ function Campo({
       </span>
 
       <input
+        type={
+          type
+        }
+
         value={
           value
         }
@@ -2320,6 +3176,28 @@ const botonGris:
 
   color:
     "#ffffff",
+
+  fontSize:
+    "9px",
+
+  fontWeight:
+    700,
+
+  cursor:
+    "pointer",
+};
+
+const botonEditarTexto:
+  React.CSSProperties =
+{
+  border:
+    "none",
+
+  background:
+    "transparent",
+
+  color:
+    "#e9423a",
 
   fontSize:
     "9px",

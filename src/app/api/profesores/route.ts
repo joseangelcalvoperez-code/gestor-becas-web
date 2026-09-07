@@ -45,6 +45,7 @@ export async function GET() {
           nombre: true,
           apellidos: true,
           dni: true,
+          email: true,
 
           _count: {
             select: {

@@ -10,11 +10,6 @@ import {
   obtenerSesion,
 } from "@/lib/session";
 
-/* =========================================================
-   GET
-   CARGAR DATOS DEL CENTRO DE LA SESIÓN
-   ========================================================= */
-
 export async function GET() {
   try {
     const sesion =
@@ -33,36 +28,61 @@ export async function GET() {
       );
     }
 
-    const centro =
-      await prisma.centro.findFirst({
-        where: {
-          id:
-            sesion.centroId,
+    const [
+      centro,
+      usuarioAcceso,
+    ] =
+      await Promise.all([
+        prisma.centro.findFirst({
+          where: {
+            id:
+              sesion.centroId,
+            activo: true,
+          },
+          select: {
+            id: true,
+            nombre: true,
+            codigo: true,
+            cif: true,
+            direccion: true,
+            localidad: true,
+            provincia: true,
+            telefono: true,
+            email: true,
+            directorNombre: true,
+            directorApellidos: true,
+            directorDni: true,
+            directorEmail: true,
+            selloFirmaUrl: true,
+          },
+        }),
 
-          activo:
-            true,
-        },
+        prisma.usuario.findFirst({
+          where: {
+            id:
+              sesion.usuarioId,
+            centroId:
+              sesion.centroId,
+            activo: true,
+          },
+          select: {
+            id: true,
+            nombre: true,
+            apellidos: true,
+            email: true,
+          },
+        }),
+      ]);
 
-        select: {
-          id: true,
-
-          nombre: true,
-          codigo: true,
-          cif: true,
-          direccion: true,
-          localidad: true,
-          provincia: true,
-          telefono: true,
-          email: true,
-        },
-      });
-
-    if (!centro) {
+    if (
+      !centro ||
+      !usuarioAcceso
+    ) {
       return NextResponse.json(
         {
           ok: false,
           error:
-            "No se ha encontrado el centro asociado a la sesión.",
+            "No se han encontrado los datos asociados a la sesión.",
         },
         {
           status: 404,
@@ -73,6 +93,7 @@ export async function GET() {
     return NextResponse.json({
       ok: true,
       centro,
+      usuarioAcceso,
     });
   } catch (error) {
     console.error(
@@ -92,11 +113,6 @@ export async function GET() {
     );
   }
 }
-
-/* =========================================================
-   PUT
-   ACTUALIZAR DATOS DEL CENTRO DE LA SESIÓN
-   ========================================================= */
 
 export async function PUT(
   request: Request
@@ -122,58 +138,42 @@ export async function PUT(
       await request.json();
 
     const nombre =
-      String(
-        body.nombre ??
-          ""
-      ).trim();
-
+      String(body.nombre ?? "").trim();
     const codigo =
-      String(
-        body.codigo ??
-          ""
-      ).trim();
-
+      String(body.codigo ?? "").trim();
     const cif =
-      String(
-        body.cif ??
-          ""
-      ).trim();
-
+      String(body.cif ?? "").trim();
     const direccion =
-      String(
-        body.direccion ??
-          ""
-      ).trim();
-
+      String(body.direccion ?? "").trim();
     const localidad =
-      String(
-        body.localidad ??
-          ""
-      ).trim();
-
+      String(body.localidad ?? "").trim();
     const provincia =
-      String(
-        body.provincia ??
-          ""
-      ).trim();
-
+      String(body.provincia ?? "").trim();
     const telefono =
-      String(
-        body.telefono ??
-          ""
-      ).trim();
-
+      String(body.telefono ?? "").trim();
     const email =
+      String(body.email ?? "")
+        .trim()
+        .toLowerCase();
+    const directorNombre = String(body.directorNombre ?? "").trim();
+    const directorApellidos = String(body.directorApellidos ?? "").trim();
+    const directorDni = String(body.directorDni ?? "").trim().toUpperCase();
+    const directorEmail = String(body.directorEmail ?? "").trim().toLowerCase();
+
+    const usuarioNombre =
       String(
-        body.email ??
-          ""
+        body.usuarioNombre ?? ""
+      ).trim();
+    const usuarioApellidos =
+      String(
+        body.usuarioApellidos ?? ""
+      ).trim();
+    const usuarioEmail =
+      String(
+        body.usuarioEmail ?? ""
       )
         .trim()
         .toLowerCase();
-
-    /* =====================================================
-       VALIDACIONES
-       ===================================================== */
 
     if (
       !nombre ||
@@ -183,13 +183,20 @@ export async function PUT(
       !localidad ||
       !provincia ||
       !telefono ||
-      !email
+      !email ||
+      !directorNombre ||
+      !directorApellidos ||
+      !directorDni ||
+      !directorEmail ||
+      !usuarioNombre ||
+      !usuarioApellidos ||
+      !usuarioEmail
     ) {
       return NextResponse.json(
         {
           ok: false,
           error:
-            "Debe completar todos los campos.",
+            "Debe completar todos los datos del centro, del director y del usuario de acceso.",
         },
         {
           status: 400,
@@ -197,12 +204,7 @@ export async function PUT(
       );
     }
 
-    const emailValido =
-      /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
-        email
-      );
-
-    if (!emailValido) {
+    if (!esEmailValido(email)) {
       return NextResponse.json(
         {
           ok: false,
@@ -215,30 +217,41 @@ export async function PUT(
       );
     }
 
-    /*
-     * Comprobamos si el nuevo código ya lo
-     * utiliza otro centro.
-     */
+    if (!esEmailValido(usuarioEmail)) {
+      return NextResponse.json(
+        {
+          ok: false,
+          error:
+            "El email de acceso no es válido.",
+        },
+        {
+          status: 400,
+        }
+      );
+    }
+
+    if (!esEmailValido(directorEmail)) {
+      return NextResponse.json(
+        { ok: false, error: "El email del director no es válido." },
+        { status: 400 }
+      );
+    }
 
     const centroConMismoCodigo =
       await prisma.centro.findFirst({
         where: {
           codigo,
-
           NOT: {
             id:
               sesion.centroId,
           },
         },
-
         select: {
           id: true,
         },
       });
 
-    if (
-      centroConMismoCodigo
-    ) {
+    if (centroConMismoCodigo) {
       return NextResponse.json(
         {
           ok: false,
@@ -252,81 +265,118 @@ export async function PUT(
     }
 
     /*
-     * MUY IMPORTANTE:
-     *
-     * El id del centro NO viene del navegador.
-     * Siempre utilizamos sesion.centroId.
-     *
-     * Así un centro no puede cambiar el id
-     * de una petición para modificar otro.
+     * El mismo email SÍ puede existir en centros distintos.
+     * Únicamente impedimos duplicarlo para dos usuarios del
+     * mismo centro, por si en el futuro se habilitan varios.
      */
-
-    const resultado =
-      await prisma.centro.updateMany({
+    const usuarioDuplicado =
+      await prisma.usuario.findFirst({
         where: {
-          id:
+          centroId:
             sesion.centroId,
-
-          activo:
-            true,
+          email:
+            usuarioEmail,
+          NOT: {
+            id:
+              sesion.usuarioId,
+          },
         },
-
-        data: {
-          nombre,
-          codigo,
-          cif,
-          direccion,
-          localidad,
-          provincia,
-          telefono,
-          email,
+        select: {
+          id: true,
         },
       });
 
-    if (
-      resultado.count !== 1
-    ) {
+    if (usuarioDuplicado) {
       return NextResponse.json(
         {
           ok: false,
           error:
-            "No se ha podido actualizar el centro.",
+            "Ya existe otro usuario con ese email dentro de este centro.",
         },
         {
-          status: 404,
+          status: 409,
         }
       );
     }
 
-    const centroActualizado =
-      await prisma.centro.findUnique({
-        where: {
-          id:
-            sesion.centroId,
-        },
+    const resultado =
+      await prisma.$transaction(
+        async (tx) => {
+          const centroActualizado =
+            await tx.centro.update({
+              where: {
+                id:
+                  sesion.centroId,
+              },
+              data: {
+                nombre,
+                codigo,
+                cif,
+                direccion,
+                localidad,
+                provincia,
+                telefono,
+                email,
+                directorNombre,
+                directorApellidos,
+                directorDni,
+                directorEmail,
+              },
+              select: {
+                id: true,
+                nombre: true,
+                codigo: true,
+                cif: true,
+                direccion: true,
+                localidad: true,
+                provincia: true,
+                telefono: true,
+                email: true,
+                directorNombre: true,
+                directorApellidos: true,
+                directorDni: true,
+                directorEmail: true,
+                selloFirmaUrl: true,
+              },
+            });
 
-        select: {
-          id: true,
+          const usuarioActualizado =
+            await tx.usuario.update({
+              where: {
+                id:
+                  sesion.usuarioId,
+              },
+              data: {
+                nombre:
+                  usuarioNombre,
+                apellidos:
+                  usuarioApellidos,
+                email:
+                  usuarioEmail,
+              },
+              select: {
+                id: true,
+                nombre: true,
+                apellidos: true,
+                email: true,
+              },
+            });
 
-          nombre: true,
-          codigo: true,
-          cif: true,
-          direccion: true,
-          localidad: true,
-          provincia: true,
-          telefono: true,
-          email: true,
-        },
-      });
+          return {
+            centroActualizado,
+            usuarioActualizado,
+          };
+        }
+      );
 
     return NextResponse.json({
       ok: true,
-
       mensaje:
-        "Datos del centro guardados correctamente.",
-
+        "Datos del centro y de acceso guardados correctamente.",
       centro:
-        centroActualizado,
+        resultado.centroActualizado,
+      usuarioAcceso:
+        resultado.usuarioActualizado,
     });
   } catch (error) {
     console.error(
@@ -345,4 +395,12 @@ export async function PUT(
       }
     );
   }
+}
+
+function esEmailValido(
+  email: string
+) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
+    email
+  );
 }

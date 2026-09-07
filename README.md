@@ -1,322 +1,124 @@
 # Gestor de Becas Web
 
-Aplicación web para la gestión de centros, cursos académicos, alumnado, asignaturas, asistencia y generación de documentación. Esta versión corresponde al **gestor sin módulo de firma**.
+Aplicación web para gestionar centros educativos, cursos académicos, alumnado, profesorado, asistencias y la generación y firma electrónica de los Anexos I y V.
 
-## Tecnologías principales
+## Versiones
 
-- Next.js
-- TypeScript
-- Node.js / npm
-- Prisma ORM
-- MySQL
-- Generación de documentos PDF mediante plantillas incluidas en el proyecto
+| Versión | Contenido | Manual |
+| --- | --- | --- |
+| v1.0.0 | Gestor sin módulo de firmas, conservado en la etiqueta del repositorio original. | [Manual v1 PDF](public/documentos/Manual_Gestor_Becas_v1.0.pdf) |
+| v2.0.0 | Gestor con módulo de firmas de Anexos I y V. | [Manual v2 PDF](public/documentos/Manual_Gestor_Becas_v2.0.pdf) · [Fuente editable](docs/manual-v2.md) |
 
-# Instalación detallada
+Repositorio de las dos versiones: [gestor-becas-web](https://github.com/joseangelcalvoperez-code/gestor-becas-web).
+El manual v1 y su [original Word](Manual_Gestor_Becas_v1.0.docx) se conservan sin modificaciones. Inicio ofrece acceso a ambos manuales.
 
-## 1. Requisitos previos
+La v2 se prepara para su incorporación al mismo repositorio manteniendo el historial y la etiqueta v1.0.0. Consulte [la preparación de publicación](docs/publicacion-v2.md) y [los cambios](CHANGELOG.md).
 
-Antes de instalar el servicio deben estar disponibles:
+## Funcionalidades de la v2.0.0
 
-### Node.js
+- Registro y acceso de usuarios por centro.
+- Gestión de cursos académicos, alumnado, grados, asignaturas y profesores.
+- Importación y exportación de alumnado y asistencias mediante hojas de cálculo.
+- Registro mensual de horas asistidas y no asistidas.
+- Generación en PDF de los Anexos I y V.
+- Preparación de envíos y firma mediante enlaces personales.
+- Firma acumulativa de los profesores en el Anexo I.
+- Firma final del director cuando han firmado todos los profesores.
+- Incorporación del sello configurado por el centro al Anexo I final.
+- Rechazo de documentos con observaciones y trazabilidad de eventos.
+- Verificación pública mediante CSV.
+- Descarga individual o agrupada de documentos completamente firmados.
+- Conservación temporal de PDFs y mantenimiento de evidencias de firma.
+- Recuperación de contraseña por correo electrónico.
 
-Instalar una versión LTS reciente de Node.js y comprobar la instalación:
+Los enlaces de firma se distribuyen manualmente desde el detalle del envío; todavía no se envían automáticamente por correo. La subida de PDF externos está deshabilitada.
 
-```powershell
-node --version
-npm --version
-```
+## Tecnologías
 
-### MySQL
+- Next.js 16 con App Router
+- React 19 y TypeScript
+- Prisma ORM 7
+- MySQL o MariaDB
+- `pdf-lib` para generar y estampar PDFs
+- ExcelJS para importaciones y exportaciones
+- Resend como proveedor de correo
 
-Debe existir un servidor MySQL accesible desde el equipo o servidor donde se ejecutará la aplicación.
+## Requisitos
 
-Será necesario conocer:
+- Node.js 20 o superior
+- npm
+- MySQL o MariaDB
+- Una base principal y otra base vacía para las migraciones de desarrollo
 
-- Host o dirección del servidor
-- Puerto de MySQL
-- Nombre de la base de datos
-- Usuario
-- Contraseña
+## Instalación local
 
-Para desarrollo, MySQL puede ejecutarse en el mismo ordenador que la aplicación.
+1. Instala las dependencias:
 
-### Git
+   ```bash
+   npm install
+   ```
 
-Git es necesario si el proyecto se descarga y actualiza directamente desde GitHub:
+2. Copia `.env.example` como `.env` y completa sus valores:
 
-```powershell
-git --version
-```
+   ```powershell
+   Copy-Item .env.example .env
+   ```
 
-## 2. Descargar el proyecto
+3. Para una base nueva y vacía, aplica las migraciones y genera Prisma Client:
 
-Situarse en la carpeta donde se quiera instalar:
+   ```bash
+   npx prisma migrate deploy
+   npx prisma generate
+   ```
 
-```powershell
-cd C:\Proyectos
-```
+   Para actualizar una base v1 existente, revise primero [las instrucciones de actualización](docs/publicacion-v2.md). La v1 publicada no contiene las migraciones SQL iniciales; hay que reconciliar su historial antes de aplicar las de v2.
 
-Clonar el repositorio:
+4. Inicia la aplicación:
 
-```powershell
-git clone URL_DEL_REPOSITORIO
-cd gestor-becas-web
-```
+   ```bash
+   npm run dev
+   ```
 
-Si se recibe como ZIP, descomprimirlo y abrir una terminal en la carpeta raíz.
+5. Abre `http://localhost:3000`.
 
-## 3. Instalar las dependencias
+## Variables de entorno
 
-Desde la raíz del proyecto:
+| Variable | Obligatoria | Descripción |
+| --- | --- | --- |
+| `DATABASE_URL` | Sí | Conexión MySQL/MariaDB utilizada por la aplicación. |
+| `SHADOW_DATABASE_URL` | Desarrollo | Base auxiliar vacía usada por Prisma para crear migraciones. |
+| `AUTH_SECRET` | Sí | Secreto largo y aleatorio para firmar las sesiones. |
+| `APP_URL` | Sí | URL pública usada en enlaces de firma, recuperación y verificación. |
+| `NEXT_PUBLIC_APP_URL` | Recomendada | URL pública disponible en el cliente. |
+| `EMAIL_PROVIDER` | Para correo | Proveedor de email; actualmente `resend`. |
+| `EMAIL_FROM` | Para correo | Remitente verificado por el proveedor. |
+| `RESEND_API_KEY` | Para correo | Clave privada de Resend. |
+| `EMAIL_DEMO_TO` | No | Destinatario para pruebas de envío. |
 
-```powershell
-npm install
-```
+## Comandos disponibles
 
-Este comando instala las dependencias definidas en `package.json`.
-
-La carpeta `node_modules` se genera localmente y no se almacena en GitHub.
-
-## 4. Crear la base de datos
-
-Crear en MySQL una base de datos para el aplicativo. Por ejemplo:
-
-```sql
-CREATE DATABASE gestor_becas
-CHARACTER SET utf8mb4
-COLLATE utf8mb4_unicode_ci;
-```
-
-El nombre es orientativo. Puede utilizarse otro siempre que coincida con la configuración del proyecto.
-
-La base de datos local y sus datos de prueba **no se suben a GitHub**.
-
-## 5. Configurar las variables de entorno
-
-Crear o configurar en la raíz del proyecto:
-
-```text
-.env
-```
-
-Este archivo contiene información propia de cada instalación y **no debe subirse al repositorio**.
-
-Configurar la conexión a MySQL conforme a la variable utilizada por Prisma. Ejemplo:
-
-```env
-DATABASE_URL="mysql://USUARIO:CONTRASENA@127.0.0.1:3306/gestor_becas"
-```
-
-Sustituir usuario, contraseña, host, puerto y base de datos por los valores reales.
-
-> Nunca guardar contraseñas, credenciales o secretos reales en GitHub.
-
-## 6. Preparar Prisma y la estructura de la base de datos
-
-El modelo se encuentra en:
-
-```text
-prisma/schema.prisma
-```
-
-Generar Prisma Client:
-
-```powershell
-npx prisma generate
-```
-
-Comprobar las migraciones:
-
-```powershell
-npx prisma migrate status
-```
-
-### Base de datos nueva
-
-Si el repositorio contiene las migraciones en `prisma/migrations`, aplicarlas mediante:
-
-```powershell
-npx prisma migrate deploy
-```
-
-Después:
-
-```powershell
-npx prisma generate
-```
-
-### Modificaciones del esquema durante el desarrollo
-
-Cuando se cambie deliberadamente `schema.prisma`, las nuevas migraciones se pueden crear en desarrollo con:
-
-```powershell
-npx prisma migrate dev --name descripcion_del_cambio
-```
-
-No utilizar `migrate dev` indiscriminadamente en un servidor de producción.
-
-## 7. Plantillas PDF
-
-Las plantillas maestras forman parte de la aplicación y deben conservarse.
-
-Entre ellas:
-
-```text
-public/
-└── plantillas/
-    ├── anexo-i-vacio.pdf
-    └── anexo-v-vacio.pdf
-```
-
-Estas plantillas son reutilizables para distintos cursos académicos. La aplicación incorpora dinámicamente datos como curso, mes, semanas, alumno, asignaturas y asistencia.
-
-**No sustituir o modificar una plantilla sin comprobar posteriormente las coordenadas de impresión.**
-
-## 8. Arrancar el servicio en desarrollo
-
-Ejecutar:
-
-```powershell
+```bash
 npm run dev
-```
-
-Abrir en el navegador:
-
-```text
-http://localhost:3000
-```
-
-Para detener el servidor:
-
-```text
-Ctrl + C
-```
-
-## 9. Comprobaciones después de una instalación
-
-Antes de considerar una instalación operativa, verificar:
-
-1. La aplicación arranca sin errores.
-2. La conexión con MySQL funciona.
-3. Las migraciones están aplicadas.
-4. El acceso y la configuración inicial disponibles en esa instalación funcionan.
-5. Se pueden configurar los datos del centro y el curso académico.
-6. Se pueden crear los datos académicos necesarios.
-7. Se puede registrar alumnado y matrícula.
-8. Se puede introducir asistencia.
-9. Se genera correctamente un ANEXO V.
-10. Se genera correctamente un ANEXO I.
-11. Funcionan las descargas y generaciones múltiples.
-12. Los datos impresos mantienen sus posiciones sobre las plantillas PDF.
-
-## 10. Compilar para producción
-
-Antes de publicar una versión:
-
-```powershell
 npm run build
-```
-
-Si la compilación finaliza correctamente:
-
-```powershell
-npm start
-```
-
-Por defecto, Next.js suele utilizar el puerto `3000`, salvo que la instalación configure otro.
-
-Para una instalación accesible desde Internet se recomienda utilizar HTTPS y ejecutar la aplicación detrás de un proxy inverso. La configuración concreta dependerá del servidor o proveedor elegido.
-
-## 11. Actualizar una instalación existente
-
-Antes de actualizar un entorno con información real, realizar una copia de seguridad de MySQL.
-
-Después:
-
-```powershell
-git pull
-npm install
-npx prisma generate
+npm run start
+npm run lint
+npx prisma validate
 npx prisma migrate deploy
-npm run build
-```
-
-Finalmente, reiniciar el proceso que mantiene la aplicación en ejecución.
-
-Actualizar el código no equivale a borrar los datos de MySQL, pero cualquier migración debe revisarse antes de aplicarse sobre información real.
-
-## 12. Archivos que no deben subirse a GitHub
-
-Entre otros:
-
-```text
-.env
-.env.local
-node_modules/
-.next/
-*.sql
-*.dump
-*.bak
-```
-
-Tampoco deben versionarse exportaciones de bases de datos con información real.
-
-## 13. Copias de seguridad
-
-En una instalación real se recomienda mantener copias periódicas de:
-
-- Base de datos MySQL
-- Configuración necesaria para reconstruir el servicio
-- Plantillas documentales si se personalizan
-
-GitHub conserva el código y su historial, pero **no sustituye una copia de seguridad de la base de datos**.
-
-## 14. Estructura general
-
-```text
-gestor-becas-web/
-├── prisma/
-│   ├── migrations/
-│   └── schema.prisma
-├── public/
-│   └── plantillas/
-├── src/
-│   └── app/
-├── .gitignore
-├── next.config.ts
-├── package.json
-├── package-lock.json
-├── prisma.config.ts
-├── README.md
-└── tsconfig.json
-```
-
-## 15. Instalación rápida para desarrollo
-
-Una vez preparado MySQL:
-
-```powershell
-git clone URL_DEL_REPOSITORIO
-cd gestor-becas-web
-npm install
-```
-
-Crear/configurar `.env` y ejecutar:
-
-```powershell
 npx prisma generate
-npx prisma migrate deploy
-npm run dev
 ```
 
-Abrir:
+## Almacenamiento y privacidad
 
-```text
-http://localhost:3000
-```
+Los originales, documentos firmados y sellos se guardan bajo `storage/`. Esta carpeta, los archivos `.env`, Prisma Client generado, dependencias y artefactos de compilación están excluidos del repositorio.
 
-# Versión
+En producción, `storage/` debe estar respaldado por almacenamiento persistente y privado. Nunca deben publicarse archivos `.env`, copias de la base de datos, documentos firmados, sellos ni secretos.
 
-**Gestor de Becas Web — v1.0.0**
+## Plantillas documentales
 
-Primera versión estable del gestor web sin módulo de firma.
+Las plantillas PDF maestras están en `public/plantillas/`. Las coordenadas para rellenar y estampar los documentos se encuentran en sus generadores y en `src/lib/firmas/estampar-pdf.ts`.
+
+## Versión
+
+Versión del proyecto: `2.0.0`, con módulo de firmas. La etiqueta `v1.0.0` del repositorio `gestor-becas-web` identifica el gestor original sin firmas.
+
+Antes de desplegar en producción deben configurarse una base de datos, almacenamiento persistente, HTTPS, una URL pública estable y un remitente de correo verificado.

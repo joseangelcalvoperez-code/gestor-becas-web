@@ -8,71 +8,65 @@ datasource db {
 }
 
 model Centro {
-  id Int @id @default(autoincrement())
-
-  nombre    String
-  codigo    String @unique
-  cif       String
-  direccion String
-  localidad String
-  provincia String
-  telefono  String
-  email     String
-
-  selloFirmaUrl String? @map("sello_firma_url")
-
-  activo Boolean @default(true)
-
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-
-  usuarios         Usuario[]
-  grados           Grado[]
-  profesors        Profesor[]
-  asignaturas      Asignatura[]
-  alumnos          Alumno[]
-  cursosAcademicos CursoAcademico[]
-  matriculas       Matricula[]
-  asistencias      Asistencia[]
+  id                Int              @id @default(autoincrement())
+  nombre            String
+  codigo            String           @unique
+  cif               String
+  direccion         String
+  localidad         String
+  provincia         String
+  telefono          String
+  email             String
+  selloFirmaUrl     String?          @map("sello_firma_url")
+  activo            Boolean          @default(true)
+  createdAt         DateTime         @default(now()) @map("created_at")
+  updatedAt         DateTime         @updatedAt @map("updated_at")
+  directorNombre    String?          @map("director_nombre")
+  directorApellidos String?          @map("director_apellidos")
+  directorDni       String?          @map("director_dni")
+  directorEmail     String?          @map("director_email")
+  alumnos           Alumno[]
+  asignaturas       Asignatura[]
+  asistencias       Asistencia[]
+  cursosAcademicos  CursoAcademico[]
+  enviosFirma       EnvioFirma[]
+  grados            Grado[]
+  matriculas        Matricula[]
+  profesors         Profesor[]
+  usuarios          Usuario[]
 
   @@map("centros")
 }
 
 model Usuario {
-  id Int @id @default(autoincrement())
+  id                     Int                    @id @default(autoincrement())
+  centroId               Int                    @map("centro_id")
+  passwordHash           String                 @map("password_hash")
+  activo                 Boolean                @default(true)
+  createdAt              DateTime               @default(now()) @map("created_at")
+  updatedAt              DateTime               @updatedAt @map("updated_at")
+  email                  String
+  nombre                 String
+  apellidos              String                 @default("")
+  recuperacionesPassword RecuperacionPassword[]
+  centro                 Centro                 @relation(fields: [centroId], references: [id], onDelete: Cascade)
 
-  centroId Int @map("centro_id")
-
-  nombre String
-
-  email        String @unique
-  passwordHash String @map("password_hash")
-
-  activo Boolean @default(true)
-
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-
-  centro Centro @relation(fields: [centroId], references: [id], onDelete: Cascade)
-
+  @@unique([centroId, email])
   @@index([centroId])
+  @@index([email])
   @@map("usuarios")
 }
 
 model Grado {
-  id Int @id @default(autoincrement())
-
-  centroId Int     @map("centro_id")
-  nombre   String
-  activo   Boolean @default(true)
-
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-
-  centro      Centro       @relation(fields: [centroId], references: [id], onDelete: Cascade)
+  id          Int          @id @default(autoincrement())
+  centroId    Int          @map("centro_id")
+  nombre      String
+  activo      Boolean      @default(true)
+  createdAt   DateTime     @default(now()) @map("created_at")
+  updatedAt   DateTime     @updatedAt @map("updated_at")
   asignaturas Asignatura[]
-
-  matriculas Matricula[]
+  centro      Centro       @relation(fields: [centroId], references: [id], onDelete: Cascade)
+  matriculas  Matricula[]
 
   @@unique([centroId, nombre])
   @@index([centroId])
@@ -80,21 +74,18 @@ model Grado {
 }
 
 model Profesor {
-  id Int @id @default(autoincrement())
-
-  centroId Int @map("centro_id")
-
-  nombre    String
-  apellidos String
-  dni       String
-
-  activo Boolean @default(true)
-
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-
-  centro      Centro       @relation(fields: [centroId], references: [id], onDelete: Cascade)
-  asignaturas Asignatura[]
+  id             Int             @id @default(autoincrement())
+  centroId       Int             @map("centro_id")
+  nombre         String
+  apellidos      String
+  dni            String
+  activo         Boolean         @default(true)
+  createdAt      DateTime        @default(now()) @map("created_at")
+  updatedAt      DateTime        @updatedAt @map("updated_at")
+  email          String?
+  asignaturas    Asignatura[]
+  firmantesEnvio FirmanteEnvio[]
+  centro         Centro          @relation(fields: [centroId], references: [id], onDelete: Cascade)
 
   @@unique([centroId, dni])
   @@index([centroId])
@@ -102,24 +93,20 @@ model Profesor {
 }
 
 model Asignatura {
-  id Int @id @default(autoincrement())
-
-  centroId   Int @map("centro_id")
-  gradoId    Int @map("grado_id")
-  profesorId Int @map("profesor_id")
-
-  curso  Int
-  codigo String @default("")
-  nombre String
-
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-
-  centro   Centro   @relation(fields: [centroId], references: [id], onDelete: Cascade)
-  grado    Grado    @relation(fields: [gradoId], references: [id], onDelete: Cascade)
-  profesor Profesor @relation(fields: [profesorId], references: [id])
-
+  id                     Int                              @id @default(autoincrement())
+  centroId               Int                              @map("centro_id")
+  gradoId                Int                              @map("grado_id")
+  profesorId             Int                              @map("profesor_id")
+  curso                  Int
+  codigo                 String                           @default("")
+  nombre                 String
+  createdAt              DateTime                         @default(now()) @map("created_at")
+  updatedAt              DateTime                         @updatedAt @map("updated_at")
+  centro                 Centro                           @relation(fields: [centroId], references: [id], onDelete: Cascade)
+  grado                  Grado                            @relation(fields: [gradoId], references: [id], onDelete: Cascade)
+  profesor               Profesor                         @relation(fields: [profesorId], references: [id])
   asistencias            Asistencia[]
+  documentosFirma        DocumentoFirma[]
   matriculasConvalidadas MatriculaAsignaturaConvalidada[]
 
   @@unique([centroId, gradoId, curso, nombre])
@@ -130,19 +117,14 @@ model Asignatura {
 }
 
 model Alumno {
-  id Int @id @default(autoincrement())
-
-  centroId Int @map("centro_id")
-
-  nombre    String
-  apellidos String
-  dni       String
-
-  activo Boolean @default(true)
-
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-
+  id         Int         @id @default(autoincrement())
+  centroId   Int         @map("centro_id")
+  nombre     String
+  apellidos  String
+  dni        String
+  activo     Boolean     @default(true)
+  createdAt  DateTime    @default(now()) @map("created_at")
+  updatedAt  DateTime    @updatedAt @map("updated_at")
   centro     Centro      @relation(fields: [centroId], references: [id], onDelete: Cascade)
   matriculas Matricula[]
 
@@ -152,23 +134,18 @@ model Alumno {
 }
 
 model CursoAcademico {
-  id Int @id @default(autoincrement())
-
-  centroId Int @map("centro_id")
-
-  nombre String
-
-  fechaInicio DateTime @map("fecha_inicio")
-  fechaFin    DateTime @map("fecha_fin")
-
-  activo Boolean @default(true)
-  actual Boolean @default(false)
-
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-
-  centro     Centro      @relation(fields: [centroId], references: [id], onDelete: Cascade)
-  matriculas Matricula[]
+  id          Int          @id @default(autoincrement())
+  centroId    Int          @map("centro_id")
+  nombre      String
+  fechaInicio DateTime     @map("fecha_inicio")
+  fechaFin    DateTime     @map("fecha_fin")
+  activo      Boolean      @default(true)
+  createdAt   DateTime     @default(now()) @map("created_at")
+  updatedAt   DateTime     @updatedAt @map("updated_at")
+  actual      Boolean      @default(false)
+  centro      Centro       @relation(fields: [centroId], references: [id], onDelete: Cascade)
+  enviosFirma EnvioFirma[]
+  matriculas  Matricula[]
 
   @@unique([centroId, nombre])
   @@index([centroId])
@@ -177,27 +154,22 @@ model CursoAcademico {
 }
 
 model Matricula {
-  id Int @id @default(autoincrement())
-
-  centroId         Int @map("centro_id")
-  alumnoId         Int @map("alumno_id")
-  cursoAcademicoId Int @map("curso_academico_id")
-  gradoId          Int @map("grado_id")
-
-  curso      Int
-  expediente String @default("")
-
-  activo Boolean @default(true)
-
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-
-  centro         Centro         @relation(fields: [centroId], references: [id], onDelete: Cascade)
-  alumno         Alumno         @relation(fields: [alumnoId], references: [id], onDelete: Cascade)
-  cursoAcademico CursoAcademico @relation(fields: [cursoAcademicoId], references: [id], onDelete: Cascade)
-  grado          Grado          @relation(fields: [gradoId], references: [id])
-
+  id                      Int                              @id @default(autoincrement())
+  centroId                Int                              @map("centro_id")
+  alumnoId                Int                              @map("alumno_id")
+  cursoAcademicoId        Int                              @map("curso_academico_id")
+  gradoId                 Int                              @map("grado_id")
+  curso                   Int
+  expediente              String                           @default("")
+  activo                  Boolean                          @default(true)
+  createdAt               DateTime                         @default(now()) @map("created_at")
+  updatedAt               DateTime                         @updatedAt @map("updated_at")
   asistencias             Asistencia[]
+  documentosFirma         DocumentoFirma[]
+  alumno                  Alumno                           @relation(fields: [alumnoId], references: [id], onDelete: Cascade)
+  centro                  Centro                           @relation(fields: [centroId], references: [id], onDelete: Cascade)
+  cursoAcademico          CursoAcademico                   @relation(fields: [cursoAcademicoId], references: [id], onDelete: Cascade)
+  grado                   Grado                            @relation(fields: [gradoId], references: [id])
   asignaturasConvalidadas MatriculaAsignaturaConvalidada[]
 
   @@unique([centroId, alumnoId, cursoAcademicoId])
@@ -210,28 +182,21 @@ model Matricula {
 }
 
 model Asistencia {
-  id Int @id @default(autoincrement())
-
-  centroId     Int @map("centro_id")
-  matriculaId  Int @map("matricula_id")
-  asignaturaId Int @map("asignatura_id")
-
-  anio Int
-  mes  Int
-
-  horasAsistidas   Decimal @default(0) @map("horas_asistidas") @db.Decimal(8, 2)
-  horasNoAsistidas Decimal @default(0) @map("horas_no_asistidas") @db.Decimal(8, 2)
-
-  observaciones String? @db.Text
-
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-
-  centro     Centro     @relation(fields: [centroId], references: [id], onDelete: Cascade)
-  matricula  Matricula  @relation(fields: [matriculaId], references: [id], onDelete: Cascade)
-  asignatura Asignatura @relation(fields: [asignaturaId], references: [id], onDelete: Cascade)
-
-  dias AsistenciaDia[]
+  id               Int             @id @default(autoincrement())
+  centroId         Int             @map("centro_id")
+  matriculaId      Int             @map("matricula_id")
+  asignaturaId     Int             @map("asignatura_id")
+  anio             Int
+  mes              Int
+  horasAsistidas   Decimal         @default(0.00) @map("horas_asistidas") @db.Decimal(8, 2)
+  horasNoAsistidas Decimal         @default(0.00) @map("horas_no_asistidas") @db.Decimal(8, 2)
+  createdAt        DateTime        @default(now()) @map("created_at")
+  updatedAt        DateTime        @updatedAt @map("updated_at")
+  observaciones    String?         @db.Text
+  asignatura       Asignatura      @relation(fields: [asignaturaId], references: [id], onDelete: Cascade)
+  centro           Centro          @relation(fields: [centroId], references: [id], onDelete: Cascade)
+  matricula        Matricula       @relation(fields: [matriculaId], references: [id], onDelete: Cascade)
+  dias             AsistenciaDia[]
 
   @@unique([matriculaId, asignaturaId, anio, mes])
   @@index([centroId])
@@ -242,21 +207,15 @@ model Asistencia {
 }
 
 model AsistenciaDia {
-  id Int @id @default(autoincrement())
-
-  asistenciaId Int @map("asistencia_id")
-
-  fecha DateTime @db.Date
-
-  horasAsistidas   Decimal @default(0) @map("horas_asistidas") @db.Decimal(8, 2)
-  horasNoAsistidas Decimal @default(0) @map("horas_no_asistidas") @db.Decimal(8, 2)
-
-  observaciones String? @db.Text
-
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-
-  asistencia Asistencia @relation(fields: [asistenciaId], references: [id], onDelete: Cascade)
+  id               Int        @id @default(autoincrement())
+  asistenciaId     Int        @map("asistencia_id")
+  fecha            DateTime   @db.Date
+  horasAsistidas   Decimal    @default(0.00) @map("horas_asistidas") @db.Decimal(8, 2)
+  horasNoAsistidas Decimal    @default(0.00) @map("horas_no_asistidas") @db.Decimal(8, 2)
+  createdAt        DateTime   @default(now()) @map("created_at")
+  updatedAt        DateTime   @updatedAt @map("updated_at")
+  observaciones    String?    @db.Text
+  asistencia       Asistencia @relation(fields: [asistenciaId], references: [id], onDelete: Cascade)
 
   @@unique([asistenciaId, fecha])
   @@index([asistenciaId])
@@ -264,29 +223,17 @@ model AsistenciaDia {
   @@map("asistencias_dias")
 }
 
-enum TipoPlantillaDocumento {
-  ANEXO_I
-  ANEXO_V
-}
-
 model PlantillaDocumento {
-  id Int @id @default(autoincrement())
-
-  tipo TipoPlantillaDocumento
-
-  cursoInicio Int @map("curso_inicio")
-  cursoFin    Int @map("curso_fin")
-
-  version Int @default(1)
-
-  nombre String
-
-  archivoKey String @map("archivo_key")
-
-  activa Boolean @default(true)
-
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  id          Int                    @id @default(autoincrement())
+  tipo        TipoPlantillaDocumento
+  cursoInicio Int                    @map("curso_inicio")
+  cursoFin    Int                    @map("curso_fin")
+  version     Int                    @default(1)
+  nombre      String
+  archivoKey  String                 @map("archivo_key")
+  activa      Boolean                @default(true)
+  createdAt   DateTime               @default(now()) @map("created_at")
+  updatedAt   DateTime               @updatedAt @map("updated_at")
 
   @@unique([tipo, cursoInicio, cursoFin, version])
   @@index([cursoInicio, cursoFin])
@@ -295,19 +242,240 @@ model PlantillaDocumento {
 }
 
 model MatriculaAsignaturaConvalidada {
-  id Int @id @default(autoincrement())
-
-  matriculaId  Int @map("matricula_id")
-  asignaturaId Int @map("asignatura_id")
-
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-
-  matricula  Matricula  @relation(fields: [matriculaId], references: [id], onDelete: Cascade)
-  asignatura Asignatura @relation(fields: [asignaturaId], references: [id], onDelete: Cascade)
+  id           Int        @id @default(autoincrement())
+  matriculaId  Int        @map("matricula_id")
+  asignaturaId Int        @map("asignatura_id")
+  createdAt    DateTime   @default(now()) @map("created_at")
+  updatedAt    DateTime   @updatedAt @map("updated_at")
+  asignatura   Asignatura @relation(fields: [asignaturaId], references: [id], onDelete: Cascade)
+  matricula    Matricula  @relation(fields: [matriculaId], references: [id], onDelete: Cascade)
 
   @@unique([matriculaId, asignaturaId])
   @@index([matriculaId])
   @@index([asignaturaId])
   @@map("matriculas_asignaturas_convalidadas")
+}
+
+model EnvioFirma {
+  id               Int              @id @default(autoincrement())
+  centroId         Int              @map("centro_id")
+  cursoAcademicoId Int?             @map("curso_academico_id")
+  tipo             TipoEnvioFirma
+  estado           EstadoEnvioFirma @default(BORRADOR)
+  nombre           String
+  anio             Int?
+  mes              Int?
+  createdAt        DateTime         @default(now()) @map("created_at")
+  updatedAt        DateTime         @updatedAt @map("updated_at")
+  documentos       DocumentoFirma[]
+  centro           Centro           @relation(fields: [centroId], references: [id], onDelete: Cascade)
+  cursoAcademico   CursoAcademico?  @relation(fields: [cursoAcademicoId], references: [id])
+  eventos          EventoFirma[]
+  firmantes        FirmanteEnvio[]
+
+  @@index([centroId])
+  @@index([cursoAcademicoId])
+  @@index([estado])
+  @@index([anio, mes])
+  @@map("envios_firma")
+}
+
+model DocumentoFirma {
+  id                           Int                     @id @default(autoincrement())
+  envioFirmaId                 Int                     @map("envio_firma_id")
+  matriculaId                  Int?                    @map("matricula_id")
+  asignaturaId                 Int?                    @map("asignatura_id")
+  tipo                         TipoDocumentoFirma
+  nombreArchivo                String                  @map("nombre_archivo")
+  archivoOriginalKey           String?                 @map("archivo_original_key")
+  archivoFirmadoKey            String?                 @map("archivo_firmado_key")
+  hashOriginal                 String?                 @map("hash_original")
+  hashFirmado                  String?                 @map("hash_firmado")
+  csv                          String                  @unique
+  estado                       EstadoDocumentoFirma    @default(PENDIENTE)
+  anio                         Int?
+  mes                          Int?
+  createdAt                    DateTime                @default(now()) @map("created_at")
+  updatedAt                    DateTime                @updatedAt @map("updated_at")
+  motivoEliminacionPdf         String?                 @map("motivo_eliminacion_pdf") @db.VarChar(100)
+  pdfDisponibleHasta           DateTime?               @map("pdf_disponible_hasta")
+  pdfEliminadoEn               DateTime?               @map("pdf_eliminado_en")
+  snapshotAlumnoApellidos      String?                 @map("snapshot_alumno_apellidos")
+  snapshotAlumnoDni            String?                 @map("snapshot_alumno_dni")
+  snapshotAlumnoNombre         String?                 @map("snapshot_alumno_nombre")
+  snapshotAsignaturaCodigo     String?                 @map("snapshot_asignatura_codigo")
+  snapshotAsignaturaNombre     String?                 @map("snapshot_asignatura_nombre")
+  snapshotCapturadoEn          DateTime?               @map("snapshot_capturado_en")
+  snapshotCentroCodigo         String?                 @map("snapshot_centro_codigo")
+  snapshotCentroNombre         String?                 @map("snapshot_centro_nombre")
+  snapshotCursoAcademicoNombre String?                 @map("snapshot_curso_academico_nombre")
+  snapshotCursoAlumno          Int?                    @map("snapshot_curso_alumno")
+  snapshotExpediente           String?                 @map("snapshot_expediente")
+  snapshotGradoNombre          String?                 @map("snapshot_grado_nombre")
+  asignatura                   Asignatura?             @relation(fields: [asignaturaId], references: [id])
+  envioFirma                   EnvioFirma              @relation(fields: [envioFirmaId], references: [id], onDelete: Cascade)
+  matricula                    Matricula?              @relation(fields: [matriculaId], references: [id])
+  firmas                       FirmaDocumento[]
+  rechazos                     RechazoDocumentoFirma[]
+
+  @@index([envioFirmaId])
+  @@index([matriculaId])
+  @@index([asignaturaId])
+  @@index([estado])
+  @@index([anio, mes])
+  @@map("documentos_firma")
+}
+
+model FirmanteEnvio {
+  id           Int                     @id @default(autoincrement())
+  envioFirmaId Int                     @map("envio_firma_id")
+  profesorId   Int?                    @map("profesor_id")
+  nombre       String
+  apellidos    String
+  dni          String
+  email        String?
+  token        String                  @unique
+  estado       EstadoFirmanteEnvio     @default(PENDIENTE)
+  fechaFirma   DateTime?               @map("fecha_firma")
+  createdAt    DateTime                @default(now()) @map("created_at")
+  updatedAt    DateTime                @updatedAt @map("updated_at")
+  tipo         TipoFirmanteEnvio       @default(PROFESOR)
+  envioFirma   EnvioFirma              @relation(fields: [envioFirmaId], references: [id], onDelete: Cascade)
+  profesor     Profesor?               @relation(fields: [profesorId], references: [id])
+  firmas       FirmaDocumento[]
+  rechazos     RechazoDocumentoFirma[]
+
+  @@index([envioFirmaId])
+  @@index([profesorId])
+  @@index([tipo])
+  @@index([estado])
+  @@map("firmantes_envio")
+}
+
+model FirmaDocumento {
+  id                       Int            @id @default(autoincrement())
+  documentoFirmaId         Int            @map("documento_firma_id")
+  firmanteEnvioId          Int            @map("firmante_envio_id")
+  fechaFirma               DateTime       @default(now()) @map("fecha_firma")
+  ip                       String?
+  userAgent                String?        @map("user_agent") @db.Text
+  hashDocumento            String         @map("hash_documento")
+  createdAt                DateTime       @default(now()) @map("created_at")
+  evidenciaDisponibleHasta DateTime?      @map("evidencia_disponible_hasta")
+  documento                DocumentoFirma @relation(fields: [documentoFirmaId], references: [id], onDelete: Cascade)
+  firmante                 FirmanteEnvio  @relation(fields: [firmanteEnvioId], references: [id], onDelete: Cascade)
+
+  @@unique([documentoFirmaId, firmanteEnvioId])
+  @@index([documentoFirmaId])
+  @@index([firmanteEnvioId])
+  @@map("firmas_documentos")
+}
+
+model RechazoDocumentoFirma {
+  id               Int            @id @default(autoincrement())
+  documentoFirmaId Int            @map("documento_firma_id")
+  firmanteEnvioId  Int            @map("firmante_envio_id")
+  observaciones    String?        @db.Text
+  fechaRechazo     DateTime       @default(now()) @map("fecha_rechazo")
+  ip               String?
+  userAgent        String?        @map("user_agent") @db.Text
+  createdAt        DateTime       @default(now()) @map("created_at")
+  updatedAt        DateTime       @updatedAt @map("updated_at")
+  documento        DocumentoFirma @relation(fields: [documentoFirmaId], references: [id], onDelete: Cascade)
+  firmante         FirmanteEnvio  @relation(fields: [firmanteEnvioId], references: [id], onDelete: Cascade)
+
+  @@unique([documentoFirmaId, firmanteEnvioId])
+  @@index([documentoFirmaId])
+  @@index([firmanteEnvioId])
+  @@index([fechaRechazo])
+  @@map("rechazos_documentos_firma")
+}
+
+model EventoFirma {
+  id           Int             @id @default(autoincrement())
+  envioFirmaId Int             @map("envio_firma_id")
+  tipo         TipoEventoFirma
+  descripcion  String          @db.Text
+  ip           String?
+  createdAt    DateTime        @default(now()) @map("created_at")
+  envioFirma   EnvioFirma      @relation(fields: [envioFirmaId], references: [id], onDelete: Cascade)
+
+  @@index([envioFirmaId])
+  @@index([tipo])
+  @@index([createdAt])
+  @@map("eventos_firma")
+}
+
+model RecuperacionPassword {
+  id        Int       @id @default(autoincrement())
+  usuarioId Int       @map("usuario_id")
+  tokenHash String    @unique @map("token_hash") @db.Char(64)
+  expiraEn  DateTime  @map("expira_en")
+  usadoEn   DateTime? @map("usado_en")
+  createdAt DateTime  @default(now()) @map("created_at")
+  usuario   Usuario   @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+
+  @@index([usuarioId])
+  @@index([expiraEn])
+  @@index([usadoEn])
+  @@map("recuperaciones_password")
+}
+
+enum TipoPlantillaDocumento {
+  ANEXO_I
+  ANEXO_V
+}
+
+enum TipoEnvioFirma {
+  DOCUMENTOS_GENERADOS
+  DOCUMENTO_MANUAL
+}
+
+enum TipoDocumentoFirma {
+  ANEXO_I
+  ANEXO_V
+  OTRO
+}
+
+enum EstadoEnvioFirma {
+  BORRADOR
+  PENDIENTE
+  PARCIAL
+  COMPLETADO
+  CANCELADO
+}
+
+enum EstadoDocumentoFirma {
+  PENDIENTE
+  PARCIAL
+  FIRMADO
+  RECHAZADO
+  ANULADO
+}
+
+enum EstadoFirmanteEnvio {
+  PENDIENTE
+  PARCIAL
+  FIRMADO
+  RECHAZADO
+}
+
+enum TipoFirmanteEnvio {
+  PROFESOR
+  DIRECTOR
+}
+
+enum TipoEventoFirma {
+  ENVIO_CREADO
+  DOCUMENTO_ANADIDO
+  ENVIO_ENVIADO
+  ACCESO_FIRMANTE
+  DOCUMENTO_FIRMADO
+  DOCUMENTO_RECHAZADO
+  RECHAZO_RETIRADO
+  LOTE_PROCESADO
+  LOTE_FIRMADO
+  DOCUMENTO_ANULADO
+  ENVIO_COMPLETADO
+  ENVIO_CANCELADO
 }
