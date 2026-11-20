@@ -73,6 +73,20 @@ function crearCliente() {
       allowPublicKeyRetrieval:
         permitirClavePublica(host),
 
+      /*
+       * DATABASE_SSL=1 cifra la conexión (recomendado en servidor).
+       * MySQL 8 en Windows trae un certificado autofirmado, por lo
+       * que no se valida salvo DATABASE_SSL_VERIFY=1.
+       */
+      ...(process.env.DATABASE_SSL === "1"
+        ? {
+            ssl: {
+              rejectUnauthorized:
+                process.env.DATABASE_SSL_VERIFY === "1",
+            },
+          }
+        : {}),
+
       port: enteroEntorno(
         "DATABASE_PORT",
         3306

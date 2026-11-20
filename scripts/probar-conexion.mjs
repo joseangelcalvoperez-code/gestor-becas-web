@@ -81,7 +81,7 @@ function compararConUrl() {
 
 compararConUrl();
 
-async function probar(allowPublicKeyRetrieval) {
+async function probar(opciones) {
   const conn = await mariadb.createConnection({
     host,
     port,
@@ -89,31 +89,78 @@ async function probar(allowPublicKeyRetrieval) {
     password: process.env.DATABASE_PASSWORD,
     database,
     connectTimeout: 8000,
-    allowPublicKeyRetrieval,
+    ...opciones,
   });
   const [fila] = await conn.query(
-    "SELECT VERSION() AS version, (SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = DATABASE()) AS tablas"
+    "SELECT VERSION() AS version, CURRENT_USER() AS cuenta, (SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = DATABASE()) AS tablas"
   );
+  let plugin = "";
+  try {
+    const [p] = await conn.query(
+      "SELECT plugin FROM mysql.user WHERE CONCAT(user, '@', host) = CURRENT_USER()"
+    );
+    plugin = p?.plugin ?? "";
+  } catch {
+    // Sin permiso para leer mysql.user: no es necesario.
+  }
   await conn.end();
-  return fila;
+  return { ...fila, plugin };
 }
 
-try {
-  const r = await probar(true);
-  console.log(`\n✔ Conexión correcta. Servidor ${r.version}. Tablas en la base de datos: ${r.tablas}`);
-  if (Number(r.tablas) === 0) {
+/*
+ * Se prueban varias formas de conexión para distinguir:
+ *  - contraseña realmente incorrecta (fallan todas), o
+ *  - problema de autenticación de MySQL 8 sin cifrar (funciona con SSL).
+ */
+const variantes = [
+  {
+    nombre: "Configuración de la aplicación (sin SSL)",
+    opciones: { allowPublicKeyRetrieval: true },
+    env: process.env.DATABASE_SSL === "1" ? null : "",
+  },
+  {
+    nombre: "Con SSL (conexión cifrada)",
+    opciones: { allowPublicKeyRetrieval: true, ssl: { rejectUnauthorized: false } },
+    env: 'DATABASE_SSL="1"',
+  },
+];
+
+let correcta = null;
+const errores = [];
+
+for (const variante of variantes) {
+  try {
+    const r = await probar(variante.opciones);
+    console.log(`\n✔ ${variante.nombre}: conexión correcta.`);
+    console.log(`  Servidor ${r.version} · cuenta ${r.cuenta}${r.plugin ? ` · autenticación ${r.plugin}` : ""} · tablas: ${r.tablas}`);
+    correcta = { variante, r };
+    break;
+  } catch (e) {
+    errores.push(e);
+    console.error(`\n✖ ${variante.nombre}: ${e.code ?? "-"}\n  ${e.message}`);
+  }
+}
+
+if (correcta) {
+  if (correcta.variante.env) {
+    console.log(`\n→ SOLUCIÓN: añada esta línea al .env y reinicie la aplicación:\n\n    ${correcta.variante.env}\n`);
+  } else if (process.env.DATABASE_SSL === "1") {
+    console.log("\n  (El .env ya tiene DATABASE_SSL=\"1\".)");
+  }
+  if (Number(correcta.r.tablas) === 0) {
     console.log("  La base de datos está vacía: ejecute  npx prisma migrate deploy");
   }
-} catch (e) {
-  console.error(`\n✖ No se puede conectar.\n  Código: ${e.code ?? "-"}\n  Mensaje: ${e.message}`);
+} else {
+  const e = errores[0];
   const pistas = {
-    ER_ACCESS_DENIED_ERROR: "Usuario o contraseña incorrectos en el .env (o el usuario no existe para 127.0.0.1).",
+    ER_ACCESS_DENIED_ERROR:
+      "MySQL rechaza el usuario/contraseña con TODAS las formas de conexión: la contraseña del usuario en MySQL\n    no es la del .env. Restablézcala como root (ver docs/INSTALACION_LOCAL.md, problemas frecuentes):\n\n    ALTER USER 'USUARIO'@'localhost' IDENTIFIED BY 'CLAVE_DEL_ENV';\n    ALTER USER 'USUARIO'@'127.0.0.1' IDENTIFIED BY 'CLAVE_DEL_ENV';\n    FLUSH PRIVILEGES;",
     ER_BAD_DB_ERROR: "La base de datos indicada en DATABASE_NAME no existe.",
     ER_DBACCESS_DENIED_ERROR: "El usuario no tiene permisos sobre esa base de datos (falta el GRANT).",
     ECONNREFUSED: "MySQL no está arrancado o no escucha en ese puerto (Servicios de Windows → MySQL80).",
     ER_CONNECTION_TIMEOUT: "MySQL no responde: compruebe host, puerto y cortafuegos.",
   };
   const pista = pistas[e.code];
-  if (pista) console.error(`\n  → ${pista}`);
+  console.error(`\n→ ${pista ?? "Revise los datos de conexión del .env."}`);
   process.exit(1);
 }

@@ -238,6 +238,7 @@ npm run dev
 | `pool timeout: failed to retrieve a connection from pool … active=0 idle=0` | La aplicación no logra conectar con MySQL. Ejecutar `npm run probar:bd` para ver la causa real. Con MySQL 8 se debía a la autenticación `caching_sha2_password`; está resuelto desde la v1.1 (actualizar con `git pull`). |
 | `P3018 … Table 'centros' already exists` con la migración `20260819120943_init_centros_usuarios` | Se descargó la rama `codex/version-2` en lugar de `main`. Ejecutar `git checkout main`, después `npx prisma migrate resolve --rolled-back 20260819120943_init_centros_usuarios` y repetir el paso 5. No se pierden datos. |
 | `P3009 … found failed migrations` | Igual que la fila anterior: marcar como revertida la migración fallida que indique el mensaje con `npx prisma migrate resolve --rolled-back NOMBRE`. |
+| `Access denied for user 'gestor'@'localhost'` en `npm run probar:bd` | El diagnóstico prueba sin y con SSL. Si **solo funciona con SSL**, añadir `DATABASE_SSL="1"` al `.env`. Si **fallan todas**, la contraseña en MySQL no es la del `.env`: como root, `ALTER USER 'gestor'@'localhost' IDENTIFIED BY 'CLAVE';` y lo mismo para `'gestor'@'127.0.0.1'`, y luego `FLUSH PRIVILEGES;`. |
 | `npm` / `npx` no se reconocen, pero `node` sí | Usar `npm.cmd` y `npx.cmd`. |
 | `Falta AUTH_SECRET` | Falta la línea `AUTH_SECRET` en el `.env`. |
 | El login no hace nada o vuelve a pedir la contraseña | Se está entrando por IP en lugar de `localhost` (ver paso 6). |
