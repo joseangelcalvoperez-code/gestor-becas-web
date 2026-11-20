@@ -3,6 +3,8 @@
 Aplicación web para la gestión de centros, cursos académicos, alumnado, asignaturas, asistencia y generación de documentación. Esta versión corresponde al **gestor sin módulo de firma**.
 
 > **v1.1.0** — Rediseño institucional (Comunidad de Madrid · Consejería de Educación), optimización para 233 centros simultáneos y ~4.000 alumnos, y guía de despliegue. Ver **[docs/RENDIMIENTO_Y_DESPLIEGUE.md](docs/RENDIMIENTO_Y_DESPLIEGUE.md)**.
+>
+> **Instalación paso a paso en un PC nuevo para pruebas:** [docs/INSTALACION_LOCAL.md](docs/INSTALACION_LOCAL.md).
 
 ## Tecnologías principales
 
