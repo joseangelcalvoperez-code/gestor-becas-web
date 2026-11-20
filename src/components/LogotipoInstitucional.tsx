@@ -24,7 +24,14 @@ export default function LogotipoInstitucional({
   }
 
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: 12,
+        color: "var(--cm-texto)",
+      }}
+    >
       <SimboloMarca />
       <div style={{ lineHeight: 1.2 }}>
         <strong>{MARCA.organismo}</strong>

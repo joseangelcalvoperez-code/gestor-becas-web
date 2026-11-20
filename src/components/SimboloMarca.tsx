@@ -2,7 +2,7 @@ import { MARCA } from "@/lib/marca";
 
 /*
  * Emblema institucional (estrellas de la Comunidad de Madrid).
- * Si el logotipo está desactivado (NEXT_PUBLIC_LOGO_INSTITUCIONAL=0)
+ * Si el logotipo está desactivado (NEXT_PUBLIC_OCULTAR_LOGOTIPO=1)
  * se muestra un símbolo neutro.
  */
 export default function SimboloMarca({

@@ -13,12 +13,16 @@
    Para sustituirlo por una versión de mayor calidad (por
    ejemplo, la vectorial del Manual de Identidad Corporativa)
    basta con reemplazar esos archivos con el mismo nombre.
-   NEXT_PUBLIC_LOGO_INSTITUCIONAL=0 lo desactiva y muestra un
+   NEXT_PUBLIC_OCULTAR_LOGOTIPO=1 lo oculta y muestra un
    símbolo neutro.
+
+   Nota: las variables NEXT_PUBLIC_LOGO_INSTITUCIONAL y
+   NEXT_PUBLIC_DEPARTAMENTO de la primera v1.1 ya no se usan
+   (el .env.example inicial desactivaba el logotipo).
    ========================================================= */
 
 const logoActivo =
-  process.env.NEXT_PUBLIC_LOGO_INSTITUCIONAL !== "0";
+  process.env.NEXT_PUBLIC_OCULTAR_LOGOTIPO !== "1";
 
 export const MARCA = {
   organismo:
@@ -26,7 +30,7 @@ export const MARCA = {
     "Comunidad de Madrid",
 
   departamento:
-    process.env.NEXT_PUBLIC_DEPARTAMENTO ??
+    process.env.NEXT_PUBLIC_CONSEJERIA ??
     "Consejería de Educación, Universidades, Ciencia y Portavocía",
 
   aplicacion: "Gestor de Becas",

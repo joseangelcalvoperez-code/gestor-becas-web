@@ -218,8 +218,8 @@ El rojo del logotipo (`#E83A39`, token `--cm-rojo-marca`) se usa solo en superfi
 
 **Cambio de denominación o de calidad**:
 * **Logotipo**: el actual procede de una imagen de 538 px. Si se dispone de la versión oficial en alta resolución del Manual de Identidad Corporativa, basta con sustituir los archivos manteniendo el nombre.
-* **Denominación**: cuando cambie la estructura de Gobierno, ajustar `NEXT_PUBLIC_DEPARTAMENTO` en `.env` o `src/lib/marca.ts`.
-* **Desactivar el logotipo**: `NEXT_PUBLIC_LOGO_INSTITUCIONAL=0` muestra un símbolo neutro.
+* **Denominación**: cuando cambie la estructura de Gobierno, ajustar `NEXT_PUBLIC_CONSEJERIA` en `.env` o `src/lib/marca.ts`.
+* **Desactivar el logotipo**: `NEXT_PUBLIC_OCULTAR_LOGOTIPO=1` muestra un símbolo neutro.
 
 ### 5.5 Capturas
 
