@@ -1,0 +1,490 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Gestor de Becas · Manual de usuario v1.1</title>
+<style>
+  @page { size: A4; margin: 20mm 18mm 20mm 18mm; }
+  @page :first { margin: 0; }
+
+  :root {
+    --rojo: #c8102e; --rojo-marca: #e83a39; --rojo-claro: #fdf1f2; --rojo-borde: #f1b9c0;
+    --texto: #1d2733; --texto-2: #3d4a5c; --texto-3: #5f6b7a;
+    --borde: #dde2e8; --fondo: #f3f5f8;
+    --aviso: #8a5a00; --aviso-claro: #fff8e6; --aviso-borde: #f0d189;
+    --info: #1f5f99; --info-claro: #eef5fb; --info-borde: #bcd5ec;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body { margin: 0; font-family: "Segoe UI", Inter, Roboto, "Helvetica Neue", Arial, sans-serif; color: var(--texto); font-size: 10.5pt; line-height: 1.5; }
+
+  /* ---------- Portada ---------- */
+  .portada { height: 297mm; width: 210mm; position: relative; page-break-after: always; overflow: hidden; display: flex; flex-direction: column; }
+  .portada-franja { height: 9mm; background: var(--rojo-marca); }
+  .portada-logo { padding: 22mm 22mm 0; }
+  .portada-logo img { width: 92mm; }
+  .portada-titulo { margin: auto 22mm 0; padding-bottom: 14mm; }
+  .portada-titulo .etiqueta { display: inline-block; font-size: 10pt; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--rojo); border-bottom: 2px solid var(--rojo); padding-bottom: 2mm; margin-bottom: 6mm; }
+  .portada-titulo h1 { font-size: 34pt; line-height: 1.08; margin: 0; letter-spacing: -.01em; }
+  .portada-titulo h1 span { color: var(--rojo); }
+  .portada-titulo p { font-size: 13pt; color: var(--texto-2); margin: 5mm 0 0; max-width: 140mm; }
+  .portada-pie { background: var(--fondo); border-top: 1px solid var(--borde); padding: 9mm 22mm; display: grid; grid-template-columns: repeat(3, 1fr); gap: 6mm; font-size: 9.5pt; }
+  .portada-pie b { display: block; font-size: 8pt; letter-spacing: .08em; text-transform: uppercase; color: var(--texto-3); font-weight: 700; margin-bottom: 1mm; }
+  .portada-banda { position: absolute; right: -40mm; top: 70mm; width: 120mm; height: 120mm; border: 18mm solid var(--rojo-claro); border-radius: 50%; }
+
+  /* ---------- Índice ---------- */
+  .indice { page-break-after: always; }
+  .indice ol { list-style: none; padding: 0; margin: 0; counter-reset: c; }
+  .indice > ol > li { counter-increment: c; display: flex; gap: 4mm; padding: 2.6mm 0; border-bottom: 1px solid var(--borde); font-weight: 600; }
+  .indice > ol > li::before { content: counter(c); color: var(--rojo); width: 7mm; font-weight: 700; }
+  .indice a { color: inherit; text-decoration: none; flex: 1; }
+  .indice small { display: block; font-weight: 400; color: var(--texto-3); font-size: 9pt; }
+
+  /* ---------- Contenido ---------- */
+  h2 { font-size: 18pt; margin: 0 0 4mm; padding-top: 1mm; letter-spacing: -.005em; page-break-after: avoid; }
+  h2 .num { color: var(--rojo); margin-right: 2mm; }
+  section.capitulo { page-break-before: always; }
+  section.capitulo.sigue { page-break-before: auto; margin-top: 10mm; }
+  section.capitulo::before { content: ""; display: block; width: 14mm; height: 1.4mm; background: var(--rojo); margin-bottom: 5mm; }
+  h3 { font-size: 12pt; margin: 6mm 0 2mm; page-break-after: avoid; }
+  p { margin: 0 0 3mm; }
+  ul, ol { margin: 0 0 3mm; padding-left: 6mm; }
+  li { margin-bottom: 1.2mm; }
+  .boton { display: inline-block; font-size: 8.5pt; font-weight: 700; letter-spacing: .02em; padding: 0 2mm; border-radius: 1mm; background: var(--rojo); color: #fff; white-space: nowrap; line-height: 1.6; }
+  .boton.sec { background: #3d4a5c; }
+  .menu { font-weight: 700; color: var(--rojo); }
+  code { font-family: Consolas, "Liberation Mono", monospace; font-size: 9pt; background: var(--fondo); padding: 0 1.2mm; border-radius: 1mm; }
+
+  figure { margin: 4mm 0 5mm; page-break-inside: avoid; }
+  figure img { width: 100%; display: block; border: 1px solid var(--borde); border-radius: 1.5mm; box-shadow: 0 1mm 3mm rgba(29,39,51,.08); }
+  figcaption { font-size: 8.5pt; color: var(--texto-3); margin-top: 2mm; }
+  figcaption b { color: var(--texto-2); }
+  figure.estrecha img { width: 82%; margin: 0 auto; }
+  figure.media img { width: 68%; margin: 0 auto; }
+  figure.pequena img { width: 56%; margin: 0 auto; }
+  figure.pequena figcaption { text-align: center; }
+  figure.estrecha figcaption, figure.media figcaption { text-align: center; }
+  body.solo-portada > :not(.portada) { display: none !important; }
+  body.sin-portada > .portada { display: none !important; }
+
+  .nota { border: 1px solid; border-left-width: 1.4mm; border-radius: 1.2mm; padding: 3mm 4mm; margin: 4mm 0; page-break-inside: avoid; font-size: 10pt; }
+  .nota b:first-child { display: block; margin-bottom: 1mm; }
+  .nota.importante { background: var(--rojo-claro); border-color: var(--rojo-borde); border-left-color: var(--rojo); }
+  .nota.aviso { background: var(--aviso-claro); border-color: var(--aviso-borde); border-left-color: var(--aviso); }
+  .nota.consejo { background: var(--info-claro); border-color: var(--info-borde); border-left-color: var(--info); }
+
+  .pasos { list-style: none; padding: 0; counter-reset: p; }
+  .pasos li { counter-increment: p; position: relative; padding-left: 9mm; margin-bottom: 2.4mm; }
+  .pasos li::before { content: counter(p); position: absolute; left: 0; top: .2mm; width: 6mm; height: 6mm; border-radius: 50%; background: var(--rojo); color: #fff; font-size: 8.5pt; font-weight: 700; display: grid; place-items: center; }
+
+  table { width: 100%; border-collapse: collapse; margin: 3mm 0 5mm; font-size: 9.5pt; page-break-inside: auto; }
+  th { text-align: left; background: var(--fondo); font-size: 8.5pt; text-transform: uppercase; letter-spacing: .04em; color: var(--texto-2); }
+  th, td { padding: 2.2mm 3mm; border-bottom: 1px solid var(--borde); vertical-align: top; }
+  tr { page-break-inside: avoid; }
+
+  .dos { display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; }
+  .tarjeta { border: 1px solid var(--borde); border-radius: 1.5mm; padding: 3.5mm 4mm; page-break-inside: avoid; }
+  .tarjeta h4 { margin: 0 0 1.5mm; font-size: 10.5pt; }
+  .tarjeta p { margin: 0; font-size: 9.5pt; color: var(--texto-2); }
+</style>
+</head>
+<body>
+
+<!-- ===================== PORTADA ===================== -->
+<div class="portada">
+  <div class="portada-franja"></div>
+  <div class="portada-banda"></div>
+  <div class="portada-logo"><img src="../../public/marca/logo-comunidad-madrid.png" alt="Comunidad de Madrid. Consejería de Educación, Universidades, Ciencia y Portavocía"></div>
+  <div class="portada-titulo">
+    <div class="etiqueta">Manual de usuario</div>
+    <h1>Gestor de Becas<br><span>Segunda Oportunidad</span></h1>
+    <p>Guía de uso para los centros educativos: configuración, alumnado, registro de asistencia y generación de la documentación justificativa.</p>
+  </div>
+  <div class="portada-pie">
+    <div><b>Versión</b>1.1.0</div>
+    <div><b>Fecha</b>20 de noviembre de 2026</div>
+    <div><b>Destinatarios</b>Personal de gestión de los centros</div>
+  </div>
+</div>
+
+<!-- ===================== ÍNDICE ===================== -->
+<div class="indice">
+  <h2>Índice</h2>
+  <ol>
+    <li><a href="#c1">Introducción <small>Qué es la aplicación y qué permite hacer</small></a></li>
+    <li><a href="#c2">Acceso a la aplicación <small>Alta del centro, inicio y cierre de sesión</small></a></li>
+    <li><a href="#c3">Funcionamiento general <small>Cabecera, menú y curso académico</small></a></li>
+    <li><a href="#c4">Orden recomendado de configuración</a></li>
+    <li><a href="#c5">Datos del centro y cursos académicos</a></li>
+    <li><a href="#c6">Grados y asignaturas</a></li>
+    <li><a href="#c7">Alumnado <small>Matrícula, importación, convalidaciones y bajas</small></a></li>
+    <li><a href="#c8">Asistencia <small>Registro manual y plantilla Excel</small></a></li>
+    <li><a href="#c9">Documentación <small>Anexo V, Anexo I, expedientes y generación masiva</small></a></li>
+    <li><a href="#c10">Flujo mensual recomendado</a></li>
+    <li><a href="#c11">Casos especiales</a></li>
+    <li><a href="#c12">Buenas prácticas</a></li>
+    <li><a href="#c13">Resolución de incidencias</a></li>
+    <li><a href="#c14">Novedades de la versión 1.1</a></li>
+  </ol>
+</div>
+
+<!-- ===================== 1 ===================== -->
+<section class="capitulo" id="c1">
+  <h2><span class="num">1</span>Introducción</h2>
+  <p><b>Gestor de Becas</b> es la aplicación web con la que los centros educativos gestionan las Becas de Segunda Oportunidad. Organiza la información por curso académico y relaciona alumnado, grados, asignaturas, profesorado, asistencia y documentación.</p>
+  <p>Su objetivo es reducir tareas repetitivas, mantener la información ordenada y generar automáticamente la documentación mensual (Anexo V y Anexo I) a partir de los datos registrados.</p>
+
+  <h3>Funciones principales</h3>
+  <div class="dos">
+    <div class="tarjeta"><h4>Configuración</h4><p>Datos del centro, cursos académicos, grados, asignaturas y profesorado responsable.</p></div>
+    <div class="tarjeta"><h4>Alumnado</h4><p>Alta, edición, baja, importación y exportación Excel, y asignaturas convalidadas.</p></div>
+    <div class="tarjeta"><h4>Asistencia</h4><p>Registro diario por asignatura, con resumen mensual y observaciones, o de forma masiva mediante Excel.</p></div>
+    <div class="tarjeta"><h4>Documentación</h4><p>Anexos V, Anexo I y expedientes completos, individuales o de todo el centro en un único archivo.</p></div>
+  </div>
+
+  <h3>Requisitos</h3>
+  <ul>
+    <li>Un navegador actualizado: Microsoft Edge, Google Chrome o Mozilla Firefox.</li>
+    <li>La dirección web facilitada por la Consejería y la cuenta de usuario del centro.</li>
+    <li>Para trabajar con plantillas: Microsoft Excel o LibreOffice Calc.</li>
+  </ul>
+</section>
+
+<!-- ===================== 2 ===================== -->
+<section class="capitulo" id="c2">
+  <h2><span class="num">2</span>Acceso a la aplicación</h2>
+
+  <figure>
+    <img src="img/01-acceso.jpg" alt="">
+    <figcaption><b>Figura 1.</b> Pantalla de acceso.</figcaption>
+  </figure>
+
+  <h3>2.1 Iniciar sesión</h3>
+  <ol class="pasos">
+    <li>Abra la dirección de la aplicación en el navegador.</li>
+    <li>Escriba el <b>correo electrónico</b> y la <b>contraseña</b> de la cuenta del centro.</li>
+    <li>Pulse <span class="boton">Iniciar sesión</span>. Se abrirá la pantalla de <span class="menu">Inicio</span>.</li>
+  </ol>
+  <p>La sesión permanece abierta durante <b>8 horas</b>. Pasado ese tiempo, la aplicación vuelve a pedir las credenciales.</p>
+
+  <div class="nota aviso"><b>Protección frente a accesos indebidos</b>Tras <b>8 intentos fallidos</b> de contraseña en 15 minutos, la cuenta se bloquea temporalmente y aparece el mensaje «Demasiados intentos fallidos». Espere el tiempo indicado antes de volver a intentarlo.</div>
+
+  <h3>2.2 Alta de un centro nuevo</h3>
+  <p>Si el centro todavía no tiene cuenta, pulse <b>Solicitar alta del centro</b> en la pantalla de acceso y complete el formulario.</p>
+  <figure class="estrecha">
+    <img src="img/02-registro.jpg" alt="">
+    <figcaption><b>Figura 2.</b> Formulario de alta del centro.</figcaption>
+  </figure>
+  <ul>
+    <li><b>Datos del centro:</b> nombre, código de centro, CIF, dirección, localidad, provincia, teléfono y correo del centro.</li>
+    <li><b>Datos de acceso:</b> nombre de la persona responsable, correo de acceso y contraseña (mínimo 8 caracteres), que se escribe dos veces.</li>
+  </ul>
+  <p>El código de centro y el correo de acceso no pueden estar ya registrados.</p>
+
+  <h3>2.3 Cerrar sesión</h3>
+  <p>Pulse <span class="boton sec">Cerrar sesión</span> en la parte inferior del menú lateral. Hágalo siempre al terminar, sobre todo en equipos compartidos.</p>
+</section>
+
+<!-- ===================== 3 ===================== -->
+<section class="capitulo" id="c3">
+  <h2><span class="num">3</span>Funcionamiento general</h2>
+  <figure class="media">
+    <img src="img/03-inicio.jpg" alt="">
+    <figcaption><b>Figura 3.</b> Pantalla de Inicio y estructura común de todas las pantallas.</figcaption>
+  </figure>
+
+  <h3>3.1 Cabecera</h3>
+  <figure>
+    <img src="img/04-cabecera.jpg" alt="">
+    <figcaption><b>Figura 4.</b> Cabecera: identificación institucional, aplicación, curso académico y centro.</figcaption>
+  </figure>
+  <ul>
+    <li><b>Izquierda:</b> identificación de la Comunidad de Madrid y de la Consejería, y el nombre de la aplicación.</li>
+    <li><b>Curso académico:</b> selector del curso con el que se trabaja. Los alumnos, la asistencia y los documentos que se consultan o generan dependen de este curso.</li>
+    <li><b>Derecha:</b> nombre y código del centro y usuario conectado.</li>
+  </ul>
+
+  <div class="nota importante"><b>Importante</b>Antes de introducir o consultar información, compruebe siempre el <b>curso académico</b> seleccionado en la cabecera.</div>
+
+  <h3>3.2 Menú lateral</h3>
+  <table>
+    <tr><th style="width:32%">Opción</th><th>Para qué sirve</th></tr>
+    <tr><td class="menu">Inicio</td><td>Acceso al manual y resumen del flujo de trabajo.</td></tr>
+    <tr><td class="menu">Alumnado</td><td>Matrículas del curso, importación/exportación, convalidaciones y bajas.</td></tr>
+    <tr><td class="menu">Grados y asignaturas</td><td>Estructura académica: grados, asignaturas de 1.º y 2.º y profesorado.</td></tr>
+    <tr><td class="menu">Asistencia</td><td>Registro mensual de horas por alumno y asignatura, o mediante Excel.</td></tr>
+    <tr><td class="menu">Documentación</td><td>Generación de Anexos V, Anexo I y expedientes.</td></tr>
+    <tr><td class="menu">Datos del centro</td><td>Datos identificativos del centro y cursos académicos.</td></tr>
+  </table>
+  <p>En la parte inferior del menú están el enlace al <b>Manual de usuario</b> y el botón <b>Cerrar sesión</b>. La opción activa aparece resaltada en rojo.</p>
+</section>
+
+<!-- ===================== 4 ===================== -->
+<section class="capitulo sigue" id="c4">
+  <h2><span class="num">4</span>Orden recomendado de configuración</h2>
+  <p>Al configurar un centro desde cero conviene seguir este orden, porque cada paso usa información creada en el anterior:</p>
+  <ol class="pasos">
+    <li>Completar los <b>datos del centro</b>.</li>
+    <li>Crear el <b>curso académico</b> de trabajo y marcarlo como actual.</li>
+    <li>Crear los <b>grados</b>.</li>
+    <li>Crear las <b>asignaturas</b> de 1.º y 2.º curso con su profesor responsable.</li>
+    <li>Dar de alta o <b>importar el alumnado</b> y matricularlo en su grado y curso.</li>
+    <li>Marcar las <b>asignaturas convalidadas</b> de cada alumno, si las hay.</li>
+    <li>Registrar o importar la <b>asistencia</b> mensual.</li>
+    <li>Revisar la información y <b>generar la documentación</b>.</li>
+  </ol>
+  <div class="nota consejo"><b>Consejo</b>Para centros con muchos alumnos, use la plantilla Excel de alumnado (apartado 7.3). Así el alta del curso completo se hace en minutos.</div>
+</section>
+
+<!-- ===================== 5 ===================== -->
+<section class="capitulo" id="c5">
+  <h2><span class="num">5</span>Datos del centro y cursos académicos</h2>
+  <figure class="media">
+    <img src="img/05-centro.jpg" alt="">
+    <figcaption><b>Figura 5.</b> <span class="menu">Datos del centro</span>: datos identificativos y cursos académicos.</figcaption>
+  </figure>
+
+  <h3>5.1 Datos del centro</h3>
+  <p>Aquí se guarda la información identificativa que usa la aplicación y que aparece en los documentos: nombre, código, CIF, dirección, localidad, provincia, teléfono y correo electrónico. Tras modificarla, pulse <span class="boton">Guardar datos del centro</span>.</p>
+
+  <h3>5.2 Cursos académicos</h3>
+  <p>Con <span class="boton">+ Nuevo curso</span> se crea un curso académico con su nombre (por ejemplo, <code>2026-2027</code>) y sus fechas de inicio y fin. Las fechas determinan los meses disponibles en Asistencia y Documentación.</p>
+  <ul>
+    <li><b>Hacer actual:</b> convierte un curso en el curso de trabajo por defecto, identificado como «Curso actual».</li>
+    <li><b>Desactivar / Activar:</b> retira o recupera un curso. Siempre debe quedar un curso activo y actual.</li>
+    <li><b>Eliminar:</b> solo está disponible para cursos previamente desactivados.</li>
+  </ul>
+  <div class="nota aviso"><b>Advertencia</b>Eliminar un curso borra todos los datos asociados a él: matrículas, asistencia y convalidaciones. Lea con atención el mensaje de confirmación antes de aceptar.</div>
+</section>
+
+<!-- ===================== 6 ===================== -->
+<section class="capitulo" id="c6">
+  <h2><span class="num">6</span>Grados y asignaturas</h2>
+  <figure>
+    <img src="img/06-grados.jpg" alt="">
+    <figcaption><b>Figura 6.</b> <span class="menu">Grados y asignaturas</span> con un grado seleccionado.</figcaption>
+  </figure>
+  <p>Esta pantalla define la estructura académica que se usa después para matricular alumnos, registrar asistencia y generar la documentación.</p>
+
+  <h3>6.1 Grados</h3>
+  <p>Use <span class="boton">+ Nuevo grado</span> para crear un grado. Los grados aparecen en el panel izquierdo con su número de asignaturas. Al seleccionar uno se muestran sus asignaturas. <span class="boton" style="background:#fff;color:var(--rojo);border:1px solid var(--rojo)">Eliminar grado</span> retira el grado seleccionado.</p>
+
+  <h3>6.2 Asignaturas</h3>
+  <p>Las asignaturas se organizan en las pestañas <b>1.º curso</b> y <b>2.º curso</b>. Con <span class="boton">+ Nueva asignatura</span> se añade una asignatura al grado seleccionado:</p>
+  <ul>
+    <li><b>Código y nombre</b> de la asignatura o módulo. El código puede ser numérico o alfanumérico.</li>
+    <li><b>Profesor responsable:</b> elija uno ya existente o cree uno nuevo con nombre, apellidos y DNI/NIE. Su nombre aparecerá en el Anexo V.</li>
+    <li><b>Eliminar</b> retira la asignatura.</li>
+  </ul>
+  <div class="nota consejo"><b>Recomendación</b>Configure por completo grados y asignaturas antes de matricular alumnos. Así no tendrá que corregir relaciones después.</div>
+</section>
+
+<!-- ===================== 7 ===================== -->
+<section class="capitulo" id="c7">
+  <h2><span class="num">7</span>Alumnado</h2>
+  <figure>
+    <img src="img/07-alumnos.jpg" alt="">
+    <figcaption><b>Figura 7.</b> <span class="menu">Alumnado</span>: acciones, filtros y listado de matrículas.</figcaption>
+  </figure>
+  <p>La pantalla muestra las matrículas del <b>curso académico seleccionado</b> en la cabecera.</p>
+
+  <h3>7.1 Consulta y filtros</h3>
+  <ul>
+    <li><b>Buscar</b> por nombre, apellidos, DNI/NIE o expediente.</li>
+    <li>Filtrar por <b>grado</b>, por <b>curso</b> (1.º o 2.º) y por <b>estado</b> (activos, de baja o todos).</li>
+  </ul>
+  <p>Cada fila ofrece las acciones <b>Editar</b>, <b>Convalidaciones</b> y <b>Baja</b>. En los alumnos dados de baja aparece <b>Reactivar</b>.</p>
+
+  <h3>7.2 Matricular un alumno</h3>
+  <figure>
+    <img src="img/08-nuevo-alumno.jpg" alt="">
+    <figcaption><b>Figura 8.</b> Formulario de nueva matrícula.</figcaption>
+  </figure>
+  <ol class="pasos">
+    <li>Pulse <span class="boton">+ Nuevo alumno</span>.</li>
+    <li>Complete nombre, apellidos, DNI/NIE y n.º de expediente.</li>
+    <li>Elija el <b>grado</b> y el <b>curso del grado</b>.</li>
+    <li>Pulse <span class="boton">Matricular alumno</span>.</li>
+  </ol>
+  <p>Si el DNI/NIE ya existe en el centro de un curso anterior, la aplicación reutiliza la ficha de la persona y crea la nueva matrícula.</p>
+
+  <h3>7.3 Importación y exportación</h3>
+  <table>
+    <tr><th style="width:32%">Botón</th><th>Función</th></tr>
+    <tr><td><span class="boton sec">Exportar plantilla</span></td><td>Descarga la plantilla Excel preparada para altas masivas, con los grados del centro.</td></tr>
+    <tr><td><span class="boton">Importar Excel</span></td><td>Incorpora la plantilla cumplimentada. Si hay errores, la aplicación indica la fila y el motivo, y no importa nada hasta que se corrijan.</td></tr>
+    <tr><td><span class="boton sec">Exportar listado</span></td><td>Descarga el listado de alumnos del curso en Excel.</td></tr>
+  </table>
+  <div class="nota consejo"><b>Consejo</b>Use siempre la plantilla que descarga la aplicación y no cambie sus columnas. Después de importar, revise algunos alumnos al azar.</div>
+
+  <h3>7.4 Convalidaciones</h3>
+  <figure>
+    <img src="img/09-convalidaciones.jpg" alt="">
+    <figcaption><b>Figura 9.</b> Selección de asignaturas convalidadas de un alumno.</figcaption>
+  </figure>
+  <p>La acción <b>Convalidaciones</b> muestra las asignaturas del grado y curso del alumno. Marque las convalidadas y pulse <span class="boton">Guardar convalidaciones</span>. En el listado, la columna «Convalidadas» indica cuáles tiene cada alumno.</p>
+  <div class="nota importante"><b>Efecto de una convalidación</b>Una asignatura convalidada no admite registro de asistencia, no aparece en la plantilla Excel de asistencia y se excluye de la documentación. La convalidación no se traslada automáticamente a la matrícula de otro curso.</div>
+
+  <h3>7.5 Bajas</h3>
+  <p><b>Baja</b> desactiva la matrícula sin borrar sus datos. El alumno deja de aparecer en el filtro «Activos» y en la generación masiva. Con <b>Reactivar</b> se recupera.</p>
+</section>
+
+<!-- ===================== 8 ===================== -->
+<section class="capitulo" id="c8">
+  <h2><span class="num">8</span>Asistencia</h2>
+  <p>La asistencia puede registrarse de dos formas: <b>individualmente</b> desde la pantalla, o <b>de forma masiva</b> con una plantilla Excel mensual.</p>
+  <figure>
+    <img src="img/10-asistencia.jpg" alt="">
+    <figcaption><b>Figura 10.</b> <span class="menu">Asistencia</span>: zona Excel (arriba) y selectores de grado, asignatura y alumno.</figcaption>
+  </figure>
+
+  <h3>8.1 Selección del alumno</h3>
+  <ol class="pasos">
+    <li>Seleccione el <b>grado</b>.</li>
+    <li>Seleccione la <b>asignatura</b>.</li>
+    <li>Seleccione el <b>alumno</b>.</li>
+  </ol>
+  <p>Cada selector se activa al completar el anterior. Así solo pueden elegirse combinaciones que correspondan a una matrícula real. Si un alumno tiene convalidada la asignatura elegida, no aparece en la lista de alumnos de esa asignatura.</p>
+
+  <h3>8.2 Registro manual</h3>
+  <figure class="media">
+    <img src="img/11-asistencia-tabla.jpg" alt="">
+    <figcaption><b>Figura 11.</b> Tabla mensual de asistencia con resumen y observaciones.</figcaption>
+  </figure>
+  <ul>
+    <li>La tabla organiza el mes por <b>semanas</b> y <b>días laborables</b> (lunes a viernes). Para cada día se anotan las horas <b>Asiste</b> y <b>No asiste</b>.</li>
+    <li>Las celdas <b>rayadas</b> son días que no pertenecen al mes mostrado.</li>
+    <li>Las <b>flechas</b> del encabezado cambian de mes dentro del curso académico.</li>
+    <li>El panel <b>Asistencia mes</b> calcula horas totales, asistidas, no asistidas y el porcentaje de asistencia.</li>
+    <li>En <b>Observaciones / mes</b> se anotan incidencias del mes.</li>
+    <li>Se puede navegar con el teclado: flechas ← ↑ → ↓ para moverse por las celdas, e <b>Intro</b> para pasar a la siguiente.</li>
+  </ul>
+  <p>Pulse <span class="boton">Guardar asistencia</span> para confirmar. Mientras haya cambios pendientes, la pantalla muestra el aviso «Hay cambios sin guardar». Guarde siempre antes de cambiar de alumno, asignatura o mes.</p>
+
+  <h3>8.3 Trabajo masivo con Excel</h3>
+  <ol class="pasos">
+    <li>En <b>Mes para Excel</b>, elija el mes.</li>
+    <li>Pulse <span class="boton sec">Exportar plantilla Excel</span>. La hoja contiene todos los alumnos y asignaturas del curso para ese mes. Si ya hay horas guardadas, aparecen cumplimentadas.</li>
+    <li>Complete o corrija las horas en Excel, sin modificar la estructura.</li>
+    <li>Pulse <span class="boton">Importar plantilla Excel</span> y seleccione el archivo. Tras confirmar, la aplicación valida el archivo y sustituye la asistencia del mes de las combinaciones alumno-asignatura incluidas. <b>Si hay cualquier error, no se guarda ningún cambio</b> y se indica qué corregir.</li>
+  </ol>
+  <div class="nota consejo"><b>Consejo</b>Registre la asistencia de forma continua (diaria o semanal) en lugar de dejarla para el final de mes. Es más fiable y evita esperas en los días de mayor uso.</div>
+</section>
+
+<!-- ===================== 9 ===================== -->
+<section class="capitulo sigue" id="c9">
+  <h2><span class="num">9</span>Documentación</h2>
+  <p><span class="menu">Documentación</span> genera los documentos mensuales a partir de los datos del alumno y de la asistencia registrada.</p>
+  <figure class="pequena">
+    <img src="img/12-documentos.jpg" alt="">
+    <figcaption><b>Figura 12.</b> <span class="menu">Documentación</span> con el resumen del mes desplegado y las opciones de generación.</figcaption>
+  </figure>
+
+  <h3>9.1 Selección y resumen</h3>
+  <p>Elija el <b>alumno</b> y el <b>mes</b> con las flechas. Se muestran los datos básicos del alumno. El apartado <b>Resumen del mes</b> se despliega pulsando sobre él y muestra, por asignatura, las horas totales y las asistidas, con el porcentaje global.</p>
+  <div class="nota importante"><b>Antes de generar</b>Despliegue el resumen del mes y compruebe que las horas son correctas. Los documentos reflejan exactamente lo registrado.</div>
+
+  <h3>9.2 Opciones de generación</h3>
+  <table>
+    <tr><th style="width:30%">Opción</th><th>Resultado</th></tr>
+    <tr><td><b>Todos los Anexos V</b></td><td>Un Anexo V por cada asignatura del alumno, con la asistencia desde el inicio del curso hasta el mes seleccionado. Se descarga en un archivo ZIP.</td></tr>
+    <tr><td><b>Anexo V individual</b></td><td>El Anexo V de la asignatura elegida en el desplegable (PDF).</td></tr>
+    <tr><td><b>Anexo I</b></td><td>El Anexo I del alumno para el mes seleccionado (PDF).</td></tr>
+    <tr><td><b>Expediente completo</b></td><td>Los Anexos V y el Anexo I del alumno en un único ZIP.</td></tr>
+    <tr><td><b>Generación masiva del centro</b></td><td>Los expedientes de todos los alumnos activos del curso para el mes elegido, en un ZIP con una carpeta por alumno.</td></tr>
+  </table>
+  <p>Las asignaturas convalidadas se excluyen de la documentación.</p>
+
+  <div class="nota aviso"><b>Generación masiva</b>Según el número de alumnos, puede tardar entre unos segundos y un par de minutos. No cierre ni recargue la página mientras se genera. Hágala una sola vez al final, con todo revisado y, si es posible, fuera de las horas de mayor uso (antes de las 10:00 o después de las 14:00).</div>
+</section>
+
+<!-- ===================== 10 ===================== -->
+<section class="capitulo sigue" id="c10">
+  <h2><span class="num">10</span>Flujo mensual recomendado</h2>
+  <p>Con el centro configurado y el alumnado matriculado, el trabajo de cada mes se resume así:</p>
+  <ol class="pasos">
+    <li>Comprobar el <b>curso académico</b> seleccionado.</li>
+    <li>Registrar la <b>asistencia</b> a lo largo del mes, o exportar la plantilla Excel del mes.</li>
+    <li>Si se trabaja con Excel, completar la plantilla e <b>importarla</b>.</li>
+    <li>Revisar los datos y porcentajes de asistencia.</li>
+    <li>En <span class="menu">Documentación</span>, comprobar el <b>resumen del mes</b> de cada alumno.</li>
+    <li>Corregir cualquier incidencia antes de generar documentos.</li>
+    <li>Generar los <b>Anexos V, Anexo I, expedientes</b> o la <b>generación masiva</b> del centro.</li>
+    <li>Conservar los documentos generados según el procedimiento interno del centro.</li>
+  </ol>
+
+  <h3>Calendario de cierre</h3>
+  <p>La aplicación la usan simultáneamente todos los centros. Si la Consejería establece un <b>calendario escalonado de cierre mensual</b> por zonas, respete el día asignado a su centro para la generación masiva. Así la espera es mínima para todos.</p>
+</section>
+
+<!-- ===================== 11 ===================== -->
+<section class="capitulo" id="c11">
+  <h2><span class="num">11</span>Casos especiales</h2>
+  <h3>11.1 Asignaturas convalidadas</h3>
+  <p>Se gestionan desde <span class="menu">Alumnado</span> (apartado 7.4). Quedan excluidas de la asistencia y de la documentación de esa asignatura.</p>
+  <h3>11.2 Cambio de curso académico</h3>
+  <p>El selector de la cabecera cambia el curso de trabajo. Al hacerlo, todas las pantallas pasan a mostrar los datos del curso elegido.</p>
+  <h3>11.3 Cursos históricos</h3>
+  <p>Los cursos que ya no se usan pueden desactivarse. La eliminación completa solo es posible con el curso desactivado y tras confirmar el aviso.</p>
+  <h3>11.4 Alumnos dados de baja</h3>
+  <p>El filtro <b>Estado</b> de <span class="menu">Alumnado</span> distingue matrículas activas y bajas. Las bajas no se incluyen en la generación masiva.</p>
+  <h3>11.5 Alumnos con muchas asignaturas o meses</h3>
+  <p>Si el contenido supera la capacidad de una página del modelo oficial, el documento continúa en una segunda página. Ocurre en el Anexo I con muchas asignaturas y en el Anexo V a partir del sexto mes del curso.</p>
+</section>
+
+<!-- ===================== 12 ===================== -->
+<section class="capitulo" id="c12">
+  <h2><span class="num">12</span>Buenas prácticas</h2>
+  <ul>
+    <li>Compruebe el <b>curso académico</b> seleccionado antes de empezar cualquier tarea.</li>
+    <li>Configure grados y asignaturas <b>antes</b> de matricular alumnos.</li>
+    <li>Revise las convalidaciones <b>antes</b> de introducir asistencia.</li>
+    <li>Use las plantillas Excel generadas por la aplicación y no altere su estructura.</li>
+    <li>Tras una importación masiva, revise una muestra de alumnos.</li>
+    <li>Guarde la asistencia antes de cambiar de alumno, asignatura o mes.</li>
+    <li>Registre la asistencia de forma continua, no solo a final de mes.</li>
+    <li>Revise el resumen mensual antes de generar los Anexos.</li>
+    <li>Haga la generación masiva una sola vez y fuera de las horas de mayor uso.</li>
+    <li>Extreme la precaución al eliminar cursos o información histórica.</li>
+    <li>Mantenga actualizados los datos del centro y cierre la sesión al terminar.</li>
+  </ul>
+</section>
+
+<!-- ===================== 13 ===================== -->
+<section class="capitulo" id="c13">
+  <h2><span class="num">13</span>Resolución de incidencias</h2>
+  <table>
+    <tr><th style="width:38%">Situación</th><th>Qué hacer</th></tr>
+    <tr><td>«Email o contraseña incorrectos»</td><td>Revise el correo y la contraseña (atención a mayúsculas). Si no la recuerda, contacte con el soporte de la aplicación.</td></tr>
+    <tr><td>«Demasiados intentos fallidos»</td><td>La cuenta está bloqueada temporalmente. Espere 15 minutos.</td></tr>
+    <tr><td>La aplicación vuelve a pedir la contraseña</td><td>La sesión caduca a las 8 horas. Inicie sesión de nuevo.</td></tr>
+    <tr><td>No aparecen alumnos, asistencia o documentos</td><td>Compruebe el curso académico de la cabecera y los filtros de <span class="menu">Alumnado</span>.</td></tr>
+    <tr><td>Un alumno no aparece en Asistencia para una asignatura</td><td>Probablemente la tiene convalidada. Revíselo en <span class="menu">Alumnado</span> → Convalidaciones.</td></tr>
+    <tr><td>Error al importar un Excel</td><td>Lea el mensaje: indica la fila y el motivo. Corrija el archivo y vuelva a importarlo. Use siempre la plantilla exportada por la aplicación.</td></tr>
+    <tr><td>El documento muestra horas inesperadas</td><td>Revise el resumen del mes en <span class="menu">Documentación</span> y corrija la asistencia del mes o asignatura correspondiente.</td></tr>
+    <tr><td>La generación masiva tarda</td><td>Es normal en centros con muchos alumnos. No recargue la página. Si coincide con un pico de uso, inténtelo fuera de las horas de mayor actividad.</td></tr>
+  </table>
+</section>
+
+<!-- ===================== 14 ===================== -->
+<section class="capitulo" id="c14">
+  <h2><span class="num">14</span>Novedades de la versión 1.1</h2>
+  <h3>Interfaz</h3>
+  <ul>
+    <li>Nuevo diseño institucional de la Comunidad de Madrid, con mayor tamaño de letra y mejor contraste (accesibilidad AA).</li>
+    <li>Menú lateral con iconos y nombres actualizados: <span class="menu">Alumnado</span>, <span class="menu">Documentación</span> y <span class="menu">Datos del centro</span>.</li>
+    <li>La cabecera muestra el código del centro y el usuario conectado.</li>
+    <li>Nueva pantalla de acceso y acceso directo al manual desde el menú.</li>
+    <li>Corregidas columnas recortadas en <span class="menu">Alumnado</span> y en el resumen de <span class="menu">Asistencia</span>.</li>
+  </ul>
+  <h3>Rendimiento y seguridad</h3>
+  <ul>
+    <li>La generación masiva de expedientes es aproximadamente <b>el doble de rápida</b>.</li>
+    <li>La aplicación está preparada para el uso simultáneo de todos los centros sin esperas excesivas.</li>
+    <li>Bloqueo temporal tras varios intentos fallidos de contraseña.</li>
+    <li>Los documentos generados (Anexo I y Anexo V) mantienen exactamente el mismo formato y contenido que en la versión 1.0.</li>
+  </ul>
+</section>
+
+</body>
+</html>

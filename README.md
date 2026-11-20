@@ -5,6 +5,8 @@ Aplicación web para la gestión de centros, cursos académicos, alumnado, asign
 > **v1.1.0** — Rediseño institucional (Comunidad de Madrid · Consejería de Educación), optimización para 233 centros simultáneos y ~4.000 alumnos, y guía de despliegue. Ver **[docs/RENDIMIENTO_Y_DESPLIEGUE.md](docs/RENDIMIENTO_Y_DESPLIEGUE.md)**.
 >
 > **Instalación paso a paso en un PC nuevo para pruebas:** [docs/INSTALACION_LOCAL.md](docs/INSTALACION_LOCAL.md).
+>
+> **Manual de usuario:** `public/documentos/Manual_Gestor_Becas_v1.1.pdf` (enlazado desde la aplicación). Se genera desde `docs/manual/manual.html` con `node scripts/manual/generar-pdf.mjs`; las capturas se rehacen con `scripts/manual/capturas.mjs`.
 
 ## Tecnologías principales
 

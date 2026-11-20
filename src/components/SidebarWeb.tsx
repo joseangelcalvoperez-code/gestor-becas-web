@@ -118,7 +118,7 @@ export default function SidebarWeb() {
       <div className="cm-menu-pie">
         <a
           className="cm-menu-ayuda"
-          href="/documentos/Manual_Gestor_Becas_v1.0.pdf"
+          href="/documentos/Manual_Gestor_Becas_v1.1.pdf"
           target="_blank"
           rel="noopener noreferrer"
         >
