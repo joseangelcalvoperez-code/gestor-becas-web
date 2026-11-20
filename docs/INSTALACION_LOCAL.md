@@ -75,14 +75,18 @@ cd C:\Proyectos
 Descargar el proyecto y entrar en su carpeta:
 
 ```powershell
-git clone https://github.com/joseangelcalvoperez-code/gestor-becas-web.git
+git clone -b main https://github.com/joseangelcalvoperez-code/gestor-becas-web.git
 ```
 
 ```powershell
 cd gestor-becas-web
 ```
 
-Así se descarga la versión 1.1 (rama `main`).
+Así se descarga la versión 1.1 (rama `main`, sin módulo de firmas).
+
+> **Importante:** el `-b main` es necesario. La rama por defecto del repositorio en GitHub es `codex/version-2` (la versión **con firmas**). Sin `-b main` se descarga esa otra versión, que tiene migraciones distintas e incompatibles con esta base de datos.
+>
+> Para comprobar qué versión hay descargada: `git branch --show-current` (debe responder `main`).
 
 > Para probar la versión anterior: `git checkout v1.0.0`. Para volver a la nueva: `git checkout main`.
 
@@ -232,6 +236,8 @@ npm run dev
 | `Access denied for user 'gestor'` | La contraseña del `.env` no coincide con la del paso 2. |
 | `Can't reach database server` / `ECONNREFUSED 3306` | MySQL no está arrancado. Abrir *Servicios* de Windows → **MySQL80** → *Iniciar*. |
 | `pool timeout: failed to retrieve a connection from pool … active=0 idle=0` | La aplicación no logra conectar con MySQL. Ejecutar `npm run probar:bd` para ver la causa real. Con MySQL 8 se debía a la autenticación `caching_sha2_password`; está resuelto desde la v1.1 (actualizar con `git pull`). |
+| `P3018 … Table 'centros' already exists` con la migración `20260819120943_init_centros_usuarios` | Se descargó la rama `codex/version-2` en lugar de `main`. Ejecutar `git checkout main`, después `npx prisma migrate resolve --rolled-back 20260819120943_init_centros_usuarios` y repetir el paso 5. No se pierden datos. |
+| `P3009 … found failed migrations` | Igual que la fila anterior: marcar como revertida la migración fallida que indique el mensaje con `npx prisma migrate resolve --rolled-back NOMBRE`. |
 | `npm` / `npx` no se reconocen, pero `node` sí | Usar `npm.cmd` y `npx.cmd`. |
 | `Falta AUTH_SECRET` | Falta la línea `AUTH_SECRET` en el `.env`. |
 | El login no hace nada o vuelve a pedir la contraseña | Se está entrando por IP en lugar de `localhost` (ver paso 6). |
