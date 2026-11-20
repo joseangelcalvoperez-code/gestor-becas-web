@@ -231,3 +231,51 @@ El rojo del logotipo (`#E83A39`, token `--cm-rojo-marca`) se usa solo en superfi
 ![Inicio](capturas/inicio.png)
 ![Documentación](capturas/documentos.png)
 ![Alumnado](capturas/alumnos.png)
+
+---
+
+## 6. Gestión de contraseñas (administrador) — v1.2
+
+La aplicación **no envía correos ni se conecta a servicios externos**. El restablecimiento lo hace el administrador desde el servidor:
+
+1. El centro pulsa **«¿Ha olvidado su contraseña?»** en la pantalla de acceso e indica su correo y su código de centro. Si los datos corresponden a una cuenta activa, la solicitud queda registrada en la tabla `solicitudes_restablecimiento`. La respuesta es siempre la misma, exista o no la cuenta, para no revelar qué correos están registrados.
+2. El administrador revisa las solicitudes pendientes:
+
+   ```bash
+   npm run clave:solicitudes
+   ```
+
+3. Genera una contraseña provisional:
+
+   ```bash
+   npm run clave:restablecer -- correo@centro.es
+   ```
+
+   * Es aleatoria (generador criptográfico), con formato `Ab3d-Ef4g-Hj5k` y sin caracteres que se confundan al dictarla.
+   * Se muestra **una sola vez** y caduca a las **72 h** (`--horas N` para cambiarlo, máximo 168).
+   * Cierra todas las sesiones abiertas del usuario y marca como atendidas sus solicitudes.
+   * Pide confirmación antes de aplicarse (`--si` la omite).
+4. El administrador la comunica al centro **por un canal oficial** (teléfono o correo corporativo), sin enviarla en el mismo mensaje que el correo de acceso.
+5. Al entrar con ella, la aplicación **obliga a establecer una contraseña personal**. Hasta entonces, esa sesión no puede usar ninguna otra pantalla ni API.
+
+**Política de contraseñas** (alta de centros y cambios): al menos 10 caracteres, letras y números, distinta de la actual y sin contener el usuario del correo. Los centros pueden cambiarla en cualquier momento desde **Cambiar contraseña**, en el menú lateral.
+
+**Cierre de sesiones.** Cada petición comprueba en la base de datos, con una consulta por clave primaria, que el usuario y el centro siguen activos y que la contraseña no ha cambiado desde que se inició la sesión. Un restablecimiento o un cambio de contraseña invalida al momento las sesiones anteriores. Coste medido: +0,4 s en un expediente masivo de 17 alumnos y +0,3 s en 233 guardados simultáneos.
+
+**Configuración opcional:** `NEXT_PUBLIC_SOPORTE_CONTACTO` muestra el contacto del soporte en la pantalla de restablecimiento.
+
+**Migración:** `20261120000200_restablecimiento_clave` añade los campos a `usuarios` y crea la tabla de solicitudes. Es aditiva y se aplica con `npx prisma migrate deploy`.
+
+## 7. Alta masiva de grados y asignaturas — v1.2
+
+En **Grados y asignaturas**, *Exportar plantilla* descarga un Excel con la configuración actual del centro, e *Importar Excel* la carga. Funciona igual que las demás importaciones:
+
+* **Todo o nada.** Si una fila tiene errores no se guarda nada, y se devuelve la lista de filas con el motivo.
+* **Plantilla propia del centro.** Solo se admite la plantilla generada por la aplicación para el mismo centro. Se comprueban la hoja oculta `_METADATA` y las columnas.
+* **Aditiva.** Nunca elimina grados, asignaturas ni profesores.
+* **Reglas de alta:** son las mismas que en el alta manual.
+  * Un grado eliminado se recupera.
+  * El profesorado se identifica por DNI/NIE, con validación de la letra en los nuevos. Un DNI ya registrado debe tener el mismo nombre.
+  * Una asignatura no se puede repetir en el mismo grado y curso. Las existentes actualizan su código y su profesor.
+  * Los códigos no se pueden repetir dentro del mismo grado y curso. Sí se pueden intercambiar entre asignaturas.
+* **Límites:** 5 MB y 1.500 filas por importación.

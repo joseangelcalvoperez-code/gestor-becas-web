@@ -19,7 +19,7 @@ const { chromium } = require("playwright");
 
 const raiz = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const origen = path.join(raiz, "docs/manual/manual.html");
-const destino = path.join(raiz, "public/documentos/Manual_Gestor_Becas_v1.1.pdf");
+const destino = path.join(raiz, "public/documentos/Manual_Gestor_Becas_v1.2.pdf");
 
 const navegador = await chromium.launch();
 const pagina = await navegador.newPage();
@@ -52,7 +52,7 @@ const cuerpo = await pagina.pdf({
   footerTemplate: `
     <div style="width:100%;font-family:Segoe UI,Arial,sans-serif;font-size:7.5pt;color:#5f6b7a;
                 padding:0 18mm;display:flex;justify-content:space-between;">
-      <span>Gestor de Becas · Manual de usuario · v1.1</span>
+      <span>Gestor de Becas · Manual de usuario · v1.2</span>
       <span>Página <span class="pageNumber"></span> de <span class="totalPages"></span></span>
     </div>`,
 });
@@ -65,10 +65,11 @@ for (const bytes of [portada, cuerpo]) {
   const paginas = await final.copyPages(doc, doc.getPageIndices());
   paginas.forEach((p) => final.addPage(p));
 }
-final.setTitle("Gestor de Becas · Manual de usuario v1.1");
+final.setTitle("Gestor de Becas · Manual de usuario v1.2");
 final.setAuthor("Comunidad de Madrid · Consejería de Educación, Universidades, Ciencia y Portavocía");
 final.setSubject("Becas de Segunda Oportunidad");
 final.setLanguage("es-ES");
+fs.mkdirSync(path.dirname(destino), { recursive: true });
 fs.writeFileSync(destino, await final.save());
 
 await navegador.close();

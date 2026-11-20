@@ -1,13 +1,15 @@
 {
   "name": "gestor-becas-web",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "probar:bd": "node scripts/probar-conexion.mjs"
+    "probar:bd": "node scripts/probar-conexion.mjs",
+    "clave:solicitudes": "node scripts/gestion-claves.mjs solicitudes",
+    "clave:restablecer": "node scripts/gestion-claves.mjs restablecer"
   },
   "dependencies": {
     "@prisma/adapter-mariadb": "^7.9.1",

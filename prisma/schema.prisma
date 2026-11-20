@@ -50,10 +50,19 @@ model Usuario {
 
   activo Boolean @default(true)
 
+  /// Obliga a cambiar la contraseña al iniciar sesión (contraseña provisional)
+  debeCambiarClave    Boolean   @default(false) @map("debe_cambiar_clave")
+  /// Caducidad de la contraseña provisional
+  claveTemporalExpira DateTime? @map("clave_temporal_expira")
+  /// Último cambio de contraseña: invalida las sesiones anteriores
+  claveActualizadaAt  DateTime? @map("clave_actualizada_at")
+
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
   centro Centro @relation(fields: [centroId], references: [id], onDelete: Cascade)
+
+  solicitudesRestablecimiento SolicitudRestablecimiento[]
 
   @@index([centroId])
   @@map("usuarios")
@@ -315,4 +324,22 @@ model MatriculaAsignaturaConvalidada {
   @@index([matriculaId])
   @@index([asignaturaId])
   @@map("matriculas_asignaturas_convalidadas")
+}
+
+/// Solicitudes de restablecimiento de contraseña hechas desde la
+/// pantalla de acceso. Las atiende el administrador con el comando
+/// npm run clave:restablecer (no se envía nada por correo).
+model SolicitudRestablecimiento {
+  id Int @id @default(autoincrement())
+
+  usuarioId Int @map("usuario_id")
+
+  createdAt  DateTime  @default(now()) @map("created_at")
+  atendidaAt DateTime? @map("atendida_at")
+
+  usuario Usuario @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+
+  @@index([usuarioId])
+  @@index([atendidaAt])
+  @@map("solicitudes_restablecimiento")
 }

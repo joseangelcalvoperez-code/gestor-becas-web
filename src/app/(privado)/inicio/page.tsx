@@ -232,7 +232,7 @@ export default function InicioPage() {
         </div>
 
         <a
-          href="/documentos/Manual_Gestor_Becas_v1.1.pdf"
+          href="/documentos/Manual_Gestor_Becas_v1.2.pdf"
           target="_blank"
           rel="noopener noreferrer"
           style={{

@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<title>Gestor de Becas · Manual de usuario v1.1</title>
+<title>Gestor de Becas · Manual de usuario v1.2</title>
 <style>
   @page { size: A4; margin: 20mm 18mm 20mm 18mm; }
   @page :first { margin: 0; }
@@ -101,7 +101,7 @@
     <p>Guía de uso para los centros educativos: configuración, alumnado, registro de asistencia y generación de la documentación justificativa.</p>
   </div>
   <div class="portada-pie">
-    <div><b>Versión</b>1.1.0</div>
+    <div><b>Versión</b>1.2.0</div>
     <div><b>Fecha</b>20 de noviembre de 2026</div>
     <div><b>Destinatarios</b>Personal de gestión de los centros</div>
   </div>
@@ -124,7 +124,7 @@
     <li><a href="#c11">Casos especiales</a></li>
     <li><a href="#c12">Buenas prácticas</a></li>
     <li><a href="#c13">Resolución de incidencias</a></li>
-    <li><a href="#c14">Novedades de la versión 1.1</a></li>
+    <li><a href="#c14">Novedades de las versiones 1.1 y 1.2</a></li>
   </ol>
 </div>
 
@@ -177,11 +177,37 @@
   </figure>
   <ul>
     <li><b>Datos del centro:</b> nombre, código de centro, CIF, dirección, localidad, provincia, teléfono y correo del centro.</li>
-    <li><b>Datos de acceso:</b> nombre de la persona responsable, correo de acceso y contraseña (mínimo 8 caracteres), que se escribe dos veces.</li>
+    <li><b>Datos de acceso:</b> nombre de la persona responsable, correo de acceso y contraseña, que se escribe dos veces. La contraseña debe tener <b>al menos 10 caracteres y combinar letras y números</b>.</li>
   </ul>
   <p>El código de centro y el correo de acceso no pueden estar ya registrados.</p>
 
-  <h3>2.3 Cerrar sesión</h3>
+  <h3>2.3 ¿Ha olvidado su contraseña?</h3>
+  <figure class="pequena">
+    <img src="img/13-recuperar-clave.jpg" alt="">
+    <figcaption><b>Figura 3.</b> Solicitud de restablecimiento de contraseña.</figcaption>
+  </figure>
+  <p>La aplicación no envía correos. El restablecimiento lo hace el <b>servicio de soporte</b>, que entrega una contraseña provisional por un canal oficial:</p>
+  <ol class="pasos">
+    <li>En la pantalla de acceso, pulse <b>¿Ha olvidado su contraseña?</b>.</li>
+    <li>Escriba el <b>correo de acceso</b> y el <b>código de centro</b> y pulse <span class="boton">Solicitar restablecimiento</span>. La solicitud queda registrada.</li>
+    <li>El servicio de soporte le facilitará una <b>contraseña provisional</b> (formato <code>Ab3d-Ef4g-Hj5k</code>). Es válida durante <b>72 horas</b>.</li>
+    <li>Inicie sesión con ella. La aplicación le pedirá que establezca una <b>contraseña personal</b> antes de continuar (apartado 2.4).</li>
+  </ol>
+  <div class="nota aviso"><b>Seguridad</b>Por seguridad, la respuesta de la pantalla es la misma aunque los datos no correspondan a ninguna cuenta. Cuando se genera la contraseña provisional, se cierran las sesiones abiertas de esa cuenta en cualquier equipo.</div>
+
+  <h3>2.4 Cambiar la contraseña</h3>
+  <figure class="pequena">
+    <img src="img/14-cambiar-clave.jpg" alt="">
+    <figcaption><b>Figura 4.</b> Cambio de contraseña.</figcaption>
+  </figure>
+  <p>Puede cambiar su contraseña en cualquier momento desde <b>Cambiar contraseña</b>, en la parte inferior del menú lateral. Tras entrar con una contraseña provisional, este paso es obligatorio y no se puede usar la aplicación hasta completarlo.</p>
+  <ol class="pasos">
+    <li>Escriba la contraseña <b>actual</b> (o la provisional).</li>
+    <li>Escriba la <b>nueva contraseña</b> dos veces y pulse <span class="boton">Guardar contraseña</span>.</li>
+  </ol>
+  <p>La nueva contraseña debe tener <b>al menos 10 caracteres</b>, combinar <b>letras y números</b>, ser distinta de la actual y no contener el usuario del correo. Al cambiarla se cierran las demás sesiones abiertas con la contraseña anterior.</p>
+
+  <h3>2.5 Cerrar sesión</h3>
   <p>Pulse <span class="boton sec">Cerrar sesión</span> en la parte inferior del menú lateral. Hágalo siempre al terminar, sobre todo en equipos compartidos.</p>
 </section>
 
@@ -190,13 +216,13 @@
   <h2><span class="num">3</span>Funcionamiento general</h2>
   <figure class="media">
     <img src="img/03-inicio.jpg" alt="">
-    <figcaption><b>Figura 3.</b> Pantalla de Inicio y estructura común de todas las pantallas.</figcaption>
+    <figcaption><b>Figura 5.</b> Pantalla de Inicio y estructura común de todas las pantallas.</figcaption>
   </figure>
 
   <h3>3.1 Cabecera</h3>
   <figure>
     <img src="img/04-cabecera.jpg" alt="">
-    <figcaption><b>Figura 4.</b> Cabecera: identificación institucional, aplicación, curso académico y centro.</figcaption>
+    <figcaption><b>Figura 6.</b> Cabecera: identificación institucional, aplicación, curso académico y centro.</figcaption>
   </figure>
   <ul>
     <li><b>Izquierda:</b> identificación de la Comunidad de Madrid y de la Consejería, y el nombre de la aplicación.</li>
@@ -241,7 +267,7 @@
   <h2><span class="num">5</span>Datos del centro y cursos académicos</h2>
   <figure class="media">
     <img src="img/05-centro.jpg" alt="">
-    <figcaption><b>Figura 5.</b> <span class="menu">Datos del centro</span>: datos identificativos y cursos académicos.</figcaption>
+    <figcaption><b>Figura 7.</b> <span class="menu">Datos del centro</span>: datos identificativos y cursos académicos.</figcaption>
   </figure>
 
   <h3>5.1 Datos del centro</h3>
@@ -262,7 +288,7 @@
   <h2><span class="num">6</span>Grados y asignaturas</h2>
   <figure>
     <img src="img/06-grados.jpg" alt="">
-    <figcaption><b>Figura 6.</b> <span class="menu">Grados y asignaturas</span> con un grado seleccionado.</figcaption>
+    <figcaption><b>Figura 8.</b> <span class="menu">Grados y asignaturas</span> con un grado seleccionado.</figcaption>
   </figure>
   <p>Esta pantalla define la estructura académica que se usa después para matricular alumnos, registrar asistencia y generar la documentación.</p>
 
@@ -277,6 +303,24 @@
     <li><b>Eliminar</b> retira la asignatura.</li>
   </ul>
   <div class="nota consejo"><b>Recomendación</b>Configure por completo grados y asignaturas antes de matricular alumnos. Así no tendrá que corregir relaciones después.</div>
+
+  <h3>6.3 Alta masiva con Excel</h3>
+  <p>Para configurar muchos grados y asignaturas de una vez, use los botones de la parte superior de la pantalla:</p>
+  <ol class="pasos">
+    <li>Pulse <span class="boton sec">Exportar plantilla</span>. Se descarga un Excel con la configuración actual del centro, en filas grises, y espacio para añadir más.</li>
+    <li>Añada una fila por asignatura: <b>grado</b>, <b>curso</b> (1 o 2), <b>código</b>, <b>asignatura</b> y <b>nombre, apellidos y DNI/NIE del profesor</b>. La hoja <i>PROFESORADO</i> muestra los profesores ya registrados.</li>
+    <li>Pulse <span class="boton">Importar Excel</span>, seleccione el archivo y confirme.</li>
+  </ol>
+  <table>
+    <tr><th style="width:34%">En la plantilla…</th><th>Al importar…</th></tr>
+    <tr><td>Un grado que no existe</td><td>Se crea. Si se había eliminado, se recupera.</td></tr>
+    <tr><td>Un profesor con DNI/NIE nuevo</td><td>Se da de alta. El DNI/NIE debe ser válido (formato y letra).</td></tr>
+    <tr><td>Un DNI/NIE ya registrado</td><td>Se usa ese profesor. El nombre debe coincidir con el registrado.</td></tr>
+    <tr><td>Una asignatura nueva</td><td>Se crea en su grado y curso.</td></tr>
+    <tr><td>Una asignatura existente</td><td>Se actualizan su código y su profesor, si han cambiado.</td></tr>
+    <tr><td>Una fila que se borra del Excel</td><td><b>No se elimina nada.</b> Para eliminar use los botones de la pantalla.</td></tr>
+  </table>
+  <div class="nota importante"><b>Todo o nada</b>Si alguna fila tiene un error (datos incompletos, curso distinto de 1 o 2, DNI/NIE no válido, asignatura repetida, código ya usado en el mismo grado y curso…), <b>no se importa ninguna</b>. La pantalla muestra la lista de filas con su motivo para corregirlas. Solo se admite la plantilla descargada del propio centro.</div>
 </section>
 
 <!-- ===================== 7 ===================== -->
@@ -284,7 +328,7 @@
   <h2><span class="num">7</span>Alumnado</h2>
   <figure>
     <img src="img/07-alumnos.jpg" alt="">
-    <figcaption><b>Figura 7.</b> <span class="menu">Alumnado</span>: acciones, filtros y listado de matrículas.</figcaption>
+    <figcaption><b>Figura 9.</b> <span class="menu">Alumnado</span>: acciones, filtros y listado de matrículas.</figcaption>
   </figure>
   <p>La pantalla muestra las matrículas del <b>curso académico seleccionado</b> en la cabecera.</p>
 
@@ -298,7 +342,7 @@
   <h3>7.2 Matricular un alumno</h3>
   <figure>
     <img src="img/08-nuevo-alumno.jpg" alt="">
-    <figcaption><b>Figura 8.</b> Formulario de nueva matrícula.</figcaption>
+    <figcaption><b>Figura 10.</b> Formulario de nueva matrícula.</figcaption>
   </figure>
   <ol class="pasos">
     <li>Pulse <span class="boton">+ Nuevo alumno</span>.</li>
@@ -320,7 +364,7 @@
   <h3>7.4 Convalidaciones</h3>
   <figure>
     <img src="img/09-convalidaciones.jpg" alt="">
-    <figcaption><b>Figura 9.</b> Selección de asignaturas convalidadas de un alumno.</figcaption>
+    <figcaption><b>Figura 11.</b> Selección de asignaturas convalidadas de un alumno.</figcaption>
   </figure>
   <p>La acción <b>Convalidaciones</b> muestra las asignaturas del grado y curso del alumno. Marque las convalidadas y pulse <span class="boton">Guardar convalidaciones</span>. En el listado, la columna «Convalidadas» indica cuáles tiene cada alumno.</p>
   <div class="nota importante"><b>Efecto de una convalidación</b>Una asignatura convalidada no admite registro de asistencia, no aparece en la plantilla Excel de asistencia y se excluye de la documentación. La convalidación no se traslada automáticamente a la matrícula de otro curso.</div>
@@ -335,7 +379,7 @@
   <p>La asistencia puede registrarse de dos formas: <b>individualmente</b> desde la pantalla, o <b>de forma masiva</b> con una plantilla Excel mensual.</p>
   <figure>
     <img src="img/10-asistencia.jpg" alt="">
-    <figcaption><b>Figura 10.</b> <span class="menu">Asistencia</span>: zona Excel (arriba) y selectores de grado, asignatura y alumno.</figcaption>
+    <figcaption><b>Figura 12.</b> <span class="menu">Asistencia</span>: zona Excel (arriba) y selectores de grado, asignatura y alumno.</figcaption>
   </figure>
 
   <h3>8.1 Selección del alumno</h3>
@@ -349,7 +393,7 @@
   <h3>8.2 Registro manual</h3>
   <figure class="media">
     <img src="img/11-asistencia-tabla.jpg" alt="">
-    <figcaption><b>Figura 11.</b> Tabla mensual de asistencia con resumen y observaciones.</figcaption>
+    <figcaption><b>Figura 13.</b> Tabla mensual de asistencia con resumen y observaciones.</figcaption>
   </figure>
   <ul>
     <li>La tabla organiza el mes por <b>semanas</b> y <b>días laborables</b> (lunes a viernes). Para cada día se anotan las horas <b>Asiste</b> y <b>No asiste</b>.</li>
@@ -377,7 +421,7 @@
   <p><span class="menu">Documentación</span> genera los documentos mensuales a partir de los datos del alumno y de la asistencia registrada.</p>
   <figure class="pequena">
     <img src="img/12-documentos.jpg" alt="">
-    <figcaption><b>Figura 12.</b> <span class="menu">Documentación</span> con el resumen del mes desplegado y las opciones de generación.</figcaption>
+    <figcaption><b>Figura 14.</b> <span class="menu">Documentación</span> con el resumen del mes desplegado y las opciones de generación.</figcaption>
   </figure>
 
   <h3>9.1 Selección y resumen</h3>
@@ -457,6 +501,8 @@
     <tr><th style="width:38%">Situación</th><th>Qué hacer</th></tr>
     <tr><td>«Email o contraseña incorrectos»</td><td>Revise el correo y la contraseña (atención a mayúsculas). Si no la recuerda, contacte con el soporte de la aplicación.</td></tr>
     <tr><td>«Demasiados intentos fallidos»</td><td>La cuenta está bloqueada temporalmente. Espere 15 minutos.</td></tr>
+    <tr><td>No recuerda la contraseña</td><td>Use <b>¿Ha olvidado su contraseña?</b> en la pantalla de acceso (apartado 2.3).</td></tr>
+    <tr><td>«La contraseña provisional ha caducado»</td><td>Han pasado más de 72 horas. Solicite un nuevo restablecimiento.</td></tr>
     <tr><td>La aplicación vuelve a pedir la contraseña</td><td>La sesión caduca a las 8 horas. Inicie sesión de nuevo.</td></tr>
     <tr><td>No aparecen alumnos, asistencia o documentos</td><td>Compruebe el curso académico de la cabecera y los filtros de <span class="menu">Alumnado</span>.</td></tr>
     <tr><td>Un alumno no aparece en Asistencia para una asignatura</td><td>Probablemente la tiene convalidada. Revíselo en <span class="menu">Alumnado</span> → Convalidaciones.</td></tr>
@@ -468,8 +514,15 @@
 
 <!-- ===================== 14 ===================== -->
 <section class="capitulo" id="c14">
-  <h2><span class="num">14</span>Novedades de la versión 1.1</h2>
-  <h3>Interfaz</h3>
+  <h2><span class="num">14</span>Novedades</h2>
+  <h3>Versión 1.2</h3>
+  <ul>
+    <li><b>Alta masiva de grados y asignaturas</b> mediante plantilla Excel (apartado 6.3).</li>
+    <li><b>Restablecimiento de contraseña</b> con contraseña provisional facilitada por el servicio de soporte (apartado 2.3).</li>
+    <li><b>Cambio de contraseña</b> desde el menú lateral (apartado 2.4). Nueva política: al menos 10 caracteres con letras y números.</li>
+    <li>Al cambiar o restablecer la contraseña se cierran las sesiones abiertas con la anterior.</li>
+  </ul>
+  <h3>Versión 1.1 · Interfaz</h3>
   <ul>
     <li>Nuevo diseño institucional de la Comunidad de Madrid, con mayor tamaño de letra y mejor contraste (accesibilidad AA).</li>
     <li>Menú lateral con iconos y nombres actualizados: <span class="menu">Alumnado</span>, <span class="menu">Documentación</span> y <span class="menu">Datos del centro</span>.</li>
@@ -477,7 +530,7 @@
     <li>Nueva pantalla de acceso y acceso directo al manual desde el menú.</li>
     <li>Corregidas columnas recortadas en <span class="menu">Alumnado</span> y en el resumen de <span class="menu">Asistencia</span>.</li>
   </ul>
-  <h3>Rendimiento y seguridad</h3>
+  <h3>Versión 1.1 · Rendimiento y seguridad</h3>
   <ul>
     <li>La generación masiva de expedientes es aproximadamente <b>el doble de rápida</b>.</li>
     <li>La aplicación está preparada para el uso simultáneo de todos los centros sin esperas excesivas.</li>

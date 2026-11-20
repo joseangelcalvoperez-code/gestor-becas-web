@@ -144,6 +144,29 @@ export async function POST(
 
     limpiarIntentos(email);
 
+    /*
+     * Contraseña provisional (restablecimiento): debe estar
+     * vigente y obliga a cambiarla antes de usar la aplicación.
+     */
+    if (usuario.debeCambiarClave) {
+      if (
+        usuario.claveTemporalExpira &&
+        usuario.claveTemporalExpira.getTime() < Date.now()
+      ) {
+        return NextResponse.json(
+          {
+            ok: false,
+
+            error:
+              "La contraseña provisional ha caducado. Solicite un nuevo restablecimiento desde «¿Ha olvidado su contraseña?».",
+          },
+          {
+            status: 401,
+          }
+        );
+      }
+    }
+
     await crearSesion({
       usuarioId:
         usuario.id,
@@ -160,6 +183,9 @@ export async function POST(
 
     return NextResponse.json({
       ok: true,
+
+      cambioClave:
+        usuario.debeCambiarClave,
 
       usuario: {
         id:

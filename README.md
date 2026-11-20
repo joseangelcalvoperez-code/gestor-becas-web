@@ -6,7 +6,7 @@ Aplicación web para la gestión de centros, cursos académicos, alumnado, asign
 >
 > **Instalación paso a paso en un PC nuevo para pruebas:** [docs/INSTALACION_LOCAL.md](docs/INSTALACION_LOCAL.md).
 >
-> **Manual de usuario:** `public/documentos/Manual_Gestor_Becas_v1.1.pdf` (enlazado desde la aplicación). Se genera desde `docs/manual/manual.html` con `node scripts/manual/generar-pdf.mjs`; las capturas se rehacen con `scripts/manual/capturas.mjs`.
+> **Manual de usuario:** `public/documentos/Manual_Gestor_Becas_v1.2.pdf` (enlazado desde la aplicación). Se genera desde `docs/manual/manual.html` con `node scripts/manual/generar-pdf.mjs`; las capturas se rehacen con `scripts/manual/capturas.mjs`.
 
 ## Tecnologías principales
 
@@ -334,7 +334,14 @@ http://localhost:3000
 
 # Versión
 
-**Gestor de Becas Web — v1.1.0**
+**Gestor de Becas Web — v1.2.0**
+
+- Alta masiva de grados y asignaturas mediante plantilla Excel (todo o nada, sin borrados).
+- Restablecimiento de contraseña sin servicios externos: solicitud desde la pantalla de acceso, contraseña provisional generada por el administrador (`npm run clave:restablecer`) y cambio obligatorio al entrar.
+- Cambio de contraseña desde el menú y política de 10 caracteres con letras y números.
+- Instalaciones existentes: `npx prisma migrate deploy` aplica la nueva migración.
+
+v1.1.0
 
 - Rediseño visual institucional y accesible (WCAG 2.1 AA).
 - Generación masiva de expedientes ~2× más rápida, sin llamadas HTTP internas.

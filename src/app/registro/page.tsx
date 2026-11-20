@@ -392,6 +392,16 @@ const enviarFormulario = async (
                 type="password"
               />
             </div>
+
+            <p
+              style={{
+                marginTop: "10px",
+                fontSize: "13px",
+                color: "var(--cm-texto-3)",
+              }}
+            >
+              La contraseña debe tener al menos 10 caracteres y combinar letras y números.
+            </p>
           </div>
 
           {mensaje && (

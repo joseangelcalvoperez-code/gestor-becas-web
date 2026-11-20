@@ -6,6 +6,8 @@ import {
   useState,
 } from "react";
 
+import ImportExportGrados from "@/components/ImportExportGrados";
+
 /* =========================================================
    TIPOS
    ========================================================= */
@@ -1064,21 +1066,53 @@ const eliminarGrado =
           </p>
         </div>
 
-        <button
-          type="button"
-
-          onClick={() =>
-            setMostrarNuevoGrado(
-              true
-            )
-          }
-
-          style={
-            botonRojo
-          }
+        <div
+          style={{
+            flexShrink: 0,
+            maxWidth: "70%",
+          }}
         >
-          + NUEVO GRADO
-        </button>
+          <ImportExportGrados
+            extra={
+              <button
+                type="button"
+                onClick={() =>
+                  setMostrarNuevoGrado(
+                    true
+                  )
+                }
+                style={
+                  botonRojo
+                }
+              >
+                + NUEVO GRADO
+              </button>
+            }
+            onMensaje={(
+              tipo,
+              texto
+            ) => {
+              setTipoMensaje(
+                tipo
+              );
+              setMensaje(
+                texto
+              );
+            }}
+            onImportacionCorrecta={async () => {
+              await cargarDatosIniciales();
+
+              if (
+                gradoSeleccionadoId
+              ) {
+                await cargarAsignaturas(
+                  gradoSeleccionadoId,
+                  curso
+                );
+              }
+            }}
+          />
+        </div>
       </div>
 
       {/* MENSAJES */}

@@ -4,6 +4,8 @@ import {
 
 import bcrypt from "bcryptjs";
 
+import { validarNuevaClave } from "@/lib/clave";
+
 import {
   prisma,
 } from "@/lib/prisma";
@@ -77,14 +79,23 @@ export async function POST(
       );
     }
 
+    const problemaClave =
+      validarNuevaClave(
+        String(password),
+        {
+          email:
+            String(emailAcceso),
+        }
+      );
+
     if (
-      password.length < 8
+      problemaClave
     ) {
       return NextResponse.json(
         {
           ok: false,
           error:
-            "La contraseña debe tener al menos 8 caracteres.",
+            problemaClave,
         },
         {
           status: 400,

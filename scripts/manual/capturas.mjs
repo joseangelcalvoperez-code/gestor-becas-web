@@ -91,6 +91,11 @@ await captura("01-acceso");
 await ir("/registro");
 await captura("02-registro");
 
+// Formularios de acceso: solo la mitad derecha (tarjeta)
+const tarjeta = { x: ANCHO / 2, y: 0, width: ANCHO / 2, height: 900 };
+await ir("/recuperar-clave");
+await captura("13-recuperar-clave", tarjeta);
+
 await ir("/login");
 await p.fill("input[name=email]", EMAIL);
 await p.fill("input[name=password]", PASSWORD);
@@ -102,6 +107,9 @@ await captura("04-cabecera", { x: 0, y: 0, width: ANCHO, height: CONTENIDO_Y });
 
 await ir("/centro");
 await captura("05-centro", "contenido-completo");
+
+await ir("/cambiar-clave");
+await captura("14-cambiar-clave", tarjeta);
 
 await ir("/grados-asignaturas");
 await captura("06-grados", contenido(710));

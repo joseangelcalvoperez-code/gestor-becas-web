@@ -106,7 +106,9 @@ export default function LoginPage() {
         }
 
         router.push(
-          "/inicio"
+          resultado.cambioClave
+            ? "/cambiar-clave"
+            : "/inicio"
         );
 
         router.refresh();
@@ -169,6 +171,21 @@ export default function LoginPage() {
                 className="cm-input"
               />
             </label>
+
+            <Link
+              href="/recuperar-clave"
+              style={{
+                justifySelf: "end",
+                marginTop: "-8px",
+                fontSize: "13px",
+                color: "var(--cm-rojo)",
+                fontWeight: 600,
+                textDecoration: "underline",
+                textUnderlineOffset: "3px",
+              }}
+            >
+              ¿Ha olvidado su contraseña?
+            </Link>
 
             {mensaje && (
               <div

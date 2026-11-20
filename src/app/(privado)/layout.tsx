@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 
 import { prisma } from "@/lib/prisma";
-import { obtenerSesion } from "@/lib/session";
+import { estadoSesion } from "@/lib/session";
 import { MARCA } from "@/lib/marca";
 
 import HeaderWeb from "@/components/HeaderWeb";
@@ -12,12 +12,19 @@ export default async function LayoutPrivado({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const sesion =
-    await obtenerSesion();
+  const estado =
+    await estadoSesion();
 
-  if (!sesion) {
+  if (estado.tipo === "ninguna") {
     redirect("/login");
   }
+
+  // Contraseña provisional: obligatorio cambiarla antes de continuar
+  if (estado.tipo === "cambio-clave") {
+    redirect("/cambiar-clave");
+  }
+
+  const sesion = estado.sesion;
 
   const centro =
     await prisma.centro.findFirst({

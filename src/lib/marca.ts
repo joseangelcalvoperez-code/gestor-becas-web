@@ -37,7 +37,7 @@ export const MARCA = {
 
   programa: "Segunda Oportunidad",
 
-  version: "1.1.0",
+  version: "1.2.0",
 
   /** Emblema (cuadrado rojo con estrellas). */
   simbolo: logoActivo

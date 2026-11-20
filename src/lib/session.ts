@@ -7,6 +7,10 @@ import {
   cookies,
 } from "next/headers";
 
+import {
+  prisma,
+} from "@/lib/prisma";
+
 const nombreCookie =
   "gestor_becas_session";
 
@@ -81,10 +85,25 @@ export async function crearSesion(
   );
 }
 
-export async function obtenerSesion():
-  Promise<
-    DatosSesion | null
-  > {
+/* =========================================================
+   LECTURA DE LA SESIÓN
+
+   Además de validar la firma del token, se comprueba en la base
+   de datos (consulta por clave primaria, muy ligera):
+     - que el usuario y el centro siguen activos;
+     - que la contraseña no ha cambiado después de iniciar
+       sesión (un restablecimiento cierra las sesiones abiertas);
+     - si el usuario tiene pendiente cambiar una contraseña
+       provisional: en ese caso la sesión NO sirve para nada
+       salvo para cambiarla.
+   ========================================================= */
+
+type EstadoSesion =
+  | { tipo: "valida"; sesion: DatosSesion }
+  | { tipo: "cambio-clave"; sesion: DatosSesion }
+  | { tipo: "ninguna" };
+
+export async function estadoSesion(): Promise<EstadoSesion> {
   try {
     const cookieStore =
       await cookies();
@@ -95,7 +114,7 @@ export async function obtenerSesion():
       )?.value;
 
     if (!token) {
-      return null;
+      return { tipo: "ninguna" };
     }
 
     const {
@@ -133,18 +152,91 @@ export async function obtenerSesion():
       !centroId ||
       !email
     ) {
-      return null;
+      return { tipo: "ninguna" };
     }
 
-    return {
+    const usuario =
+      await prisma.usuario.findUnique({
+        where: {
+          id: usuarioId,
+        },
+
+        select: {
+          activo: true,
+          centroId: true,
+          debeCambiarClave: true,
+          claveActualizadaAt: true,
+          centro: {
+            select: {
+              activo: true,
+            },
+          },
+        },
+      });
+
+    if (
+      !usuario ||
+      !usuario.activo ||
+      !usuario.centro.activo ||
+      usuario.centroId !== centroId
+    ) {
+      return { tipo: "ninguna" };
+    }
+
+    // Token emitido antes del último cambio de contraseña
+    if (
+      usuario.claveActualizadaAt &&
+      (payload.iat ?? 0) * 1000 <
+        usuario.claveActualizadaAt.getTime()
+    ) {
+      return { tipo: "ninguna" };
+    }
+
+    const sesion = {
       usuarioId,
       centroId,
       nombre,
       email,
     };
+
+    return usuario.debeCambiarClave
+      ? { tipo: "cambio-clave", sesion }
+      : { tipo: "valida", sesion };
   } catch {
-    return null;
+    return { tipo: "ninguna" };
   }
+}
+
+/**
+ * Sesión para trabajar con la aplicación. Devuelve null si no hay
+ * sesión o si el usuario debe cambiar antes su contraseña.
+ */
+export async function obtenerSesion():
+  Promise<
+    DatosSesion | null
+  > {
+  const estado =
+    await estadoSesion();
+
+  return estado.tipo === "valida"
+    ? estado.sesion
+    : null;
+}
+
+/**
+ * Sesión admitida para cambiar la contraseña: la normal y la de
+ * quien entra con una contraseña provisional.
+ */
+export async function obtenerSesionParaCambioClave():
+  Promise<
+    DatosSesion | null
+  > {
+  const estado =
+    await estadoSesion();
+
+  return estado.tipo === "ninguna"
+    ? null
+    : estado.sesion;
 }
 
 export async function eliminarSesion() {
