@@ -9,7 +9,10 @@
     "lint": "eslint",
     "probar:bd": "node scripts/probar-conexion.mjs",
     "clave:solicitudes": "node scripts/gestion-claves.mjs solicitudes",
-    "clave:restablecer": "node scripts/gestion-claves.mjs restablecer"
+    "clave:restablecer": "node scripts/gestion-claves.mjs restablecer",
+    "db:generar": "prisma generate",
+    "db:migrar": "prisma migrate deploy",
+    "db:estado": "prisma migrate status"
   },
   "dependencies": {
     "@prisma/adapter-mariadb": "^7.9.1",

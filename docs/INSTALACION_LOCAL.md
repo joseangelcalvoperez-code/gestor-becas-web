@@ -134,11 +134,11 @@ npm ci
 ```
 
 ```powershell
-npx prisma generate
+npm run db:generar
 ```
 
 ```powershell
-npx prisma migrate deploy
+npm run db:migrar
 ```
 
 El último comando debe terminar con `All migrations have been successfully applied`.
@@ -151,7 +151,9 @@ npm run probar:bd
 
 Debe aparecer `✔ Conexión correcta`. Si aparece un error, el propio comando indica la causa.
 
-> **Si PowerShell dice que `npm` o `npx` no se reconocen** (aunque `node --version` funcione), usar `npm.cmd` y `npx.cmd` en todos los comandos de esta guía: `npm.cmd ci`, `npx.cmd prisma generate`, `npm.cmd run dev`…
+> **Si PowerShell dice que `npm` o `npx` no se reconocen** (aunque `node --version` funcione), usar `npm.cmd` y `npx.cmd` en todos los comandos de esta guía: `npm.cmd ci`, `npm.cmd run db:generar`, `npm.cmd run dev`…
+>
+> **Use siempre `npm run db:generar` y `npm run db:migrar`** en lugar de `npx prisma …`: así se usa la versión de Prisma del proyecto. Si `npx` no la encuentra, descarga la última de Internet (que puede ser incompatible).
 
 ---
 
@@ -214,11 +216,11 @@ npm ci
 ```
 
 ```powershell
-npx prisma generate
+npm run db:generar
 ```
 
 ```powershell
-npx prisma migrate deploy
+npm run db:migrar
 ```
 
 ```powershell
@@ -255,9 +257,11 @@ En local, el «administrador» es usted mismo:
 | `Access denied for user 'gestor'` | La contraseña del `.env` no coincide con la del paso 2. |
 | `Can't reach database server` / `ECONNREFUSED 3306` | MySQL no está arrancado. Abrir *Servicios* de Windows → **MySQL80** → *Iniciar*. |
 | `pool timeout: failed to retrieve a connection from pool … active=0 idle=0` | La aplicación no logra conectar con MySQL. Ejecutar `npm run probar:bd` para ver la causa real. Con MySQL 8 se debía a la autenticación `caching_sha2_password`; está resuelto desde la v1.1 (actualizar con `git pull`). |
-| `P3018 … Table 'centros' already exists` con la migración `20260819120943_init_centros_usuarios` | Se descargó la rama `codex/version-2` en lugar de `main`. Ejecutar `git checkout main`, después `npx prisma migrate resolve --rolled-back 20260819120943_init_centros_usuarios` y repetir el paso 5. No se pierden datos. |
-| `P3009 … found failed migrations` | Igual que la fila anterior: marcar como revertida la migración fallida que indique el mensaje con `npx prisma migrate resolve --rolled-back NOMBRE`. |
+| `P3018 … Table 'centros' already exists` con la migración `20260819120943_init_centros_usuarios` | Se descargó la rama `codex/version-2` en lugar de `main`. Ejecutar `git checkout main`, después `npx --no-install prisma migrate resolve --rolled-back 20260819120943_init_centros_usuarios` y repetir el paso 5. No se pierden datos. |
+| `P3009 … found failed migrations` | Igual que la fila anterior: marcar como revertida la migración fallida que indique el mensaje con `npx --no-install prisma migrate resolve --rolled-back NOMBRE`. |
 | `Access denied for user 'gestor'@'localhost'` en `npm run probar:bd` | El diagnóstico prueba sin y con SSL. Si **solo funciona con SSL**, añadir `DATABASE_SSL="1"` al `.env`. Si **fallan todas**, la contraseña en MySQL no es la del `.env`: como root, `ALTER USER 'gestor'@'localhost' IDENTIFIED BY 'CLAVE';` y lo mismo para `'gestor'@'127.0.0.1'`, y luego `FLUSH PRIVILEGES;`. |
+| `` `prisma generate` is a Prisma 7 command and is not available in Prisma 8 `` o `Need to install the following packages: prisma@8…` | Falta la instalación del proyecto (`node_modules`) y `npx` ha descargado otra versión. Responda **n** si lo pregunta. Cierre la aplicación (`Ctrl + C`) y VS Code, abra PowerShell en la carpeta del proyecto, ejecute `npm ci` hasta que termine sin errores y use `npm run db:generar`. |
+| `npm ci` termina con `EPERM` o `EBUSY` | Hay archivos de `node_modules` en uso. Cierre la aplicación y VS Code y repita `npm ci`. |
 | `npm` / `npx` no se reconocen, pero `node` sí | Usar `npm.cmd` y `npx.cmd`. |
 | `Falta AUTH_SECRET` | Falta la línea `AUTH_SECRET` en el `.env`. |
 | El login no hace nada o vuelve a pedir la contraseña | Se está entrando por IP en lugar de `localhost` (ver paso 6). |

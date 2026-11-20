@@ -128,13 +128,13 @@ prisma/schema.prisma
 Generar Prisma Client:
 
 ```powershell
-npx prisma generate
+npm run db:generar
 ```
 
 Comprobar las migraciones:
 
 ```powershell
-npx prisma migrate status
+npm run db:estado
 ```
 
 ### Base de datos nueva
@@ -142,13 +142,13 @@ npx prisma migrate status
 Las migraciones están en `prisma/migrations`. Aplicarlas mediante:
 
 ```powershell
-npx prisma migrate deploy
+npm run db:migrar
 ```
 
 Después:
 
 ```powershell
-npx prisma generate
+npm run db:generar
 ```
 
 ### Base de datos creada con la v1.0
@@ -156,8 +156,8 @@ npx prisma generate
 Las instalaciones de la v1.0 no tienen historial de migraciones. Tras hacer copia de seguridad:
 
 ```powershell
-npx prisma migrate resolve --applied 20261120000000_init
-npx prisma migrate deploy
+npx --no-install prisma migrate resolve --applied 20261120000000_init
+npm run db:migrar
 ```
 
 El segundo comando solo añade índices de rendimiento; no modifica datos.
@@ -167,7 +167,7 @@ El segundo comando solo añade índices de rendimiento; no modifica datos.
 Cuando se cambie deliberadamente `schema.prisma`, las nuevas migraciones se pueden crear en desarrollo con:
 
 ```powershell
-npx prisma migrate dev --name descripcion_del_cambio
+npx --no-install prisma migrate dev --name descripcion_del_cambio
 ```
 
 No utilizar `migrate dev` indiscriminadamente en un servidor de producción.
@@ -253,8 +253,8 @@ Después:
 ```powershell
 git pull
 npm install
-npx prisma generate
-npx prisma migrate deploy
+npm run db:generar
+npm run db:migrar
 npm run build
 ```
 
@@ -321,8 +321,8 @@ npm install
 Crear/configurar `.env` y ejecutar:
 
 ```powershell
-npx prisma generate
-npx prisma migrate deploy
+npm run db:generar
+npm run db:migrar
 npm run dev
 ```
 
@@ -339,7 +339,7 @@ http://localhost:3000
 - Alta masiva de grados y asignaturas mediante plantilla Excel (todo o nada, sin borrados).
 - Restablecimiento de contraseña sin servicios externos: solicitud desde la pantalla de acceso, contraseña provisional generada por el administrador (`npm run clave:restablecer`) y cambio obligatorio al entrar.
 - Cambio de contraseña desde el menú y política de 10 caracteres con letras y números.
-- Instalaciones existentes: `npx prisma migrate deploy` aplica la nueva migración.
+- Instalaciones existentes: `npm run db:migrar` aplica la nueva migración.
 
 v1.1.0
 

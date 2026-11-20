@@ -118,8 +118,8 @@ El volumen de datos es pequeño: 4.000 alumnos × ~6 módulos × 10 meses ≈ 24
 
 ```bash
 npm ci
-npx prisma generate
-npx prisma migrate deploy
+npm run db:generar
+npm run db:migrar
 npm run build
 npm install -g pm2
 pm2 start node_modules/next/dist/bin/next --name gestor-becas -i max -- start -p 3000
@@ -177,14 +177,14 @@ collation-server         = utf8mb4_unicode_ci
 Las bases de datos creadas con la v1.0 ya tienen las tablas, pero no tienen historial de migraciones. **Hacer antes una copia de seguridad** y después marcar la migración base como aplicada:
 
 ```bash
-npx prisma migrate resolve --applied 20261120000000_init
+npx --no-install prisma migrate resolve --applied 20261120000000_init
 ```
 
 ```bash
-npx prisma migrate deploy
+npm run db:migrar
 ```
 
-El segundo comando solo crea los 3 índices nuevos, sin tocar los datos. En una **instalación nueva** basta con `npx prisma migrate deploy`.
+El segundo comando solo crea los 3 índices nuevos, sin tocar los datos. En una **instalación nueva** basta con `npm run db:migrar`.
 
 ---
 
@@ -264,7 +264,7 @@ La aplicación **no envía correos ni se conecta a servicios externos**. El rest
 
 **Configuración opcional:** `NEXT_PUBLIC_SOPORTE_CONTACTO` muestra el contacto del soporte en la pantalla de restablecimiento.
 
-**Migración:** `20261120000200_restablecimiento_clave` añade los campos a `usuarios` y crea la tabla de solicitudes. Es aditiva y se aplica con `npx prisma migrate deploy`.
+**Migración:** `20261120000200_restablecimiento_clave` añade los campos a `usuarios` y crea la tabla de solicitudes. Es aditiva y se aplica con `npm run db:migrar`.
 
 ## 7. Alta masiva de grados y asignaturas — v1.2
 
