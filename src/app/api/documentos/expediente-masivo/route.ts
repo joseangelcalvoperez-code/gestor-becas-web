@@ -1,4 +1,18 @@
 import {
+  CONCURRENCIA_EXPEDIENTES,
+  procesarConConcurrencia,
+} from "@/lib/limitador";
+
+import {
+  POST as postExpediente,
+} from "../expediente/route";
+
+import {
+  llamadaInterna,
+  opcionesZip,
+} from "@/lib/llamadaInterna";
+
+import {
   NextResponse,
 } from "next/server";
 
@@ -259,21 +273,25 @@ export async function POST(
        RECORRER TODOS LOS ALUMNOS
        ===================================================== */
 
-    for (
-      const matricula
-      of matriculas
-    ) {
-      const nombreAlumno =
-        `${matricula.alumno.apellidos} ${matricula.alumno.nombre}`;
+    /* =====================================================
+       GENERACIÓN EN PARALELO ACOTADO
 
-      try {
-        /* =================================================
-           GENERAR EXPEDIENTE DEL ALUMNO
-           ================================================= */
+       Los expedientes se generan varios a la vez
+       (EXPEDIENTES_CONCURRENCIA). Cada respuesta se lee
+       completa en memoria y después se ensambla el ZIP final
+       en el orden original de alumnos.
+       ===================================================== */
 
-        const respuesta =
-          await fetch(
-            urlExpediente,
+    const respuestasExpedientes =
+      await procesarConConcurrencia(
+        matriculas,
+        CONCURRENCIA_EXPEDIENTES,
+        async (matricula) => {
+          try {
+            const respuestaOriginal =
+              await llamadaInterna(
+          postExpediente,
+          urlExpediente,
             {
               method:
                 "POST",
@@ -300,6 +318,54 @@ export async function POST(
                 "no-store",
             }
           );
+
+            return new Response(
+              await respuestaOriginal.arrayBuffer(),
+              {
+                status:
+                  respuestaOriginal.status,
+
+                headers:
+                  respuestaOriginal.headers,
+              }
+            );
+          } catch (error) {
+            return Response.json(
+              {
+                ok: false,
+
+                error:
+                  error instanceof Error
+                    ? error.message
+                    : String(error),
+              },
+              {
+                status: 500,
+              }
+            );
+          }
+        }
+      );
+
+    for (
+      const [
+        indiceMatricula,
+        matricula,
+      ]
+      of matriculas.entries()
+    ) {
+      const nombreAlumno =
+        `${matricula.alumno.apellidos} ${matricula.alumno.nombre}`;
+
+      try {
+        /* =================================================
+           GENERAR EXPEDIENTE DEL ALUMNO
+           ================================================= */
+
+        const respuesta =
+          respuestasExpedientes[
+            indiceMatricula
+          ];
 
         /* =================================================
            ERROR EN ESTE ALUMNO
@@ -526,12 +592,9 @@ export async function POST(
         type:
           "uint8array",
 
-        compression:
-          "DEFLATE",
-
-        compressionOptions: {
-          level: 6,
-        },
+        ...opcionesZip(
+          request
+        ),
       });
 
     /* =====================================================

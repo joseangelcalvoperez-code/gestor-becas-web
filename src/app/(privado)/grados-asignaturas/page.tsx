@@ -1000,7 +1000,7 @@ const eliminarGrado =
           "#ffffff",
 
         border:
-          "1px solid #d7dde5",
+          "1px solid var(--cm-borde)",
 
         minHeight:
           "calc(100vh - 105px)",
@@ -1029,7 +1029,7 @@ const eliminarGrado =
             "18px",
 
           borderBottom:
-            "1px solid #d7dde5",
+            "1px solid var(--cm-borde)",
         }}
       >
         <div>
@@ -1037,7 +1037,7 @@ const eliminarGrado =
             style={{
               margin: 0,
               color:
-                "#303b50",
+                "var(--cm-texto)",
               fontSize:
                 "20px",
             }}
@@ -1051,10 +1051,10 @@ const eliminarGrado =
                 "6px 0 0",
 
               color:
-                "#7a879a",
+                "var(--cm-texto-3)",
 
               fontSize:
-                "11px",
+                "13px",
             }}
           >
             Configure los grados,
@@ -1095,23 +1095,23 @@ const eliminarGrado =
             border:
               tipoMensaje ===
               "success"
-                ? "1px solid #b9dec2"
-                : "1px solid #efb0aa",
+                ? "1px solid var(--cm-exito-borde)"
+                : "1px solid var(--cm-rojo-borde)",
 
             background:
               tipoMensaje ===
               "success"
-                ? "#edf8f0"
-                : "#fff0ef",
+                ? "var(--cm-exito-claro)"
+                : "var(--cm-rojo-claro)",
 
             color:
               tipoMensaje ===
               "success"
-                ? "#2f7d44"
-                : "#b9362f",
+                ? "var(--cm-exito)"
+                : "var(--cm-rojo-oscuro)",
 
             fontSize:
-              "11px",
+              "13px",
           }}
         >
           {
@@ -1133,13 +1133,13 @@ const eliminarGrado =
               "18px",
 
             border:
-              "1px solid #d7dde5",
+              "1px solid var(--cm-borde)",
 
             padding:
               "18px",
 
             background:
-              "#f8fafc",
+              "var(--cm-fondo-suave)",
           }}
         >
           <div
@@ -1238,7 +1238,7 @@ const eliminarGrado =
             "18px",
 
           border:
-            "1px solid #d7dde5",
+            "1px solid var(--cm-borde)",
         }}
       >
         {/* GRADOS */}
@@ -1246,10 +1246,10 @@ const eliminarGrado =
         <aside
           style={{
             borderRight:
-              "1px solid #d7dde5",
+              "1px solid var(--cm-borde)",
 
             background:
-              "#f7f8fa",
+              "var(--cm-fondo-suave)",
           }}
         >
           <div
@@ -1258,16 +1258,16 @@ const eliminarGrado =
                 "13px 16px",
 
               borderBottom:
-                "1px solid #d7dde5",
+                "1px solid var(--cm-borde)",
 
               fontSize:
-                "9px",
+                "11px",
 
               fontWeight:
                 700,
 
               color:
-                "#566176",
+                "var(--cm-texto-2)",
             }}
           >
             GRADOS
@@ -1336,11 +1336,11 @@ const eliminarGrado =
                         "none",
 
                       borderBottom:
-                        "1px solid #e0e4ea",
+                        "1px solid var(--cm-borde)",
 
                       borderLeft:
                         activo
-                          ? "3px solid #e9423a"
+                          ? "3px solid var(--cm-rojo)"
                           : "3px solid transparent",
 
                       background:
@@ -1358,10 +1358,10 @@ const eliminarGrado =
                     <div
                       style={{
                         color:
-                          "#303b50",
+                          "var(--cm-texto)",
 
                         fontSize:
-                          "11px",
+                          "13px",
 
                         fontWeight:
                           activo
@@ -1380,10 +1380,10 @@ const eliminarGrado =
                           "4px",
 
                         color:
-                          "#8a95a7",
+                          "var(--cm-texto-3)",
 
                         fontSize:
-                          "9px",
+                          "11px",
                       }}
                     >
                       {
@@ -1439,17 +1439,17 @@ const eliminarGrado =
                     "18px",
 
                   borderBottom:
-                    "1px solid #d7dde5",
+                    "1px solid var(--cm-borde)",
                 }}
               >
                 <div>
                   <div
                     style={{
                       fontSize:
-                        "9px",
+                        "11px",
 
                       color:
-                        "#8894a6",
+                        "var(--cm-texto-3)",
 
                       fontWeight:
                         700,
@@ -1467,7 +1467,7 @@ const eliminarGrado =
                         0,
 
                       color:
-                        "#303b50",
+                        "var(--cm-texto)",
 
                       fontSize:
                         "17px",
@@ -1544,7 +1544,7 @@ const eliminarGrado =
                     "16px",
 
                   borderBottom:
-                    "1px solid #d7dde5",
+                    "1px solid var(--cm-borde)",
                 }}
               >
                 {[1, 2].map(
@@ -1584,7 +1584,7 @@ const eliminarGrado =
 
                           borderBottom:
                             activo
-                              ? "3px solid #e9423a"
+                              ? "3px solid var(--cm-rojo)"
                               : "3px solid transparent",
 
                           background:
@@ -1592,11 +1592,11 @@ const eliminarGrado =
 
                           color:
                             activo
-                              ? "#303b50"
-                              : "#65758d",
+                              ? "var(--cm-texto)"
+                              : "var(--cm-texto-3)",
 
                           fontSize:
-                            "10px",
+                            "12px",
 
                           fontWeight:
                             activo
@@ -1630,10 +1630,10 @@ const eliminarGrado =
                       "18px",
 
                     border:
-                      "1px solid #d7dde5",
+                      "1px solid var(--cm-borde)",
 
                     background:
-                      "#f8fafc",
+                      "var(--cm-fondo-suave)",
                   }}
                 >
                   <div
@@ -1698,19 +1698,19 @@ const eliminarGrado =
                         "18px",
 
                       borderTop:
-                        "1px solid #d7dde5",
+                        "1px solid var(--cm-borde)",
                     }}
                   >
                     <div
                       style={{
                         fontSize:
-                          "9px",
+                          "11px",
 
                         fontWeight:
                           700,
 
                         color:
-                          "#566176",
+                          "var(--cm-texto-2)",
 
                         marginBottom:
                           "13px",
@@ -1955,7 +1955,7 @@ const eliminarGrado =
                     "18px",
 
                   border:
-                    "1px solid #d7dde5",
+                    "1px solid var(--cm-borde)",
                 }}
               >
                 <div
@@ -1967,13 +1967,13 @@ const eliminarGrado =
                       "120px 2fr 1.5fr 130px 90px",
 
                     background:
-                      "#e1e5eb",
+                      "var(--cm-borde)",
 
                     color:
-                      "#455166",
+                      "var(--cm-texto-2)",
 
                     fontSize:
-                      "9px",
+                      "11px",
 
                     fontWeight:
                       700,
@@ -2037,16 +2037,16 @@ const eliminarGrado =
                             "120px 2fr 1.5fr 130px 90px",
 
                           borderTop:
-                            "1px solid #d7dde5",
+                            "1px solid var(--cm-borde)",
 
                           background:
                             "#ffffff",
 
                           fontSize:
-                            "10px",
+                            "12px",
 
                           color:
-                            "#4b576b",
+                            "var(--cm-texto-2)",
                         }}
                       >
                         <Celda>
@@ -2060,7 +2060,7 @@ const eliminarGrado =
                           <strong
                             style={{
                               color:
-                                "#303b50",
+                                "var(--cm-texto)",
                             }}
                           >
                             {
@@ -2108,10 +2108,10 @@ const eliminarGrado =
                                 "transparent",
 
                               color:
-                                "#e9423a",
+                                "var(--cm-rojo)",
 
                               fontSize:
-                                "9px",
+                                "11px",
 
                               fontWeight:
                                 700,
@@ -2238,7 +2238,7 @@ const inputStyle:
     "border-box",
 
   border:
-    "1px solid #cbd3df",
+    "1px solid var(--cm-borde-fuerte)",
 
   padding:
     "0 11px",
@@ -2247,10 +2247,10 @@ const inputStyle:
     "#ffffff",
 
   color:
-    "#303b50",
+    "var(--cm-texto)",
 
   fontSize:
-    "11px",
+    "13px",
 
   outline:
     "none",
@@ -2266,13 +2266,13 @@ const labelStyle:
     "6px",
 
   fontSize:
-    "9px",
+    "11px",
 
   fontWeight:
     700,
 
   color:
-    "#566176",
+    "var(--cm-texto-2)",
 };
 
 const botonRojo:
@@ -2288,13 +2288,13 @@ const botonRojo:
     "none",
 
   background:
-    "#e9423a",
+    "var(--cm-rojo)",
 
   color:
     "#ffffff",
 
   fontSize:
-    "9px",
+    "11px",
 
   fontWeight:
     700,
@@ -2316,13 +2316,13 @@ const botonGris:
     "none",
 
   background:
-    "#596474",
+    "var(--cm-texto-2)",
 
   color:
     "#ffffff",
 
   fontSize:
-    "9px",
+    "11px",
 
   fontWeight:
     700,
@@ -2341,16 +2341,16 @@ const botonEliminar:
     "0 16px",
 
   border:
-    "1px solid #e9423a",
+    "1px solid var(--cm-rojo)",
 
   background:
     "#ffffff",
 
   color:
-    "#e9423a",
+    "var(--cm-rojo)",
 
   fontSize:
-    "9px",
+    "11px",
 
   fontWeight:
     700,
@@ -2366,10 +2366,10 @@ const tituloFormulario:
     "14px",
 
   color:
-    "#303b50",
+    "var(--cm-texto)",
 
   fontSize:
-    "11px",
+    "13px",
 
   fontWeight:
     700,
@@ -2391,10 +2391,10 @@ const radioStyle:
     "9px",
 
   color:
-    "#4b576b",
+    "var(--cm-texto-2)",
 
   fontSize:
-    "10px",
+    "12px",
 
   cursor:
     "pointer",
@@ -2407,10 +2407,10 @@ const textoVacio:
     "18px",
 
   color:
-    "#7a879a",
+    "var(--cm-texto-3)",
 
   fontSize:
-    "11px",
+    "13px",
 
   lineHeight:
     1.6,

@@ -1533,7 +1533,7 @@ const generarExpedienteMasivo =
           "#ffffff",
 
         border:
-          "1px solid #d7dde5",
+          "1px solid var(--cm-borde)",
 
         minHeight:
           "calc(100vh - 105px)",
@@ -1553,7 +1553,7 @@ const generarExpedienteMasivo =
             "18px",
 
           borderBottom:
-            "1px solid #d7dde5",
+            "1px solid var(--cm-borde)",
         }}
       >
         <h1
@@ -1561,7 +1561,7 @@ const generarExpedienteMasivo =
             margin: 0,
 
             color:
-              "#303b50",
+              "var(--cm-texto)",
 
             fontSize:
               "20px",
@@ -1576,10 +1576,10 @@ const generarExpedienteMasivo =
               "6px 0 0",
 
             color:
-              "#8190a8",
+              "var(--cm-texto-3)",
 
             fontSize:
-              "11px",
+              "13px",
           }}
         >
           Genere la documentación
@@ -1593,10 +1593,10 @@ const generarExpedienteMasivo =
                 "7px",
 
               color:
-                "#e9423a",
+                "var(--cm-rojo)",
 
               fontSize:
-                "9px",
+                "11px",
 
               fontWeight:
                 700,
@@ -1625,25 +1625,25 @@ const generarExpedienteMasivo =
               mensaje.startsWith(
                 "✓"
               )
-                ? "1px solid #b9dec2"
-                : "1px solid #efb0aa",
+                ? "1px solid var(--cm-exito-borde)"
+                : "1px solid var(--cm-rojo-borde)",
 
             background:
               mensaje.startsWith(
                 "✓"
               )
-                ? "#edf8f0"
-                : "#fff0ef",
+                ? "var(--cm-exito-claro)"
+                : "var(--cm-rojo-claro)",
 
             color:
               mensaje.startsWith(
                 "✓"
               )
-                ? "#2f7d44"
-                : "#b9362f",
+                ? "var(--cm-exito)"
+                : "var(--cm-rojo-oscuro)",
 
             fontSize:
-              "10px",
+              "12px",
           }}
         >
           {mensaje}
@@ -1670,10 +1670,10 @@ const generarExpedienteMasivo =
             "16px",
 
           border:
-            "1px solid #d7dde5",
+            "1px solid var(--cm-borde)",
 
           background:
-            "#f8fafc",
+            "var(--cm-fondo-suave)",
         }}
       >
         <label>
@@ -1776,7 +1776,7 @@ const generarExpedienteMasivo =
                 "40px 1fr 40px",
 
               border:
-                "1px solid #cbd3df",
+                "1px solid var(--cm-borde-fuerte)",
 
               background:
                 "#ffffff",
@@ -1813,10 +1813,10 @@ const generarExpedienteMasivo =
                   "center",
 
                 color:
-                  "#303b50",
+                  "var(--cm-texto)",
 
                 fontSize:
-                  "10px",
+                  "12px",
 
                 fontWeight:
                   700,
@@ -1862,7 +1862,7 @@ const generarExpedienteMasivo =
               "1.5fr 2fr 0.8fr",
 
             border:
-              "1px solid #d7dde5",
+              "1px solid var(--cm-borde)",
 
             borderTop:
               "none",
@@ -1898,7 +1898,7 @@ const generarExpedienteMasivo =
               "20px",
 
             border:
-              "1px solid #d7dde5",
+              "1px solid var(--cm-borde)",
           }}
         >
         <button
@@ -1931,7 +1931,7 @@ const generarExpedienteMasivo =
               "none",
 
             background:
-              "#f8fafc",
+              "var(--cm-fondo-suave)",
 
             display:
               "flex",
@@ -1943,10 +1943,10 @@ const generarExpedienteMasivo =
               "space-between",
 
             color:
-              "#303b50",
+              "var(--cm-texto)",
 
             fontSize:
-              "11px",
+              "13px",
 
             fontWeight:
               700,
@@ -1968,7 +1968,7 @@ const generarExpedienteMasivo =
                 "14px",
 
               color:
-                "#65758d",
+                "var(--cm-texto-3)",
             }}
           >
             {resumenAbierto
@@ -1985,10 +1985,10 @@ const generarExpedienteMasivo =
                     "24px",
 
                   color:
-                    "#7a879a",
+                    "var(--cm-texto-3)",
 
                   fontSize:
-                    "10px",
+                    "12px",
                 }}
               >
                 Cargando...
@@ -2004,13 +2004,13 @@ const generarExpedienteMasivo =
                     "1fr 150px 150px",
 
                   background:
-                    "#e1e5eb",
+                    "var(--cm-borde)",
 
                   color:
-                    "#455166",
+                    "var(--cm-texto-2)",
 
                   fontSize:
-                    "8px",
+                    "10px",
 
                   fontWeight:
                     700,
@@ -2046,13 +2046,13 @@ const generarExpedienteMasivo =
                         "1fr 150px 150px",
 
                       borderTop:
-                        "1px solid #d7dde5",
+                        "1px solid var(--cm-borde)",
 
                       color:
-                        "#4b576b",
+                        "var(--cm-texto-2)",
 
                       fontSize:
-                        "9px",
+                        "11px",
                     }}
                   >
                     <Celda>
@@ -2089,16 +2089,16 @@ const generarExpedienteMasivo =
                     "1fr 150px 150px",
 
                   borderTop:
-                    "2px solid #c2cad5",
+                    "2px solid var(--cm-borde-fuerte)",
 
                   background:
-                    "#f7f8fa",
+                    "var(--cm-fondo-suave)",
 
                   color:
-                    "#303b50",
+                    "var(--cm-texto)",
 
                   fontSize:
-                    "9px",
+                    "11px",
 
                   fontWeight:
                     700,
@@ -2141,7 +2141,7 @@ const generarExpedienteMasivo =
               "20px",
 
             border:
-              "1px solid #d7dde5",
+              "1px solid var(--cm-borde)",
 
             padding:
               "18px",
@@ -2153,10 +2153,10 @@ const generarExpedienteMasivo =
                 "0 0 16px",
 
               color:
-                "#303b50",
+                "var(--cm-texto)",
 
               fontSize:
-                "13px",
+                "14px",
             }}
           >
             GENERAR DOCUMENTOS
@@ -2527,10 +2527,10 @@ const generarExpedienteMasivo =
                 "20px",
 
               border:
-                "1px solid #c8d0db",
+                "1px solid var(--cm-borde-fuerte)",
 
               background:
-                "#f4f6f8",
+                "var(--cm-fondo)",
             }}
           >
             <div>
@@ -2685,16 +2685,16 @@ function Dato({
           "11px 12px",
 
         borderRight:
-          "1px solid #d7dde5",
+          "1px solid var(--cm-borde)",
       }}
     >
       <div
         style={{
           color:
-            "#8793a5",
+            "var(--cm-texto-3)",
 
           fontSize:
-            "7px",
+            "9px",
 
           fontWeight:
             700,
@@ -2709,10 +2709,10 @@ function Dato({
             "5px",
 
           color:
-            "#303b50",
+            "var(--cm-texto)",
 
           fontSize:
-            "9px",
+            "11px",
 
           fontWeight:
             600,
@@ -2876,7 +2876,7 @@ const inputStyle:
     "border-box",
 
   border:
-    "1px solid #cbd3df",
+    "1px solid var(--cm-borde-fuerte)",
 
   background:
     "#ffffff",
@@ -2885,10 +2885,10 @@ const inputStyle:
     "0 10px",
 
   color:
-    "#303b50",
+    "var(--cm-texto)",
 
   fontSize:
-    "10px",
+    "12px",
 
   outline:
     "none",
@@ -2904,10 +2904,10 @@ const labelStyle:
     "6px",
 
   color:
-    "#566176",
+    "var(--cm-texto-2)",
 
   fontSize:
-    "8px",
+    "10px",
 
   fontWeight:
     700,
@@ -2920,10 +2920,10 @@ const botonNavegacion:
     "none",
 
   background:
-    "#f2f4f7",
+    "var(--cm-fondo-suave)",
 
   color:
-    "#303b50",
+    "var(--cm-texto)",
 
   fontSize:
     "16px",
@@ -2945,13 +2945,13 @@ const botonRojo:
     "none",
 
   background:
-    "#e9423a",
+    "var(--cm-rojo)",
 
   color:
     "#ffffff",
 
   fontSize:
-    "8px",
+    "10px",
 
   fontWeight:
     700,
@@ -2988,7 +2988,7 @@ const tarjetaStyle:
     "17px",
 
   border:
-    "1px solid #d7dde5",
+    "1px solid var(--cm-borde)",
 
   background:
     "#ffffff",
@@ -2998,10 +2998,10 @@ const tituloTarjetaStyle:
   React.CSSProperties =
 {
   color:
-    "#303b50",
+    "var(--cm-texto)",
 
   fontSize:
-    "10px",
+    "12px",
 
   fontWeight:
     700,
@@ -3014,10 +3014,10 @@ const descripcionStyle:
     "6px",
 
   color:
-    "#7a879a",
+    "var(--cm-texto-3)",
 
   fontSize:
-    "9px",
+    "11px",
 
   lineHeight:
     1.5,

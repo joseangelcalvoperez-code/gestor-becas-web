@@ -1,4 +1,12 @@
 import {
+  leerPlantilla,
+} from "@/lib/plantillas";
+
+import {
+  semaforoPdf,
+} from "@/lib/limitador";
+
+import {
   NextResponse,
 } from "next/server";
 
@@ -10,9 +18,6 @@ import {
   rgb,
 } from "pdf-lib";
 
-import {
-  readFile,
-} from "fs/promises";
 
 import path from "path";
 
@@ -796,7 +801,7 @@ const MESES_CURSO = [
    POST
    ========================================================= */
 
-export async function POST(
+async function generarDocumento(
   request: Request
 ) {
   try {
@@ -1189,7 +1194,7 @@ export async function POST(
 
     try {
       bytesPlantilla =
-        await readFile(
+        await leerPlantilla(
           RUTA_PLANTILLA
         );
     } catch {
@@ -1333,6 +1338,71 @@ export async function POST(
     }
 
     /* =====================================================
+       ASISTENCIA DE TODOS LOS MESES EN UNA SOLA CONSULTA
+       (antes: una consulta por mes)
+       ===================================================== */
+
+    const periodosAnexo =
+      mesesAGenerar.map(
+        (mesConfigurado) => ({
+          anio:
+            obtenerAnioMesCurso(
+              inicioCurso,
+              mesConfigurado.numeroMes
+            ),
+
+          mes:
+            mesConfigurado.numeroMes,
+        })
+      );
+
+    const asistenciasAnexo =
+      await prisma.asistencia.findMany({
+        where: {
+          matriculaId,
+          asignaturaId,
+
+          OR: periodosAnexo,
+        },
+
+        select: {
+          anio: true,
+          mes: true,
+
+          observaciones:
+            true,
+
+          dias: {
+            orderBy: {
+              fecha:
+                "asc",
+            },
+
+            select: {
+              fecha:
+                true,
+
+              horasAsistidas:
+                true,
+
+              horasNoAsistidas:
+                true,
+            },
+          },
+        },
+      });
+
+    const asistenciaPorPeriodo =
+      new Map(
+        asistenciasAnexo.map(
+          (registro) => [
+            `${registro.anio}-${registro.mes}`,
+            registro,
+          ]
+        )
+      );
+
+    /* =====================================================
        RELLENAR MESES HASTA EL CORTE
        ===================================================== */
 
@@ -1386,44 +1456,9 @@ export async function POST(
         );
 
       const asistencia =
-        await prisma.asistencia.findUnique({
-          where: {
-            matriculaId_asignaturaId_anio_mes:
-              {
-                matriculaId,
-                asignaturaId,
-
-                anio:
-                  anioMes,
-
-                mes:
-                  mesConfigurado.numeroMes,
-              },
-          },
-
-          select: {
-            observaciones:
-              true,
-
-            dias: {
-              orderBy: {
-                fecha:
-                  "asc",
-              },
-
-              select: {
-                fecha:
-                  true,
-
-                horasAsistidas:
-                  true,
-
-                horasNoAsistidas:
-                  true,
-              },
-            },
-          },
-        });
+        asistenciaPorPeriodo.get(
+          `${anioMes}-${mesConfigurado.numeroMes}`
+        );
 
       const registros:
         RegistroAsistencia[] =
@@ -2626,4 +2661,20 @@ function limpiarNombreArchivo(
       /^_|_$/g,
       ""
     );
+}
+
+
+/* =========================================================
+   POST
+   La generación pasa por el semáforo de PDF para que las
+   peticiones simultáneas de muchos centros no saturen la CPU
+   del servidor (Anexo V).
+   ========================================================= */
+
+export function POST(
+  request: Request
+) {
+  return semaforoPdf.ejecutar(
+    () => generarDocumento(request)
+  );
 }

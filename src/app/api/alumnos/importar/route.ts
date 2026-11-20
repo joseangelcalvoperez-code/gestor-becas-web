@@ -795,6 +795,17 @@ if (
             },
           });
         }
+      },
+      {
+        /*
+         * Importaciones de cientos de alumnos superan
+         * el límite por defecto de Prisma (5 s).
+         */
+        maxWait:
+          10000,
+
+        timeout:
+          120000,
       }
     );
 

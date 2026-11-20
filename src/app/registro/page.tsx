@@ -1,5 +1,8 @@
 "use client";
 
+import SimboloMarca from "@/components/SimboloMarca";
+import { MARCA } from "@/lib/marca";
+
 import {
   FormEvent,
   useState,
@@ -170,11 +173,33 @@ const enviarFormulario = async (
         minHeight:
           "100vh",
         background:
-          "#eef1f5",
+          "var(--cm-fondo)",
         padding:
           "40px 20px",
       }}
     >
+      <div
+        style={{
+          maxWidth: "920px",
+          margin: "0 auto 20px",
+          display: "flex",
+          alignItems: "center",
+          gap: "12px",
+        }}
+      >
+        <SimboloMarca />
+
+        <div style={{ lineHeight: 1.2 }}>
+          <div style={{ fontWeight: 700, fontSize: "15px" }}>
+            {MARCA.organismo}
+          </div>
+
+          <div style={{ fontSize: "13px", color: "var(--cm-texto-3)" }}>
+            {MARCA.departamento} · {MARCA.aplicacion}
+          </div>
+        </div>
+      </div>
+
       <div
         style={{
           width:
@@ -186,7 +211,13 @@ const enviarFormulario = async (
           background:
             "#ffffff",
           border:
-            "1px solid #d8dee8",
+            "1px solid var(--cm-borde)",
+          borderTop:
+            "4px solid var(--cm-rojo)",
+          borderRadius:
+            "var(--cm-radio-grande)",
+          boxShadow:
+            "var(--cm-sombra)",
         }}
       >
         <div
@@ -194,7 +225,7 @@ const enviarFormulario = async (
             padding:
               "26px 30px",
             borderBottom:
-              "1px solid #d8dee8",
+              "1px solid var(--cm-borde)",
           }}
         >
           <h1
@@ -204,7 +235,7 @@ const enviarFormulario = async (
               fontSize:
                 "24px",
               color:
-                "#2f3b52",
+                "var(--cm-texto)",
             }}
           >
             Crear cuenta de centro
@@ -215,9 +246,9 @@ const enviarFormulario = async (
               margin:
                 "8px 0 0",
               color:
-                "#7a879a",
+                "var(--cm-texto-3)",
               fontSize:
-                "13px",
+                "14px",
             }}
           >
             Registre el centro y cree
@@ -239,7 +270,7 @@ const enviarFormulario = async (
               fontSize:
                 "14px",
               color:
-                "#303b50",
+                "var(--cm-texto)",
               margin:
                 "0 0 16px",
             }}
@@ -306,7 +337,7 @@ const enviarFormulario = async (
               paddingTop:
                 "24px",
               borderTop:
-                "1px solid #e2e6ec",
+                "1px solid var(--cm-borde)",
             }}
           >
             <h2
@@ -314,7 +345,7 @@ const enviarFormulario = async (
                 fontSize:
                   "14px",
                 color:
-                  "#303b50",
+                  "var(--cm-texto)",
                 margin:
                   "0 0 16px",
               }}
@@ -367,23 +398,23 @@ const enviarFormulario = async (
                 border:
                   tipoMensaje ===
                   "success"
-                    ? "1px solid #b9dec2"
-                    : "1px solid #efb0aa",
+                    ? "1px solid var(--cm-exito-borde)"
+                    : "1px solid var(--cm-rojo-borde)",
 
                 background:
                   tipoMensaje ===
                   "success"
-                    ? "#edf8f0"
-                    : "#fff0ef",
+                    ? "var(--cm-exito-claro)"
+                    : "var(--cm-rojo-claro)",
 
                 color:
                   tipoMensaje ===
                   "success"
-                    ? "#2f7d44"
-                    : "#b9362f",
+                    ? "var(--cm-exito)"
+                    : "var(--cm-rojo-oscuro)",
 
                 fontSize:
-                  "12px",
+                  "13px",
               }}
             >
               {
@@ -408,9 +439,9 @@ const enviarFormulario = async (
               href="/login"
               style={{
                 color:
-                  "#596474",
+                  "var(--cm-texto-2)",
                 fontSize:
-                  "12px",
+                  "13px",
                 textDecoration:
                   "none",
               }}
@@ -432,11 +463,11 @@ const enviarFormulario = async (
                 border:
                   "none",
                 background:
-                  "#e9423a",
+                  "var(--cm-rojo)",
                 color:
                   "#ffffff",
                 fontSize:
-                  "11px",
+                  "13px",
                 fontWeight:
                   700,
                 cursor:
@@ -479,11 +510,11 @@ function Campo({
       <span
         style={{
           fontSize:
-            "10px",
+            "12px",
           fontWeight:
             700,
           color:
-            "#566176",
+            "var(--cm-texto-2)",
           textTransform:
             "uppercase",
         }}
@@ -503,11 +534,11 @@ function Campo({
           minHeight:
             "40px",
           border:
-            "1px solid #cbd3df",
+            "1px solid var(--cm-borde-fuerte)",
           padding:
             "0 11px",
           fontSize:
-            "13px",
+            "14px",
           outline:
             "none",
           background:

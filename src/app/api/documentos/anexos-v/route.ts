@@ -1,4 +1,13 @@
 import {
+  POST as postAnexoV,
+} from "../anexo-v/route";
+
+import {
+  llamadaInterna,
+  opcionesZip,
+} from "@/lib/llamadaInterna";
+
+import {
   NextResponse,
 } from "next/server";
 
@@ -329,7 +338,8 @@ const asignaturasConvalidadasIds =
       of asignaturas
     ) {
       const respuesta =
-        await fetch(
+        await llamadaInterna(
+          postAnexoV,
           urlGenerador,
           {
             method:
@@ -464,12 +474,9 @@ const asignaturasConvalidadasIds =
         type:
           "uint8array",
 
-        compression:
-          "DEFLATE",
-
-        compressionOptions: {
-          level: 6,
-        },
+        ...opcionesZip(
+          request
+        ),
       });
 
     /* =====================================================

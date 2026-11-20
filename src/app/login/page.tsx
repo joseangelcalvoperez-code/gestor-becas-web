@@ -7,6 +7,8 @@ import {
 
 import Link from "next/link";
 
+import PanelAcceso from "@/components/PanelAcceso";
+
 import {
   useRouter,
 } from "next/navigation";
@@ -120,424 +122,106 @@ export default function LoginPage() {
     };
 
   return (
-    <main
-      style={{
-        minHeight:
-          "100vh",
+    <main className="cm-acceso">
+      <PanelAcceso />
 
-        background:
-          "#eef1f5",
+      <section className="cm-acceso-formulario">
+        <div className="cm-acceso-tarjeta">
+          <h1>Iniciar sesión</h1>
 
-        display:
-          "flex",
-
-        alignItems:
-          "center",
-
-        justifyContent:
-          "center",
-
-        padding:
-          "30px 20px",
-      }}
-    >
-      <div
-        style={{
-          width:
-            "100%",
-
-          maxWidth:
-            "430px",
-
-          background:
-            "#ffffff",
-
-          border:
-            "1px solid #d8dee8",
-
-          boxShadow:
-            "0 8px 30px rgba(34, 45, 65, 0.08)",
-        }}
-      >
-        {/* CABECERA */}
-
-        <div
-          style={{
-            padding:
-              "30px 32px 24px",
-
-            borderBottom:
-              "1px solid #e1e5eb",
-          }}
-        >
-          <div
-            style={{
-              display:
-                "flex",
-
-              alignItems:
-                "center",
-
-              gap:
-                "12px",
-
-              marginBottom:
-                "22px",
-            }}
-          >
-            <div
-              style={{
-                width:
-                  "42px",
-
-                height:
-                  "42px",
-
-                borderRadius:
-                  "50%",
-
-                background:
-                  "#e9423a",
-
-                display:
-                  "flex",
-
-                alignItems:
-                  "center",
-
-                justifyContent:
-                  "center",
-
-                color:
-                  "#ffffff",
-
-                fontWeight:
-                  700,
-
-                fontSize:
-                  "18px",
-              }}
-            >
-              G
-            </div>
-
-            <div>
-              <div
-                style={{
-                  fontWeight:
-                    700,
-
-                  color:
-                    "#29354a",
-
-                  fontSize:
-                    "15px",
-                }}
-              >
-                Gestor Becas
-              </div>
-
-              <div
-                style={{
-                  marginTop:
-                    "2px",
-
-                  color:
-                    "#7b8798",
-
-                  fontSize:
-                    "10px",
-                }}
-              >
-                Segunda Oportunidad
-              </div>
-            </div>
-          </div>
-
-          <h1
-            style={{
-              margin:
-                0,
-
-              color:
-                "#2f3b52",
-
-              fontSize:
-                "22px",
-            }}
-          >
-            Iniciar sesión
-          </h1>
-
-          <p
-            style={{
-              margin:
-                "7px 0 0",
-
-              color:
-                "#7a879a",
-
-              fontSize:
-                "12px",
-
-              lineHeight:
-                1.5,
-            }}
-          >
-            Acceda al espacio de gestión
-            de su centro.
+          <p className="cm-subtitulo">
+            Acceda al espacio de gestión de su centro con su
+            cuenta de usuario.
           </p>
-        </div>
 
-        {/* FORMULARIO */}
-
-        <form
-          onSubmit={
-            iniciarSesion
-          }
-
-          style={{
-            padding:
-              "26px 32px 30px",
-          }}
-        >
-          <label
-            style={{
-              display:
-                "flex",
-
-              flexDirection:
-                "column",
-
-              gap:
-                "7px",
-            }}
-          >
-            <span
-              style={{
-                fontSize:
-                  "10px",
-
-                fontWeight:
-                  700,
-
-                color:
-                  "#566176",
-
-                textTransform:
-                  "uppercase",
-              }}
-            >
-              Email
-            </span>
-
-            <input
-              required
-              type="email"
-              name="email"
-              autoComplete="email"
-
-              style={{
-                minHeight:
-                  "42px",
-
-                border:
-                  "1px solid #cbd3df",
-
-                padding:
-                  "0 11px",
-
-                fontSize:
-                  "13px",
-
-                outline:
-                  "none",
-              }}
-            />
-          </label>
-
-          <label
-            style={{
-              display:
-                "flex",
-
-              flexDirection:
-                "column",
-
-              gap:
-                "7px",
-
-              marginTop:
-                "17px",
-            }}
-          >
-            <span
-              style={{
-                fontSize:
-                  "10px",
-
-                fontWeight:
-                  700,
-
-                color:
-                  "#566176",
-
-                textTransform:
-                  "uppercase",
-              }}
-            >
-              Contraseña
-            </span>
-
-            <input
-              required
-              type="password"
-              name="password"
-              autoComplete="current-password"
-
-              style={{
-                minHeight:
-                  "42px",
-
-                border:
-                  "1px solid #cbd3df",
-
-                padding:
-                  "0 11px",
-
-                fontSize:
-                  "13px",
-
-                outline:
-                  "none",
-              }}
-            />
-          </label>
-
-          {mensaje && (
-            <div
-              style={{
-                marginTop:
-                  "17px",
-
-                padding:
-                  "11px 13px",
-
-                border:
-                  "1px solid #efb0aa",
-
-                background:
-                  "#fff0ef",
-
-                color:
-                  "#b9362f",
-
-                fontSize:
-                  "11px",
-
-                lineHeight:
-                  1.5,
-              }}
-            >
-              {
-                mensaje
-              }
-            </div>
-          )}
-
-          <button
-            type="submit"
-
-            disabled={
-              cargando
+          <form
+            onSubmit={
+              iniciarSesion
             }
-
             style={{
-              width:
-                "100%",
-
-              minHeight:
-                "44px",
-
-              marginTop:
-                "22px",
-
-              border:
-                "none",
-
-              background:
-                "#e9423a",
-
-              color:
-                "#ffffff",
-
-              fontSize:
-                "11px",
-
-              fontWeight:
-                700,
-
-              cursor:
-                cargando
-                  ? "default"
-                  : "pointer",
+              marginTop: "26px",
+              display: "grid",
+              gap: "18px",
             }}
           >
-            {cargando
-              ? "INICIANDO SESIÓN..."
-              : "INICIAR SESIÓN"}
-          </button>
+            <label className="cm-campo">
+              <span>Correo electrónico</span>
+
+              <input
+                required
+                type="email"
+                name="email"
+                autoComplete="email"
+                inputMode="email"
+                className="cm-input"
+                placeholder="usuario@centro.es"
+              />
+            </label>
+
+            <label className="cm-campo">
+              <span>Contraseña</span>
+
+              <input
+                required
+                type="password"
+                name="password"
+                autoComplete="current-password"
+                className="cm-input"
+              />
+            </label>
+
+            {mensaje && (
+              <div
+                className="cm-alerta cm-alerta-error"
+                role="alert"
+              >
+                {mensaje}
+              </div>
+            )}
+
+            <button
+              type="submit"
+              disabled={
+                cargando
+              }
+              className="cm-btn cm-btn-primario cm-btn-bloque"
+              style={{
+                minHeight: "46px",
+                fontSize: "15px",
+              }}
+            >
+              {cargando
+                ? "Iniciando sesión…"
+                : "Iniciar sesión"}
+            </button>
+          </form>
 
           <div
             style={{
-              marginTop:
-                "20px",
-
-              paddingTop:
-                "18px",
-
+              marginTop: "24px",
+              paddingTop: "18px",
               borderTop:
-                "1px solid #e2e6ec",
-
-              textAlign:
-                "center",
+                "1px solid var(--cm-borde)",
+              fontSize: "14px",
+              color: "var(--cm-texto-3)",
+              textAlign: "center",
             }}
           >
-            <span
-              style={{
-                fontSize:
-                  "11px",
-
-                color:
-                  "#7a879a",
-              }}
-            >
-              ¿Su centro todavía no tiene
-              una cuenta?{" "}
-            </span>
-
+            ¿Su centro todavía no tiene una cuenta?{" "}
             <Link
               href="/registro"
-
               style={{
-                color:
-                  "#e9423a",
-
-                fontSize:
-                  "11px",
-
-                fontWeight:
-                  700,
-
-                textDecoration:
-                  "none",
+                color: "var(--cm-rojo)",
+                fontWeight: 700,
+                textDecoration: "underline",
+                textUnderlineOffset: "3px",
               }}
             >
-              Crear cuenta
+              Solicitar alta del centro
             </Link>
           </div>
-        </form>
-      </div>
+        </div>
+      </section>
     </main>
   );
 }

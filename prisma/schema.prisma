@@ -206,6 +206,8 @@ model Matricula {
   @@index([cursoAcademicoId])
   @@index([gradoId])
   @@index([centroId, expediente])
+  // Listados de alumnos/documentos por curso, grado y curso del grado
+  @@index([centroId, cursoAcademicoId, gradoId, curso])
   @@map("matriculas")
 }
 
@@ -238,6 +240,9 @@ model Asistencia {
   @@index([matriculaId])
   @@index([asignaturaId])
   @@index([anio, mes])
+  // Resúmenes y exportaciones mensuales por alumno y por centro
+  @@index([matriculaId, anio, mes])
+  @@index([centroId, anio, mes])
   @@map("asistencias")
 }
 

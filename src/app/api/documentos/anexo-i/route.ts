@@ -1,4 +1,12 @@
 import {
+  leerPlantilla,
+} from "@/lib/plantillas";
+
+import {
+  semaforoPdf,
+} from "@/lib/limitador";
+
+import {
   NextResponse,
 } from "next/server";
 
@@ -10,9 +18,6 @@ import {
   rgb,
 } from "pdf-lib";
 
-import {
-  readFile,
-} from "fs/promises";
 
 import path from "path";
 
@@ -235,7 +240,7 @@ interface AsignaturaAnexoI {
    POST
    ========================================================= */
 
-export async function POST(
+async function generarDocumento(
   request: Request
 ) {
   try {
@@ -578,33 +583,51 @@ export async function POST(
       AsignaturaAnexoI[] =
       [];
 
+    /*
+     * Una sola consulta para todas las asignaturas
+     * (antes: una consulta por asignatura).
+     */
+
+    const asistenciasMes =
+      await prisma.asistencia.findMany({
+        where: {
+          matriculaId,
+          anio,
+          mes,
+
+          asignaturaId: {
+            in: asignaturasBase.map(
+              (asignatura) =>
+                asignatura.id
+            ),
+          },
+        },
+
+        select: {
+          asignaturaId: true,
+          horasAsistidas: true,
+          horasNoAsistidas: true,
+        },
+      });
+
+    const asistenciaPorAsignatura =
+      new Map(
+        asistenciasMes.map(
+          (asistencia) => [
+            asistencia.asignaturaId,
+            asistencia,
+          ]
+        )
+      );
+
     for (
       const asignatura
       of asignaturasBase
     ) {
       const asistencia =
-        await prisma.asistencia.findUnique({
-          where: {
-            matriculaId_asignaturaId_anio_mes:
-              {
-                matriculaId,
-
-                asignaturaId:
-                  asignatura.id,
-
-                anio,
-                mes,
-              },
-          },
-
-          select: {
-            horasAsistidas:
-              true,
-
-            horasNoAsistidas:
-              true,
-          },
-        });
+        asistenciaPorAsignatura.get(
+          asignatura.id
+        );
 
       const horasAsistidas =
         Number(
@@ -647,7 +670,7 @@ export async function POST(
 
     try {
       bytesPlantilla =
-        await readFile(
+        await leerPlantilla(
           RUTA_PLANTILLA
         );
     } catch {
@@ -1800,4 +1823,20 @@ function limpiarNombreArchivo(
       /^_|_$/g,
       ""
     );
+}
+
+
+/* =========================================================
+   POST
+   La generación pasa por el semáforo de PDF para que las
+   peticiones simultáneas de muchos centros no saturen la CPU
+   del servidor (Anexo I).
+   ========================================================= */
+
+export function POST(
+  request: Request
+) {
+  return semaforoPdf.ejecutar(
+    () => generarDocumento(request)
+  );
 }

@@ -58,3 +58,5 @@ skills-lock.json
 *.sql
 *.dump
 *.bak
+# Las migraciones de Prisma SÍ se versionan
+!prisma/migrations/**/migration.sql

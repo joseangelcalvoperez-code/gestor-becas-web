@@ -53,40 +53,18 @@ export default function CerrarSesion() {
       disabled={
         cargando
       }
-      style={{
-        minHeight:
-          "42px",
-
-        padding:
-          "0 18px",
-
-        border:
-          "none",
-
-        borderRadius:
-          "7px",
-
-        background:
-          "#e9423a",
-
-        color:
-          "#ffffff",
-
-        fontSize:
-          "11px",
-
-        fontWeight:
-          700,
-
-        cursor:
-          cargando
-            ? "default"
-            : "pointer",
-      }}
+      className="cm-btn cm-btn-secundario cm-btn-bloque"
     >
-      {cargando
-        ? "CERRANDO..."
-        : "CERRAR SESIÓN"}
+      <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+        <path d="m16 17 5-5-5-5" />
+        <path d="M21 12H9" />
+      </svg>
+      <span>
+        {cargando
+          ? "Cerrando sesión…"
+          : "Cerrar sesión"}
+      </span>
     </button>
   );
 }

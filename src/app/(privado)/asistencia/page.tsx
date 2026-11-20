@@ -2058,7 +2058,7 @@ export default function AsistenciaPage() {
           "#ffffff",
 
         border:
-          "1px solid #d7dde5",
+          "1px solid var(--cm-borde)",
 
         minHeight:
           "calc(100vh - 105px)",
@@ -2080,7 +2080,7 @@ export default function AsistenciaPage() {
             "18px",
 
           borderBottom:
-            "1px solid #d7dde5",
+            "1px solid var(--cm-borde)",
         }}
       >
         <h1
@@ -2088,7 +2088,7 @@ export default function AsistenciaPage() {
             margin: 0,
 
             color:
-              "#303b50",
+              "var(--cm-texto)",
 
             fontSize:
               "20px",
@@ -2103,10 +2103,10 @@ export default function AsistenciaPage() {
               "6px 0 0",
 
             color:
-              "#8190a8",
+              "var(--cm-texto-3)",
 
             fontSize:
-              "11px",
+              "13px",
           }}
         >
           Introduzca y consulte la
@@ -2121,10 +2121,10 @@ export default function AsistenciaPage() {
                 "7px",
 
               color:
-                "#e9423a",
+                "var(--cm-rojo)",
 
               fontSize:
-                "9px",
+                "11px",
 
               fontWeight:
                 700,
@@ -2155,25 +2155,25 @@ export default function AsistenciaPage() {
               mensaje.startsWith(
                 "✓"
               )
-                ? "1px solid #b9dec2"
-                : "1px solid #efb0aa",
+                ? "1px solid var(--cm-exito-borde)"
+                : "1px solid var(--cm-rojo-borde)",
 
             background:
               mensaje.startsWith(
                 "✓"
               )
-                ? "#edf8f0"
-                : "#fff0ef",
+                ? "var(--cm-exito-claro)"
+                : "var(--cm-rojo-claro)",
 
             color:
               mensaje.startsWith(
                 "✓"
               )
-                ? "#2f7d44"
-                : "#b9362f",
+                ? "var(--cm-exito)"
+                : "var(--cm-rojo-oscuro)",
 
             fontSize:
-              "10px",
+              "12px",
           }}
         >
           {mensaje}
@@ -2207,10 +2207,10 @@ export default function AsistenciaPage() {
               "16px",
 
             border:
-              "1px solid #d7dde5",
+              "1px solid var(--cm-borde)",
 
             background:
-              "#f4f6f8",
+              "var(--cm-fondo)",
           }}
         >
           <label>
@@ -2286,10 +2286,10 @@ export default function AsistenciaPage() {
                   "8px",
 
                 color:
-                  "#596474",
+                  "var(--cm-texto-2)",
 
                 fontSize:
-                  "9px",
+                  "11px",
 
                 lineHeight:
                   1.45,
@@ -2333,13 +2333,13 @@ export default function AsistenciaPage() {
                     "none",
 
                   background:
-                    "#596474",
+                    "var(--cm-texto-2)",
 
                   color:
                     "#ffffff",
 
                   fontSize:
-                    "9px",
+                    "11px",
 
                   fontWeight:
                     700,
@@ -2385,13 +2385,13 @@ export default function AsistenciaPage() {
                     "none",
 
                   background:
-                    "#e9423a",
+                    "var(--cm-rojo)",
 
                   color:
                     "#ffffff",
 
                   fontSize:
-                    "9px",
+                    "11px",
 
                   fontWeight:
                     700,
@@ -2448,10 +2448,10 @@ export default function AsistenciaPage() {
               "14px",
 
             border:
-              "1px solid #efb0aa",
+              "1px solid var(--cm-rojo-borde)",
 
             background:
-              "#fff7f6",
+              "var(--cm-rojo-claro)",
           }}
         >
           <div
@@ -2460,10 +2460,10 @@ export default function AsistenciaPage() {
                 "11px 14px",
 
               color:
-                "#a72d27",
+                "var(--cm-rojo-oscuro)",
 
               fontSize:
-                "10px",
+                "12px",
 
               fontWeight:
                 700,
@@ -2495,13 +2495,13 @@ export default function AsistenciaPage() {
                     "9px 14px",
 
                   borderTop:
-                    "1px solid #f0d5d2",
+                    "1px solid var(--cm-rojo-borde)",
 
                   color:
-                    "#7c4140",
+                    "var(--cm-rojo-oscuro)",
 
                   fontSize:
-                    "10px",
+                    "12px",
                 }}
               >
                 <strong>
@@ -2545,10 +2545,10 @@ export default function AsistenciaPage() {
               "14px",
 
             border:
-              "1px solid #d7dde5",
+              "1px solid var(--cm-borde)",
 
             background:
-              "#f8fafc",
+              "var(--cm-fondo-suave)",
           }}
         >
           {/* GRADO */}
@@ -2886,7 +2886,7 @@ export default function AsistenciaPage() {
               "1.5fr 2fr 0.7fr 1.4fr",
 
             border:
-              "1px solid #d7dde5",
+              "1px solid var(--cm-borde)",
 
             borderTop:
               "none",
@@ -2931,7 +2931,7 @@ export default function AsistenciaPage() {
                 "18px",
 
               border:
-                "1px solid #222a37",
+                "1px solid var(--cm-linea-tabla)",
 
               overflowX:
                 "auto",
@@ -2954,7 +2954,7 @@ export default function AsistenciaPage() {
                   "52px",
 
                 background:
-                  "#252d3c",
+                  "var(--cm-oscuro)",
 
                 color:
                   "#ffffff",
@@ -3017,7 +3017,7 @@ export default function AsistenciaPage() {
                         700,
 
                       fontSize:
-                        "12px",
+                        "13px",
                     }}
                   >
                     {
@@ -3031,7 +3031,7 @@ export default function AsistenciaPage() {
                         "2px",
 
                       fontSize:
-                        "9px",
+                        "11px",
                     }}
                   >
                     {
@@ -3077,7 +3077,7 @@ export default function AsistenciaPage() {
                     "right",
 
                   fontSize:
-                    "9px",
+                    "11px",
                 }}
               >
                 {estadoGuardado ===
@@ -3104,10 +3104,10 @@ export default function AsistenciaPage() {
                     "center",
 
                   color:
-                    "#7a879a",
+                    "var(--cm-texto-3)",
 
                   fontSize:
-                    "11px",
+                    "13px",
                 }}
               >
                 Cargando asistencia...
@@ -3119,7 +3119,7 @@ export default function AsistenciaPage() {
                     "grid",
 
                   gridTemplateColumns:
-                    "minmax(900px, 1fr) 215px",
+                    "minmax(800px, 1fr) 236px",
                 }}
               >
                 {/* ===============================
@@ -3138,10 +3138,10 @@ export default function AsistenciaPage() {
                       "fixed",
 
                     color:
-                      "#273143",
+                      "var(--cm-texto)",
 
                     fontSize:
-                      "9px",
+                      "11px",
                   }}
                 >
                   <thead>
@@ -3410,7 +3410,7 @@ export default function AsistenciaPage() {
                 <aside
                   style={{
                     borderLeft:
-                      "2px solid #222a37",
+                      "2px solid var(--cm-linea-tabla)",
 
                     background:
                       "#ffffff",
@@ -3431,10 +3431,10 @@ export default function AsistenciaPage() {
                         "center",
 
                       borderBottom:
-                        "1px solid #222a37",
+                        "1px solid var(--cm-linea-tabla)",
 
                       fontSize:
-                        "9px",
+                        "11px",
 
                       fontWeight:
                         700,
@@ -3449,7 +3449,7 @@ export default function AsistenciaPage() {
                         "17px 12px",
 
                       borderBottom:
-                        "1px solid #222a37",
+                        "1px solid var(--cm-linea-tabla)",
                     }}
                   >
                     <ResumenFila
@@ -3496,7 +3496,7 @@ export default function AsistenciaPage() {
                         "10px",
 
                       fontSize:
-                        "8px",
+                        "10px",
 
                       fontWeight:
                         700,
@@ -3505,7 +3505,7 @@ export default function AsistenciaPage() {
                         "center",
 
                       borderBottom:
-                        "1px solid #222a37",
+                        "1px solid var(--cm-linea-tabla)",
                     }}
                   >
                     OBSERVACIONES / MES
@@ -3557,13 +3557,13 @@ export default function AsistenciaPage() {
                         "border-box",
 
                       color:
-                        "#4b576b",
+                        "var(--cm-texto-2)",
 
                       fontFamily:
                         "inherit",
 
                       fontSize:
-                        "9px",
+                        "11px",
                     }}
                   />
                 </aside>
@@ -3581,10 +3581,10 @@ export default function AsistenciaPage() {
                 "8px",
 
               color:
-                "#7d899c",
+                "var(--cm-texto-3)",
 
               fontSize:
-                "9px",
+                "11px",
             }}
           >
             Utilice ← ↑ → ↓ para
@@ -3620,10 +3620,10 @@ export default function AsistenciaPage() {
               <span
                 style={{
                   color:
-                    "#bd7b17",
+                    "var(--cm-aviso)",
 
                   fontSize:
-                    "9px",
+                    "11px",
 
                   fontWeight:
                     600,
@@ -3657,13 +3657,13 @@ export default function AsistenciaPage() {
                   "none",
 
                 background:
-                  "#e9423a",
+                  "var(--cm-rojo)",
 
                 color:
                   "#ffffff",
 
                 fontSize:
-                  "9px",
+                  "11px",
 
                 fontWeight:
                   700,
@@ -3708,16 +3708,16 @@ function Dato({
           "11px 12px",
 
         borderRight:
-          "1px solid #d7dde5",
+          "1px solid var(--cm-borde)",
       }}
     >
       <div
         style={{
           color:
-            "#8793a5",
+            "var(--cm-texto-3)",
 
           fontSize:
-            "7px",
+            "9px",
 
           fontWeight:
             700,
@@ -3732,10 +3732,10 @@ function Dato({
             "5px",
 
           color:
-            "#303b50",
+            "var(--cm-texto)",
 
           fontSize:
-            "9px",
+            "11px",
 
           fontWeight:
             600,
@@ -3770,7 +3770,7 @@ function ResumenFila({
           "13px",
 
         fontSize:
-          "9px",
+          "11px",
       }}
     >
       <span>
@@ -4150,7 +4150,7 @@ const inputStyle:
     "border-box",
 
   border:
-    "1px solid #cbd3df",
+    "1px solid var(--cm-borde-fuerte)",
 
   background:
     "#ffffff",
@@ -4159,10 +4159,10 @@ const inputStyle:
     "0 10px",
 
   color:
-    "#2f3b52",
+    "var(--cm-texto)",
 
   fontSize:
-    "11px",
+    "13px",
 
   outline:
     "none",
@@ -4178,10 +4178,10 @@ const labelStyle:
     "6px",
 
   color:
-    "#566176",
+    "var(--cm-texto-2)",
 
   fontSize:
-    "8px",
+    "10px",
 
   fontWeight:
     700,
@@ -4194,22 +4194,22 @@ const thStyle:
     "28px",
 
   borderRight:
-    "1px solid #222a37",
+    "1px solid var(--cm-linea-tabla)",
 
   borderBottom:
-    "1px solid #222a37",
+    "1px solid var(--cm-linea-tabla)",
 
   background:
     "#ffffff",
 
   color:
-    "#000000",
+    "var(--cm-texto)",
 
   textAlign:
     "center",
 
   fontSize:
-    "8px",
+    "10px",
 
   fontWeight:
     700,
@@ -4224,7 +4224,7 @@ const subThStyle:
     "25px",
 
   fontSize:
-    "7px",
+    "9px",
 };
 
 const semanaStyle:
@@ -4234,10 +4234,10 @@ const semanaStyle:
     "48px",
 
   borderRight:
-    "1px solid #222a37",
+    "1px solid var(--cm-linea-tabla)",
 
   borderBottom:
-    "1px solid #222a37",
+    "1px solid var(--cm-linea-tabla)",
 
   textAlign:
     "center",
@@ -4262,10 +4262,10 @@ const celdaEditable:
     0,
 
   borderRight:
-    "1px solid #222a37",
+    "1px solid var(--cm-linea-tabla)",
 
   borderBottom:
-    "1px solid #222a37",
+    "1px solid var(--cm-linea-tabla)",
 
   background:
     "#ffffff",
@@ -4277,7 +4277,7 @@ const celdaFueraMes:
   ...celdaEditable,
 
   background:
-    "repeating-linear-gradient(135deg, #f4f5f7, #f4f5f7 5px, #eceef1 5px, #eceef1 9px)",
+    "repeating-linear-gradient(135deg, var(--cm-fondo-suave), var(--cm-fondo-suave) 5px, var(--cm-borde) 5px, var(--cm-borde) 9px)",
 };
 
 const inputCelda:
@@ -4308,10 +4308,10 @@ const inputCelda:
     "center",
 
   color:
-    "#203047",
+    "var(--cm-texto)",
 
   fontSize:
-    "11px",
+    "13px",
 
   fontWeight:
     600,
@@ -4327,10 +4327,10 @@ const botonMes:
     "28px",
 
   border:
-    "1px solid #596375",
+    "1px solid var(--cm-texto-2)",
 
   background:
-    "#30394a",
+    "var(--cm-oscuro)",
 
   color:
     "#ffffff",

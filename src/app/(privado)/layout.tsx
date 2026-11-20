@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 
 import { prisma } from "@/lib/prisma";
 import { obtenerSesion } from "@/lib/session";
+import { MARCA } from "@/lib/marca";
 
 import HeaderWeb from "@/components/HeaderWeb";
 import SidebarWeb from "@/components/SidebarWeb";
@@ -27,6 +28,7 @@ export default async function LayoutPrivado({
 
       select: {
         nombre: true,
+        codigo: true,
       },
     });
 
@@ -35,34 +37,41 @@ export default async function LayoutPrivado({
   }
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        background: "#e9edf2",
-      }}
-    >
+    <div className="cm-app">
+      <a
+        href="#contenido"
+        className="cm-saltar"
+      >
+        Saltar al contenido
+      </a>
+
       <HeaderWeb
         nombreCentro={centro.nombre}
+        codigoCentro={centro.codigo}
+        nombreUsuario={sesion.nombre}
       />
 
-      <div
-        style={{
-          display: "flex",
-          minHeight:
-            "calc(100vh - 64px)",
-        }}
-      >
+      <div className="cm-cuerpo">
         <SidebarWeb />
 
-        <main
-          style={{
-            flex: 1,
-            minWidth: 0,
-            padding: "20px",
-          }}
-        >
-          {children}
-        </main>
+        <div className="cm-principal">
+          <main
+            id="contenido"
+            className="cm-contenido"
+          >
+            {children}
+          </main>
+
+          <footer className="cm-pie">
+            <span>
+              {MARCA.organismo} · {MARCA.departamento}
+            </span>
+
+            <span>
+              {MARCA.aplicacion} — Programa {MARCA.programa} · v{MARCA.version}
+            </span>
+          </footer>
+        </div>
       </div>
     </div>
   );

@@ -559,10 +559,10 @@ export default function ImportExportAlumnos({
               "14px",
 
             border:
-              "1px solid #efb0aa",
+              "1px solid var(--cm-rojo-borde)",
 
             background:
-              "#fff7f6",
+              "var(--cm-rojo-claro)",
           }}
         >
           <div
@@ -571,10 +571,10 @@ export default function ImportExportAlumnos({
                 "11px 14px",
 
               color:
-                "#a72d27",
+                "var(--cm-rojo-oscuro)",
 
               fontSize:
-                "10px",
+                "12px",
 
               fontWeight:
                 700,
@@ -614,13 +614,13 @@ export default function ImportExportAlumnos({
                       "9px 14px",
 
                     borderTop:
-                      "1px solid #f0d5d2",
+                      "1px solid var(--cm-rojo-borde)",
 
                     color:
-                      "#7c4140",
+                      "var(--cm-rojo-oscuro)",
 
                     fontSize:
-                      "10px",
+                      "12px",
                   }}
                 >
                   <strong>
@@ -662,13 +662,13 @@ const botonRojo:
     "none",
 
   background:
-    "#e9423a",
+    "var(--cm-rojo)",
 
   color:
     "#ffffff",
 
   fontSize:
-    "9px",
+    "11px",
 
   fontWeight:
     700,
@@ -683,5 +683,5 @@ const botonSecundario:
   ...botonRojo,
 
   background:
-    "#596474",
+    "var(--cm-texto-2)",
 };

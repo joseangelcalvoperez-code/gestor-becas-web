@@ -200,10 +200,10 @@ useEffect(() => {
       <div
         style={{
           color:
-            "#c9d0dc",
+            "var(--cm-borde)",
 
           fontSize:
-            "10px",
+            "12px",
         }}
       >
         Sin curso académico
@@ -225,12 +225,15 @@ useEffect(() => {
       }}
     >
       <span
+        className="cm-cabecera-etiqueta"
         style={{
           color:
-            "#c9d0dc",
+            "var(--cm-texto-3)",
+          letterSpacing:
+            "0.04em",
 
           fontSize:
-            "9px",
+            "11px",
 
           fontWeight:
             600,
@@ -240,6 +243,7 @@ useEffect(() => {
       </span>
 
       <select
+        aria-label="Curso académico"
         value={
           seleccionado
         }
@@ -254,25 +258,25 @@ useEffect(() => {
 
         style={{
           minHeight:
-            "32px",
+            "36px",
 
           border:
-            "1px solid #4d5668",
+            "1px solid var(--cm-borde-fuerte)",
 
           borderRadius:
-            "4px",
+            "var(--cm-radio)",
 
           background:
-            "#1f2633",
+            "var(--cm-superficie)",
 
           color:
-            "#ffffff",
+            "var(--cm-texto)",
 
           padding:
             "0 10px",
 
           fontSize:
-            "10px",
+            "14px",
 
           fontWeight:
             700,

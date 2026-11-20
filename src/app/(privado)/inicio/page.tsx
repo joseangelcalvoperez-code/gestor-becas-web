@@ -12,7 +12,7 @@ export default function InicioPage() {
       "14px",
 
     border:
-      "1px solid #d7dde5",
+      "1px solid var(--cm-borde)",
 
     background:
       "#ffffff",
@@ -31,7 +31,7 @@ export default function InicioPage() {
       "50%",
 
     background:
-      "#e9423a",
+      "var(--cm-rojo)",
 
     color:
       "#ffffff",
@@ -46,7 +46,7 @@ export default function InicioPage() {
       "center",
 
     fontSize:
-      "10px",
+      "12px",
 
     fontWeight:
       700,
@@ -59,10 +59,10 @@ export default function InicioPage() {
     React.CSSProperties =
   {
     color:
-      "#303b50",
+      "var(--cm-texto)",
 
     fontSize:
-      "10px",
+      "12px",
 
     fontWeight:
       700,
@@ -78,10 +78,10 @@ export default function InicioPage() {
       0,
 
     color:
-      "#65758d",
+      "var(--cm-texto-3)",
 
     fontSize:
-      "9px",
+      "11px",
 
     lineHeight:
       1.5,
@@ -94,7 +94,7 @@ export default function InicioPage() {
           "#ffffff",
 
         border:
-          "1px solid #d7dde5",
+          "1px solid var(--cm-borde)",
 
         minHeight:
           "calc(100vh - 105px)",
@@ -113,7 +113,7 @@ export default function InicioPage() {
             "18px",
 
           borderBottom:
-            "1px solid #d7dde5",
+            "1px solid var(--cm-borde)",
         }}
       >
         <h1
@@ -122,7 +122,7 @@ export default function InicioPage() {
               0,
 
             color:
-              "#303b50",
+              "var(--cm-texto)",
 
             fontSize:
               "20px",
@@ -138,10 +138,10 @@ export default function InicioPage() {
               "6px 0 0",
 
             color:
-              "#7a879a",
+              "var(--cm-texto-3)",
 
             fontSize:
-              "11px",
+              "13px",
           }}
         >
           Aplicación web para la gestión
@@ -163,10 +163,10 @@ export default function InicioPage() {
             "20px",
 
           border:
-            "1px solid #d7dde5",
+            "1px solid var(--cm-borde)",
 
           background:
-            "#f8fafc",
+            "var(--cm-fondo-suave)",
 
           display:
             "flex",
@@ -199,7 +199,7 @@ export default function InicioPage() {
                 "14px",
 
               color:
-                "#303b50",
+                "var(--cm-texto)",
             }}
           >
             Manual de usuario
@@ -214,10 +214,10 @@ export default function InicioPage() {
                 "850px",
 
               color:
-                "#65758d",
+                "var(--cm-texto-3)",
 
               fontSize:
-                "11px",
+                "13px",
 
               lineHeight:
                 1.7,
@@ -252,13 +252,13 @@ export default function InicioPage() {
               "center",
 
             background:
-              "#e9423a",
+              "var(--cm-rojo)",
 
             color:
               "#ffffff",
 
             fontSize:
-              "9px",
+              "11px",
 
             fontWeight:
               700,
@@ -287,7 +287,7 @@ export default function InicioPage() {
             "20px",
 
           border:
-            "1px solid #d7dde5",
+            "1px solid var(--cm-borde)",
 
           background:
             "#ffffff",
@@ -308,7 +308,7 @@ export default function InicioPage() {
                 "14px",
 
               color:
-                "#303b50",
+                "var(--cm-texto)",
             }}
           >
             Flujo básico de trabajo
@@ -320,10 +320,10 @@ export default function InicioPage() {
                 "7px 0 0",
 
               color:
-                "#7a879a",
+                "var(--cm-texto-3)",
 
               fontSize:
-                "10px",
+                "12px",
 
               lineHeight:
                 1.6,

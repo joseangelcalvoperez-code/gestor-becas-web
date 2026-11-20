@@ -12,6 +12,12 @@ import {
   crearSesion,
 } from "@/lib/session";
 
+import {
+  limpiarIntentos,
+  registrarFallo,
+  segundosBloqueo,
+} from "@/lib/limiteIntentos";
+
 export async function POST(
   request: Request
 ) {
@@ -50,6 +56,28 @@ export async function POST(
       );
     }
 
+    const esperaSegundos =
+      segundosBloqueo(email);
+
+    if (esperaSegundos > 0) {
+      return NextResponse.json(
+        {
+          ok: false,
+
+          error:
+            `Demasiados intentos fallidos. Vuelva a intentarlo en ${Math.ceil(esperaSegundos / 60)} minutos.`,
+        },
+        {
+          status: 429,
+
+          headers: {
+            "Retry-After":
+              String(esperaSegundos),
+          },
+        }
+      );
+    }
+
     const usuario =
       await prisma.usuario.findUnique({
         where: {
@@ -75,6 +103,8 @@ export async function POST(
       !usuario.activo ||
       !usuario.centro.activo
     ) {
+      registrarFallo(email);
+
       return NextResponse.json(
         {
           ok: false,
@@ -97,6 +127,8 @@ export async function POST(
     if (
       !passwordCorrecta
     ) {
+      registrarFallo(email);
+
       return NextResponse.json(
         {
           ok: false,
@@ -109,6 +141,8 @@ export async function POST(
         }
       );
     }
+
+    limpiarIntentos(email);
 
     await crearSesion({
       usuarioId:

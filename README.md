@@ -2,6 +2,8 @@
 
 Aplicación web para la gestión de centros, cursos académicos, alumnado, asignaturas, asistencia y generación de documentación. Esta versión corresponde al **gestor sin módulo de firma**.
 
+> **v1.1.0** — Rediseño institucional (Comunidad de Madrid · Consejería de Educación), optimización para 233 centros simultáneos y ~4.000 alumnos, y guía de despliegue. Ver **[docs/RENDIMIENTO_Y_DESPLIEGUE.md](docs/RENDIMIENTO_Y_DESPLIEGUE.md)**.
+
 ## Tecnologías principales
 
 - Next.js
@@ -133,7 +135,7 @@ npx prisma migrate status
 
 ### Base de datos nueva
 
-Si el repositorio contiene las migraciones en `prisma/migrations`, aplicarlas mediante:
+Las migraciones están en `prisma/migrations`. Aplicarlas mediante:
 
 ```powershell
 npx prisma migrate deploy
@@ -144,6 +146,17 @@ Después:
 ```powershell
 npx prisma generate
 ```
+
+### Base de datos creada con la v1.0
+
+Las instalaciones de la v1.0 no tienen historial de migraciones. Tras hacer copia de seguridad:
+
+```powershell
+npx prisma migrate resolve --applied 20261120000000_init
+npx prisma migrate deploy
+```
+
+El segundo comando solo añade índices de rendimiento; no modifica datos.
 
 ### Modificaciones del esquema durante el desarrollo
 
@@ -317,6 +330,11 @@ http://localhost:3000
 
 # Versión
 
-**Gestor de Becas Web — v1.0.0**
+**Gestor de Becas Web — v1.1.0**
 
-Primera versión estable del gestor web sin módulo de firma.
+- Rediseño visual institucional y accesible (WCAG 2.1 AA).
+- Generación masiva de expedientes ~2× más rápida, sin llamadas HTTP internas.
+- Pool de conexiones configurable, índices nuevos, límite de intentos de login.
+- Guía de despliegue para 233 centros: `docs/RENDIMIENTO_Y_DESPLIEGUE.md`.
+
+v1.0.0 — Primera versión estable del gestor web sin módulo de firma.

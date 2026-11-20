@@ -662,7 +662,7 @@ export default function CursosAcademicos() {
           "24px",
 
         border:
-          "1px solid #d7dde5",
+          "1px solid var(--cm-borde)",
 
         background:
           "#ffffff",
@@ -688,7 +688,7 @@ export default function CursosAcademicos() {
             "18px 20px",
 
           borderBottom:
-            "1px solid #d7dde5",
+            "1px solid var(--cm-borde)",
         }}
       >
         <div>
@@ -697,7 +697,7 @@ export default function CursosAcademicos() {
               margin: 0,
 
               color:
-                "#303b50",
+                "var(--cm-texto)",
 
               fontSize:
                 "14px",
@@ -712,10 +712,10 @@ export default function CursosAcademicos() {
                 "5px 0 0",
 
               color:
-                "#7a879a",
+                "var(--cm-texto-3)",
 
               fontSize:
-                "10px",
+                "12px",
 
               lineHeight:
                 1.5,
@@ -756,23 +756,23 @@ export default function CursosAcademicos() {
             border:
               tipoMensaje ===
               "success"
-                ? "1px solid #b9dec2"
-                : "1px solid #efb0aa",
+                ? "1px solid var(--cm-exito-borde)"
+                : "1px solid var(--cm-rojo-borde)",
 
             background:
               tipoMensaje ===
               "success"
-                ? "#edf8f0"
-                : "#fff0ef",
+                ? "var(--cm-exito-claro)"
+                : "var(--cm-rojo-claro)",
 
             color:
               tipoMensaje ===
               "success"
-                ? "#2f7d44"
-                : "#b9362f",
+                ? "var(--cm-exito)"
+                : "var(--cm-rojo-oscuro)",
 
             fontSize:
-              "11px",
+              "13px",
           }}
         >
           {
@@ -797,10 +797,10 @@ export default function CursosAcademicos() {
               "18px",
 
             border:
-              "1px solid #d7dde5",
+              "1px solid var(--cm-borde)",
 
             background:
-              "#f8fafc",
+              "var(--cm-fondo-suave)",
           }}
         >
           <div
@@ -809,10 +809,10 @@ export default function CursosAcademicos() {
                 "15px",
 
               color:
-                "#303b50",
+                "var(--cm-texto)",
 
               fontSize:
-                "11px",
+                "13px",
 
               fontWeight:
                 700,
@@ -926,10 +926,10 @@ export default function CursosAcademicos() {
                   "16px",
 
                 color:
-                  "#4b576b",
+                  "var(--cm-texto-2)",
 
                 fontSize:
-                  "10px",
+                  "12px",
               }}
             >
               <input
@@ -1019,7 +1019,7 @@ export default function CursosAcademicos() {
             "18px 20px 20px",
 
           border:
-            "1px solid #d7dde5",
+            "1px solid var(--cm-borde)",
         }}
       >
         <div
@@ -1031,13 +1031,13 @@ export default function CursosAcademicos() {
               "1.2fr 1fr 1fr 110px 220px",
 
             background:
-              "#e1e5eb",
+              "var(--cm-borde)",
 
             color:
-              "#455166",
+              "var(--cm-texto-2)",
 
             fontSize:
-              "9px",
+              "11px",
 
             fontWeight:
               700,
@@ -1103,18 +1103,18 @@ export default function CursosAcademicos() {
                     "1.2fr 1fr 1fr 110px 300px",
 
                   borderTop:
-                    "1px solid #d7dde5",
+                    "1px solid var(--cm-borde)",
 
                   background:
                     curso.actual
-                      ? "#fff8f7"
+                      ? "var(--cm-rojo-claro)"
                       : "#ffffff",
 
                   color:
-                    "#4b576b",
+                    "var(--cm-texto-2)",
 
                   fontSize:
-                    "10px",
+                    "12px",
                 }}
               >
                 <Celda>
@@ -1122,7 +1122,7 @@ export default function CursosAcademicos() {
                     <strong
                       style={{
                         color:
-                          "#303b50",
+                          "var(--cm-texto)",
                       }}
                     >
                       {
@@ -1137,10 +1137,10 @@ export default function CursosAcademicos() {
                             "4px",
 
                           color:
-                            "#e9423a",
+                            "var(--cm-rojo)",
 
                           fontSize:
-                            "8px",
+                            "10px",
 
                           fontWeight:
                             700,
@@ -1169,14 +1169,14 @@ export default function CursosAcademicos() {
                     style={{
                       color:
                         curso.activo
-                          ? "#2f7d44"
-                          : "#8b94a3",
+                          ? "var(--cm-exito)"
+                          : "var(--cm-texto-3)",
 
                       fontWeight:
                         700,
 
                       fontSize:
-                        "9px",
+                        "11px",
                     }}
                   >
                     {curso.activo
@@ -1402,7 +1402,7 @@ const inputStyle:
     "border-box",
 
   border:
-    "1px solid #cbd3df",
+    "1px solid var(--cm-borde-fuerte)",
 
   padding:
     "0 11px",
@@ -1411,10 +1411,10 @@ const inputStyle:
     "#ffffff",
 
   color:
-    "#303b50",
+    "var(--cm-texto)",
 
   fontSize:
-    "11px",
+    "13px",
 
   outline:
     "none",
@@ -1430,10 +1430,10 @@ const labelStyle:
     "6px",
 
   color:
-    "#566176",
+    "var(--cm-texto-2)",
 
   fontSize:
-    "9px",
+    "11px",
 
   fontWeight:
     700,
@@ -1452,13 +1452,13 @@ const botonRojo:
     "none",
 
   background:
-    "#e9423a",
+    "var(--cm-rojo)",
 
   color:
     "#ffffff",
 
   fontSize:
-    "9px",
+    "11px",
 
   fontWeight:
     700,
@@ -1480,13 +1480,13 @@ const botonGris:
     "none",
 
   background:
-    "#596474",
+    "var(--cm-texto-2)",
 
   color:
     "#ffffff",
 
   fontSize:
-    "9px",
+    "11px",
 
   fontWeight:
     700,
@@ -1508,10 +1508,10 @@ const botonAccion:
     "transparent",
 
   color:
-    "#4f6380",
+    "var(--cm-texto-2)",
 
   fontSize:
-    "9px",
+    "11px",
 
   fontWeight:
     700,
@@ -1526,7 +1526,7 @@ const botonAccionRojo:
   ...botonAccion,
 
   color:
-    "#e9423a",
+    "var(--cm-rojo)",
 };
 
 const botonAccionVerde:
@@ -1535,7 +1535,7 @@ const botonAccionVerde:
   ...botonAccion,
 
   color:
-    "#2f7d44",
+    "var(--cm-exito)",
 };
 
 const botonAccionEliminar:
@@ -1544,7 +1544,7 @@ const botonAccionEliminar:
   ...botonAccion,
 
   color:
-    "#a72d27",
+    "var(--cm-rojo-oscuro)",
 
   fontWeight:
     800,
@@ -1557,10 +1557,10 @@ const textoVacio:
     "22px",
 
   color:
-    "#7a879a",
+    "var(--cm-texto-3)",
 
   fontSize:
-    "11px",
+    "13px",
 
   lineHeight:
     1.6,

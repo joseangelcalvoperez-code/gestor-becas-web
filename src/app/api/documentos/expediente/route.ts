@@ -1,4 +1,17 @@
 import {
+  POST as postAnexosV,
+} from "../anexos-v/route";
+
+import {
+  POST as postAnexoI,
+} from "../anexo-i/route";
+
+import {
+  llamadaInterna,
+  opcionesZip,
+} from "@/lib/llamadaInterna";
+
+import {
   NextResponse,
 } from "next/server";
 
@@ -212,8 +225,9 @@ export async function POST(
        ===================================================== */
 
     const respuestaV =
-      await fetch(
-        urlTodosV,
+      await llamadaInterna(
+          postAnexosV,
+          urlTodosV,
         {
           method:
             "POST",
@@ -281,8 +295,9 @@ export async function POST(
        ===================================================== */
 
     const respuestaI =
-      await fetch(
-        urlAnexoI,
+      await llamadaInterna(
+          postAnexoI,
+          urlAnexoI,
         {
           method:
             "POST",
@@ -431,12 +446,9 @@ export async function POST(
         type:
           "uint8array",
 
-        compression:
-          "DEFLATE",
-
-        compressionOptions: {
-          level: 6,
-        },
+        ...opcionesZip(
+          request
+        ),
       });
 
     /* =====================================================

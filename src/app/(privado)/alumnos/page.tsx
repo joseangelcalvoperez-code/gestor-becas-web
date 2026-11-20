@@ -1376,7 +1376,7 @@ export default function AlumnosPage() {
           "#ffffff",
 
         border:
-          "1px solid #d7dde5",
+          "1px solid var(--cm-borde)",
 
         minHeight:
           "calc(100vh - 105px)",
@@ -1405,7 +1405,7 @@ export default function AlumnosPage() {
             "18px",
 
           borderBottom:
-            "1px solid #d7dde5",
+            "1px solid var(--cm-borde)",
         }}
       >
         <div>
@@ -1414,7 +1414,7 @@ export default function AlumnosPage() {
               margin: 0,
 
               color:
-                "#303b50",
+                "var(--cm-texto)",
 
               fontSize:
                 "20px",
@@ -1429,10 +1429,10 @@ export default function AlumnosPage() {
                 "6px 0 0",
 
               color:
-                "#7a879a",
+                "var(--cm-texto-3)",
 
               fontSize:
-                "11px",
+                "13px",
             }}
           >
             Gestione los alumnos
@@ -1447,10 +1447,10 @@ export default function AlumnosPage() {
                   "8px",
 
                 color:
-                  "#e9423a",
+                  "var(--cm-rojo)",
 
                 fontSize:
-                  "10px",
+                  "12px",
 
                 fontWeight:
                   700,
@@ -1552,16 +1552,16 @@ export default function AlumnosPage() {
               "14px",
 
             border:
-              "1px solid #edcf89",
+              "1px solid var(--cm-aviso-borde)",
 
             background:
-              "#fff9e8",
+              "var(--cm-aviso-claro)",
 
             color:
-              "#856719",
+              "var(--cm-aviso)",
 
             fontSize:
-              "11px",
+              "13px",
           }}
         >
           No hay ningún curso académico
@@ -1583,16 +1583,16 @@ export default function AlumnosPage() {
               "14px",
 
             border:
-              "1px solid #edcf89",
+              "1px solid var(--cm-aviso-borde)",
 
             background:
-              "#fff9e8",
+              "var(--cm-aviso-claro)",
 
             color:
-              "#856719",
+              "var(--cm-aviso)",
 
             fontSize:
-              "11px",
+              "13px",
           }}
         >
           Antes de matricular alumnos
@@ -1615,23 +1615,23 @@ export default function AlumnosPage() {
             border:
               tipoMensaje ===
               "success"
-                ? "1px solid #b9dec2"
-                : "1px solid #efb0aa",
+                ? "1px solid var(--cm-exito-borde)"
+                : "1px solid var(--cm-rojo-borde)",
 
             background:
               tipoMensaje ===
               "success"
-                ? "#edf8f0"
-                : "#fff0ef",
+                ? "var(--cm-exito-claro)"
+                : "var(--cm-rojo-claro)",
 
             color:
               tipoMensaje ===
               "success"
-                ? "#2f7d44"
-                : "#b9362f",
+                ? "var(--cm-exito)"
+                : "var(--cm-rojo-oscuro)",
 
             fontSize:
-              "11px",
+              "13px",
           }}
         >
           {mensaje}
@@ -1650,10 +1650,10 @@ export default function AlumnosPage() {
               "20px",
 
             border:
-              "1px solid #d7dde5",
+              "1px solid var(--cm-borde)",
 
             background:
-              "#f8fafc",
+              "var(--cm-fondo-suave)",
           }}
         >
           <div
@@ -1665,7 +1665,7 @@ export default function AlumnosPage() {
                 "16px",
 
               borderBottom:
-                "1px solid #d7dde5",
+                "1px solid var(--cm-borde)",
             }}
           >
             <h2
@@ -1673,10 +1673,10 @@ export default function AlumnosPage() {
                 margin: 0,
 
                 color:
-                  "#303b50",
+                  "var(--cm-texto)",
 
                 fontSize:
-                  "13px",
+                  "14px",
               }}
             >
               ASIGNATURAS CONVALIDADAS
@@ -1688,10 +1688,10 @@ export default function AlumnosPage() {
                   "5px 0 0",
 
                 color:
-                  "#7a879a",
+                  "var(--cm-texto-3)",
 
                 fontSize:
-                  "10px",
+                  "12px",
               }}
             >
               {alumnoConvalidacionesNombre}
@@ -1765,19 +1765,19 @@ export default function AlumnosPage() {
 
                         border:
                           marcada
-                            ? "1px solid #e9423a"
-                            : "1px solid #d7dde5",
+                            ? "1px solid var(--cm-rojo)"
+                            : "1px solid var(--cm-borde)",
 
                         background:
                           marcada
-                            ? "#fff4f3"
+                            ? "var(--cm-rojo-claro)"
                             : "#ffffff",
 
                         color:
-                          "#303b50",
+                          "var(--cm-texto)",
 
                         fontSize:
-                          "10px",
+                          "12px",
 
                         cursor:
                           "pointer",
@@ -1889,10 +1889,10 @@ export default function AlumnosPage() {
               "20px",
 
             border:
-              "1px solid #d7dde5",
+              "1px solid var(--cm-borde)",
 
             background:
-              "#f8fafc",
+              "var(--cm-fondo-suave)",
           }}
         >
           <div
@@ -1904,7 +1904,7 @@ export default function AlumnosPage() {
                 "18px",
 
               borderBottom:
-                "1px solid #d7dde5",
+                "1px solid var(--cm-borde)",
             }}
           >
             <h2
@@ -1912,10 +1912,10 @@ export default function AlumnosPage() {
                 margin: 0,
 
                 color:
-                  "#303b50",
+                  "var(--cm-texto)",
 
                 fontSize:
-                  "13px",
+                  "14px",
               }}
             >
               {matriculaEditandoId
@@ -1929,10 +1929,10 @@ export default function AlumnosPage() {
                   "5px 0 0",
 
                 color:
-                  "#7a879a",
+                  "var(--cm-texto-3)",
 
                 fontSize:
-                  "10px",
+                  "12px",
               }}
             >
               Curso académico:{" "}
@@ -2198,10 +2198,10 @@ export default function AlumnosPage() {
               "16px",
 
             border:
-              "1px solid #d7dde5",
+              "1px solid var(--cm-borde)",
 
             background:
-              "#f8fafc",
+              "var(--cm-fondo-suave)",
           }}
         >
           <label>
@@ -2389,7 +2389,7 @@ export default function AlumnosPage() {
               "18px",
 
             border:
-              "1px solid #d7dde5",
+              "1px solid var(--cm-borde)",
 
             overflowX:
               "auto",
@@ -2398,7 +2398,7 @@ export default function AlumnosPage() {
           <div
             style={{
               minWidth:
-                "1250px",
+                "1060px",
             }}
           >
             <div
@@ -2407,16 +2407,16 @@ export default function AlumnosPage() {
                   "grid",
 
                 gridTemplateColumns:
-                  "1.2fr 1.4fr 120px 120px 1.8fr 80px 1.8fr 250px",
+                  "1fr 1.3fr 105px 105px 1.4fr 56px 1.3fr 272px",
 
                 background:
-                  "#e1e5eb",
+                  "var(--cm-borde)",
 
                 color:
-                  "#455166",
+                  "var(--cm-texto-2)",
 
                 fontSize:
-                  "9px",
+                  "11px",
 
                 fontWeight:
                   700,
@@ -2492,23 +2492,23 @@ export default function AlumnosPage() {
                         "grid",
 
                       gridTemplateColumns:
-                        "1.2fr 1.4fr 120px 120px 1.8fr 80px 1.8fr 250px",
+                        "1fr 1.3fr 105px 105px 1.4fr 56px 1.3fr 272px",
 
                       borderTop:
-                        "1px solid #d7dde5",
+                        "1px solid var(--cm-borde)",
 
                       background:
                         matricula.activo
                           ? "#ffffff"
-                          : "#f6f7f9",
+                          : "var(--cm-fondo-suave)",
 
                       color:
                         matricula.activo
-                          ? "#4b576b"
-                          : "#8b94a3",
+                          ? "var(--cm-texto-2)"
+                          : "var(--cm-texto-3)",
 
                       fontSize:
-                        "10px",
+                        "12px",
                     }}
                   >
                     <Celda>
@@ -2516,8 +2516,8 @@ export default function AlumnosPage() {
                         style={{
                           color:
                             matricula.activo
-                              ? "#303b50"
-                              : "#7c8490",
+                              ? "var(--cm-texto)"
+                              : "var(--cm-texto-3)",
                         }}
                       >
                         {
@@ -2572,7 +2572,7 @@ export default function AlumnosPage() {
                         <span
                           style={{
                             color:
-                              "#9aa4b3",
+                              "var(--cm-texto-3)",
                           }}
                         >
                           -
@@ -2717,10 +2717,10 @@ export default function AlumnosPage() {
               "10px",
 
             color:
-              "#7a879a",
+              "var(--cm-texto-3)",
 
             fontSize:
-              "10px",
+              "12px",
           }}
         >
           {
@@ -2845,7 +2845,7 @@ const inputStyle:
     "border-box",
 
   border:
-    "1px solid #cbd3df",
+    "1px solid var(--cm-borde-fuerte)",
 
   padding:
     "0 11px",
@@ -2854,10 +2854,10 @@ const inputStyle:
     "#ffffff",
 
   color:
-    "#303b50",
+    "var(--cm-texto)",
 
   fontSize:
-    "11px",
+    "13px",
 
   outline:
     "none",
@@ -2873,10 +2873,10 @@ const labelStyle:
     "6px",
 
   color:
-    "#566176",
+    "var(--cm-texto-2)",
 
   fontSize:
-    "9px",
+    "11px",
 
   fontWeight:
     700,
@@ -2895,13 +2895,13 @@ const botonRojo:
     "none",
 
   background:
-    "#e9423a",
+    "var(--cm-rojo)",
 
   color:
     "#ffffff",
 
   fontSize:
-    "9px",
+    "11px",
 
   fontWeight:
     700,
@@ -2923,13 +2923,13 @@ const botonGris:
     "none",
 
   background:
-    "#596474",
+    "var(--cm-texto-2)",
 
   color:
     "#ffffff",
 
   fontSize:
-    "9px",
+    "11px",
 
   fontWeight:
     700,
@@ -2951,10 +2951,10 @@ const botonAccion:
     "transparent",
 
   color:
-    "#4f6380",
+    "var(--cm-texto-2)",
 
   fontSize:
-    "9px",
+    "11px",
 
   fontWeight:
     700,
@@ -2969,7 +2969,7 @@ const botonAccionRojo:
   ...botonAccion,
 
   color:
-    "#e9423a",
+    "var(--cm-rojo)",
 };
 
 const botonAccionVerde:
@@ -2978,7 +2978,7 @@ const botonAccionVerde:
   ...botonAccion,
 
   color:
-    "#2f7d44",
+    "var(--cm-exito)",
 };
 
 const textoVacio:
@@ -2988,10 +2988,10 @@ const textoVacio:
     "24px",
 
   color:
-    "#7a879a",
+    "var(--cm-texto-3)",
 
   fontSize:
-    "11px",
+    "13px",
 
   lineHeight:
     1.6,

@@ -297,7 +297,7 @@ export default function CentroPage() {
             "#ffffff",
 
           border:
-            "1px solid #d7dde5",
+            "1px solid var(--cm-borde)",
 
           minHeight:
             "calc(100vh - 105px)",
@@ -306,10 +306,10 @@ export default function CentroPage() {
             "24px",
 
           color:
-            "#65758d",
+            "var(--cm-texto-3)",
 
           fontSize:
-            "12px",
+            "13px",
         }}
       >
         Cargando datos del centro...
@@ -328,7 +328,7 @@ export default function CentroPage() {
           "#ffffff",
 
         border:
-          "1px solid #d7dde5",
+          "1px solid var(--cm-borde)",
 
         minHeight:
           "calc(100vh - 105px)",
@@ -345,7 +345,7 @@ export default function CentroPage() {
             "18px",
 
           borderBottom:
-            "1px solid #d7dde5",
+            "1px solid var(--cm-borde)",
         }}
       >
         <h1
@@ -357,7 +357,7 @@ export default function CentroPage() {
               "20px",
 
             color:
-              "#303b50",
+              "var(--cm-texto)",
           }}
         >
           CENTRO
@@ -369,10 +369,10 @@ export default function CentroPage() {
               "6px 0 0",
 
             fontSize:
-              "11px",
+              "13px",
 
             color:
-              "#7a879a",
+              "var(--cm-texto-3)",
           }}
         >
           Configure los datos generales
@@ -396,23 +396,23 @@ export default function CentroPage() {
             border:
               tipoMensaje ===
               "success"
-                ? "1px solid #b9dec2"
-                : "1px solid #efb0aa",
+                ? "1px solid var(--cm-exito-borde)"
+                : "1px solid var(--cm-rojo-borde)",
 
             background:
               tipoMensaje ===
               "success"
-                ? "#edf8f0"
-                : "#fff0ef",
+                ? "var(--cm-exito-claro)"
+                : "var(--cm-rojo-claro)",
 
             color:
               tipoMensaje ===
               "success"
-                ? "#2f7d44"
-                : "#b9362f",
+                ? "var(--cm-exito)"
+                : "var(--cm-rojo-oscuro)",
 
             fontSize:
-              "11px",
+              "13px",
           }}
         >
           {
@@ -436,7 +436,7 @@ export default function CentroPage() {
         <div
           style={{
             border:
-              "1px solid #d7dde5",
+              "1px solid var(--cm-borde)",
 
             background:
               "#ffffff",
@@ -451,7 +451,7 @@ export default function CentroPage() {
                 "14px",
 
               borderBottom:
-                "1px solid #e1e5ea",
+                "1px solid var(--cm-borde)",
 
               marginBottom:
                 "18px",
@@ -466,7 +466,7 @@ export default function CentroPage() {
                   "14px",
 
                 color:
-                  "#303b50",
+                  "var(--cm-texto)",
               }}
             >
               Datos del centro
@@ -478,10 +478,10 @@ export default function CentroPage() {
                   "5px 0 0",
 
                 fontSize:
-                  "10px",
+                  "12px",
 
                 color:
-                  "#7a879a",
+                  "var(--cm-texto-3)",
               }}
             >
               Introduzca la información
@@ -674,13 +674,13 @@ export default function CentroPage() {
                 "none",
 
               background:
-                "#e9423a",
+                "var(--cm-rojo)",
 
               color:
                 "#ffffff",
 
               fontSize:
-                "10px",
+                "12px",
 
               fontWeight:
                 700,
@@ -740,13 +740,13 @@ function Campo({
       <span
         style={{
           fontSize:
-            "9px",
+            "11px",
 
           fontWeight:
             700,
 
           color:
-            "#566176",
+            "var(--cm-texto-2)",
 
           textTransform:
             "uppercase",
@@ -781,7 +781,7 @@ function Campo({
             "40px",
 
           border:
-            "1px solid #cbd3df",
+            "1px solid var(--cm-borde-fuerte)",
 
           padding:
             "0 11px",
@@ -790,10 +790,10 @@ function Campo({
             "#ffffff",
 
           color:
-            "#303b50",
+            "var(--cm-texto)",
 
           fontSize:
-            "12px",
+            "13px",
 
           outline:
             "none",

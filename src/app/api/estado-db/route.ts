@@ -6,24 +6,47 @@ import {
   prisma,
 } from "@/lib/prisma";
 
+import {
+  semaforoPdf,
+} from "@/lib/limitador";
+
+export const dynamic =
+  "force-dynamic";
+
+/* =========================================================
+   GET /api/estado-db
+   Comprobación de salud para el balanceador / monitorización.
+   Ya no expone el número de centros ni de usuarios (era
+   información accesible sin sesión).
+   ========================================================= */
+
 export async function GET() {
+  const inicio = Date.now();
+
   try {
-    const centros =
-      await prisma.centro.count();
+    await prisma.$queryRaw`SELECT 1`;
 
-    const usuarios =
-      await prisma.usuario.count();
+    return NextResponse.json(
+      {
+        ok: true,
 
-    return NextResponse.json({
-      ok: true,
+        latenciaBdMs:
+          Date.now() - inicio,
 
-      database:
-        "gestor_becas_web",
+        pdf: {
+          enEjecucion:
+            semaforoPdf.enEjecucion,
 
-      centros,
-
-      usuarios,
-    });
+          enCola:
+            semaforoPdf.enCola,
+        },
+      },
+      {
+        headers: {
+          "Cache-Control": "no-store",
+        },
+      }
+    );
   } catch (error) {
     console.error(
       "Error comprobando la base de datos:",
@@ -38,7 +61,7 @@ export async function GET() {
           "No se ha podido conectar con la base de datos.",
       },
       {
-        status: 500,
+        status: 503,
       }
     );
   }
