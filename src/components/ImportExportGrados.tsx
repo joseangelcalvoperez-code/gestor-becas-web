@@ -2,7 +2,7 @@
 
 import { ChangeEvent, useRef, useState } from "react";
 
-interface ErrorImportacion {
+export interface ErrorImportacion {
   fila: number;
   mensaje: string;
 }
@@ -18,6 +18,11 @@ interface Resumen {
 }
 
 interface Props {
+  /**
+   * Si se indica, la lista de errores la muestra la página (a todo el
+   * ancho) en lugar de este componente.
+   */
+  onErrores?: (errores: ErrorImportacion[]) => void;
   /** Botones adicionales que se muestran junto a los de importación. */
   extra?: React.ReactNode;
   onImportacionCorrecta: () => void | Promise<void>;
@@ -49,11 +54,16 @@ function plural(n: number, singular: string, pluralTexto: string) {
  * Exportación de la plantilla de grados y asignaturas e
  * importación masiva (todo o nada, sin borrar nada).
  */
-export default function ImportExportGrados({ extra, onImportacionCorrecta, onMensaje }: Props) {
+export default function ImportExportGrados({ extra, onErrores, onImportacionCorrecta, onMensaje }: Props) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [exportando, setExportando] = useState(false);
   const [importando, setImportando] = useState(false);
-  const [errores, setErrores] = useState<ErrorImportacion[]>([]);
+  const [erroresLocales, setErroresLocales] = useState<ErrorImportacion[]>([]);
+  const errores = erroresLocales;
+  const setErrores = (lista: ErrorImportacion[]) => {
+    setErroresLocales(lista);
+    onErrores?.(lista);
+  };
 
   const exportar = async () => {
     try {
@@ -176,6 +186,21 @@ export default function ImportExportGrados({ extra, onImportacionCorrecta, onMen
         {extra}
       </div>
 
+      {!onErrores && <ListaErroresImportacion errores={errores} onCerrar={() => setErrores([])} />}
+    </>
+  );
+}
+
+/** Lista de errores de importación (fila y motivo). */
+export function ListaErroresImportacion({
+  errores,
+  onCerrar,
+}: {
+  errores: ErrorImportacion[];
+  onCerrar: () => void;
+}) {
+  return (
+    <>
       {errores.length > 0 && (
         <div
           role="alert"
@@ -199,7 +224,7 @@ export default function ImportExportGrados({ extra, onImportacionCorrecta, onMen
             <span>ERRORES DE IMPORTACIÓN ({errores.length})</span>
             <button
               type="button"
-              onClick={() => setErrores([])}
+              onClick={onCerrar}
               style={{ border: "none", background: "transparent", color: "inherit", fontWeight: 700, cursor: "pointer" }}
             >
               CERRAR

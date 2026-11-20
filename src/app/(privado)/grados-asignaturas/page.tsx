@@ -6,7 +6,10 @@ import {
   useState,
 } from "react";
 
-import ImportExportGrados from "@/components/ImportExportGrados";
+import ImportExportGrados, {
+  ErrorImportacion,
+  ListaErroresImportacion,
+} from "@/components/ImportExportGrados";
 
 /* =========================================================
    TIPOS
@@ -189,6 +192,14 @@ export default function GradosAsignaturasPage() {
     setMensaje,
   ] =
     useState("");
+
+  const [
+    erroresImportacion,
+    setErroresImportacion,
+  ] =
+    useState<
+      ErrorImportacion[]
+    >([]);
 
   const [
     tipoMensaje,
@@ -1073,6 +1084,9 @@ const eliminarGrado =
           }}
         >
           <ImportExportGrados
+            onErrores={
+              setErroresImportacion
+            }
             extra={
               <button
                 type="button"
@@ -1114,6 +1128,19 @@ const eliminarGrado =
           />
         </div>
       </div>
+
+      {/* ERRORES DE IMPORTACIÓN (A TODO EL ANCHO) */}
+
+      <ListaErroresImportacion
+        errores={
+          erroresImportacion
+        }
+        onCerrar={() =>
+          setErroresImportacion(
+            []
+          )
+        }
+      />
 
       {/* MENSAJES */}
 

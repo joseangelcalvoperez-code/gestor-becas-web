@@ -343,3 +343,48 @@ model SolicitudRestablecimiento {
   @@index([atendidaAt])
   @@map("solicitudes_restablecimiento")
 }
+
+/// Personal de soporte de la plataforma (no pertenece a ningún centro).
+/// Accede al panel /admin para restablecer contraseñas de los centros.
+model Administrador {
+  id Int @id @default(autoincrement())
+
+  nombre       String
+  email        String @unique
+  passwordHash String @map("password_hash")
+
+  activo Boolean @default(true)
+
+  debeCambiarClave    Boolean   @default(true) @map("debe_cambiar_clave")
+  claveTemporalExpira DateTime? @map("clave_temporal_expira")
+  claveActualizadaAt  DateTime? @map("clave_actualizada_at")
+  ultimoAcceso        DateTime? @map("ultimo_acceso")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  registros RegistroAdministracion[]
+
+  @@map("administradores")
+}
+
+/// Registro de las acciones del personal de administración (trazabilidad).
+model RegistroAdministracion {
+  id Int @id @default(autoincrement())
+
+  administradorId Int @map("administrador_id")
+
+  accion  String
+  detalle String? @db.Text
+
+  centroId  Int? @map("centro_id")
+  usuarioId Int? @map("usuario_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  administrador Administrador @relation(fields: [administradorId], references: [id], onDelete: Cascade)
+
+  @@index([createdAt])
+  @@index([administradorId])
+  @@map("registro_administracion")
+}

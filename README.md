@@ -339,6 +339,7 @@ http://localhost:3000
 - Alta masiva de grados y asignaturas mediante plantilla Excel (todo o nada, sin borrados).
 - Restablecimiento de contraseña sin servicios externos: solicitud desde la pantalla de acceso, contraseña provisional generada por el administrador (`npm run clave:restablecer`) y cambio obligatorio al entrar.
 - Cambio de contraseña desde el menú y política de 10 caracteres con letras y números.
+- Panel web de administración (`/admin`) para que el soporte restablezca contraseñas sin usar la terminal. Primer administrador: `npm run admin:crear -- correo "Nombre"`.
 - Instalaciones existentes: `npm run db:migrar` aplica la nueva migración.
 
 v1.1.0

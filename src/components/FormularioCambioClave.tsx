@@ -7,9 +7,18 @@ import { useRouter } from "next/navigation";
 export default function FormularioCambioClave({
   obligatorio,
   politica,
+  endpoint = "/api/cambiar-clave",
+  destino = "/inicio",
+  endpointSalida = "/api/logout",
+  rutaAcceso = "/login",
 }: {
   obligatorio: boolean;
   politica: string;
+  /** Rutas para reutilizarlo en el panel de administración. */
+  endpoint?: string;
+  destino?: string;
+  endpointSalida?: string;
+  rutaAcceso?: string;
 }) {
   const router = useRouter();
   const [enviando, setEnviando] = useState(false);
@@ -25,7 +34,7 @@ export default function FormularioCambioClave({
     try {
       setEnviando(true);
 
-      const respuesta = await fetch("/api/cambiar-clave", {
+      const respuesta = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -39,7 +48,7 @@ export default function FormularioCambioClave({
 
       if (!respuesta.ok) {
         if (respuesta.status === 401) {
-          router.push("/login");
+          router.push(rutaAcceso);
           return;
         }
 
@@ -49,7 +58,7 @@ export default function FormularioCambioClave({
 
       setHecho(true);
       window.setTimeout(() => {
-        router.push("/inicio");
+        router.push(destino);
         router.refresh();
       }, 1500);
     } catch {
@@ -127,18 +136,18 @@ export default function FormularioCambioClave({
       <div style={{ textAlign: "center", fontSize: "14px" }}>
         {obligatorio ? (
           <a
-            href="/api/logout"
+            href={endpointSalida}
             onClick={async (e) => {
               e.preventDefault();
-              await fetch("/api/logout", { method: "POST" });
-              router.push("/login");
+              await fetch(endpointSalida, { method: "POST" });
+              router.push(rutaAcceso);
             }}
             style={{ color: "var(--cm-texto-3)", textDecoration: "underline" }}
           >
             Cancelar y salir
           </a>
         ) : (
-          <Link href="/inicio" style={{ color: "var(--cm-texto-3)", textDecoration: "underline" }}>
+          <Link href={destino} style={{ color: "var(--cm-texto-3)", textDecoration: "underline" }}>
             Volver a la aplicación
           </Link>
         )}

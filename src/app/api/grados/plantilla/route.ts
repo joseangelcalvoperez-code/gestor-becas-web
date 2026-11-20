@@ -146,6 +146,12 @@ export async function GET() {
       r.eachCell((c) => (c.fill = relleno(COLOR_EXCEL.existente)));
     }
 
+    // CURSO y CÓDIGO centrados para que no se lean juntos
+    for (let f = FILA_CABECERA_GRADOS + 1; f <= fila + 200; f++) {
+      hoja.getCell(`B${f}`).alignment = { horizontal: "center" };
+      hoja.getCell(`C${f}`).alignment = { horizontal: "center" };
+    }
+
     const ultimaFila = Math.max(fila + 200, FILA_CABECERA_GRADOS + MAX_FILAS_GRADOS);
 
     /* ---------------- LISTAS DE AYUDA ---------------- */

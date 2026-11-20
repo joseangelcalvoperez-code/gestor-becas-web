@@ -229,24 +229,19 @@ npm run dev
 
 ---
 
-## Probar el restablecimiento de contraseña
+## Probar el panel de administración
 
-En local, el «administrador» es usted mismo:
-
-1. En la pantalla de acceso, pulse **¿Ha olvidado su contraseña?** e indique el correo y el código del centro.
-2. Consulte las solicitudes pendientes en la terminal (dentro de la carpeta del proyecto):
+1. Cree su cuenta de administrador, una sola vez, en la terminal y dentro de la carpeta del proyecto:
 
    ```powershell
-   npm.cmd run clave:solicitudes
+   npm.cmd run admin:crear -- su.correo@madrid.org "Su Nombre"
    ```
 
-3. Genere una contraseña provisional para ese usuario:
+   Anote la contraseña provisional que aparece.
 
-   ```powershell
-   npm.cmd run clave:restablecer -- correo@centro.es
-   ```
-
-4. Entre con la contraseña provisional que aparece. La aplicación le pedirá una nueva.
+2. Abra **http://localhost:3000/admin**, entre con ese correo y la contraseña provisional, y elija una contraseña personal.
+3. En otra ventana del navegador, en la pantalla de acceso de los centros, pulse **¿Ha olvidado su contraseña?** e indique el correo y el código de un centro de prueba.
+4. En el panel aparecerá la solicitud. Pulse **Generar contraseña** y entre con ella como ese centro.
 
 ## Problemas frecuentes
 

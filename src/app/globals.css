@@ -760,3 +760,312 @@ table {
     background: #fff;
   }
 }
+
+/* ---------------------------------------------------------
+   PANEL DE ADMINISTRACIÓN
+   --------------------------------------------------------- */
+
+.cm-admin {
+  width: 100%;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 28px 24px 48px;
+  display: grid;
+  gap: 22px;
+}
+
+.cm-admin-titulo h1 {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.cm-admin-titulo > p {
+  margin-top: 4px;
+  color: var(--cm-texto-3);
+  font-size: 15px;
+}
+
+.cm-admin-pasos {
+  list-style: none;
+  counter-reset: paso;
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.cm-admin-pasos li {
+  counter-increment: paso;
+  position: relative;
+  padding: 14px 16px 14px 56px;
+  background: var(--cm-superficie);
+  border: 1px solid var(--cm-borde);
+  border-radius: var(--cm-radio-grande);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 14px;
+}
+
+.cm-admin-pasos li::before {
+  content: counter(paso);
+  position: absolute;
+  left: 16px;
+  top: 14px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--cm-rojo);
+  color: #fff;
+  font-weight: 700;
+}
+
+.cm-admin-pasos span {
+  color: var(--cm-texto-3);
+  font-size: 13px;
+}
+
+.cm-tarjeta {
+  background: var(--cm-superficie);
+  border: 1px solid var(--cm-borde);
+  border-radius: var(--cm-radio-grande);
+  padding: 20px 22px;
+  box-shadow: var(--cm-sombra);
+}
+
+.cm-tarjeta-cabecera {
+  margin-bottom: 14px;
+}
+
+.cm-tarjeta-cabecera h2 {
+  font-size: 17px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cm-tarjeta-cabecera p {
+  margin-top: 2px;
+  font-size: 13px;
+  color: var(--cm-texto-3);
+}
+
+.cm-contador {
+  min-width: 24px;
+  height: 24px;
+  padding: 0 7px;
+  border-radius: 12px;
+  background: var(--cm-rojo);
+  color: #fff;
+  font-size: 13px;
+  display: inline-grid;
+  place-items: center;
+}
+
+.cm-vacio {
+  padding: 14px 0 4px;
+  color: var(--cm-texto-3);
+  font-size: 14px;
+}
+
+.cm-tabla-contenedor {
+  overflow-x: auto;
+  border: 1px solid var(--cm-borde);
+  border-radius: var(--cm-radio);
+}
+
+.cm-tabla {
+  width: 100%;
+  font-size: 14px;
+}
+
+.cm-tabla th {
+  text-align: left;
+  padding: 10px 14px;
+  background: var(--cm-fondo);
+  color: var(--cm-texto-2);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.cm-tabla td {
+  padding: 12px 14px;
+  border-top: 1px solid var(--cm-borde);
+  vertical-align: middle;
+}
+
+.cm-tabla tr:hover td {
+  background: var(--cm-fondo-suave);
+}
+
+.cm-nowrap {
+  white-space: nowrap;
+}
+
+.cm-secundario {
+  color: var(--cm-texto-3);
+  font-size: 13px;
+}
+
+.cm-acciones {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.cm-acciones .cm-btn + .cm-btn {
+  margin-left: 6px;
+}
+
+.cm-btn-enlace {
+  background: transparent;
+  color: var(--cm-texto-2);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  padding: 0 10px;
+}
+
+.cm-insignia {
+  display: inline-block;
+  padding: 3px 9px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 700;
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+
+.cm-insignia-verde { background: var(--cm-exito-claro); color: var(--cm-exito); border-color: var(--cm-exito-borde); }
+.cm-insignia-aviso { background: var(--cm-aviso-claro); color: var(--cm-aviso); border-color: var(--cm-aviso-borde); }
+.cm-insignia-roja { background: var(--cm-rojo-claro); color: var(--cm-rojo-oscuro); border-color: var(--cm-rojo-borde); }
+.cm-insignia-gris { background: var(--cm-fondo); color: var(--cm-texto-3); border-color: var(--cm-borde); }
+.cm-insignia-oscura { background: var(--cm-oscuro); color: #fff; letter-spacing: 0.06em; text-transform: uppercase; }
+
+.cm-actividad {
+  list-style: none;
+  display: grid;
+  font-size: 14px;
+}
+
+.cm-actividad li {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  gap: 12px;
+  padding: 9px 0;
+  border-top: 1px solid var(--cm-borde);
+}
+
+.cm-alerta-aviso {
+  border-color: var(--cm-aviso-borde);
+  border-left-color: var(--cm-aviso);
+  background: var(--cm-aviso-claro);
+  color: var(--cm-aviso);
+}
+
+.cm-alerta-info {
+  border-color: #bcd5ec;
+  border-left-color: var(--cm-info);
+  background: var(--cm-info-claro);
+  color: var(--cm-texto);
+}
+
+.cm-alerta-info ul {
+  margin: 6px 0 0 18px;
+}
+
+/* Ventana modal */
+.cm-velo {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: rgba(29, 39, 51, 0.55);
+  display: grid;
+  place-items: center;
+  padding: 16px;
+}
+
+.cm-ventana {
+  width: 100%;
+  max-width: 560px;
+  max-height: calc(100vh - 32px);
+  overflow-y: auto;
+  background: var(--cm-superficie);
+  border-top: 4px solid var(--cm-rojo);
+  border-radius: var(--cm-radio-grande);
+  box-shadow: var(--cm-sombra-elevada);
+  padding: 24px 26px;
+  display: grid;
+  gap: 16px;
+}
+
+.cm-ventana h2 {
+  font-size: 20px;
+}
+
+.cm-ventana-botones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.cm-datos {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 6px 12px;
+  font-size: 15px;
+}
+
+.cm-datos dt {
+  color: var(--cm-texto-3);
+}
+
+.cm-validez {
+  border: 1px solid var(--cm-borde);
+  border-radius: var(--cm-radio);
+  padding: 10px 14px 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  font-size: 14px;
+}
+
+.cm-validez legend {
+  padding: 0 6px;
+  font-weight: 600;
+  color: var(--cm-texto-2);
+}
+
+.cm-validez label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.cm-clave-provisional {
+  text-align: center;
+  font-family: var(--cm-fuente-mono);
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  padding: 18px 12px;
+  border: 2px dashed var(--cm-rojo-borde);
+  border-radius: var(--cm-radio-grande);
+  background: var(--cm-rojo-claro);
+  color: var(--cm-texto);
+  user-select: all;
+}
+
+@media (max-width: 900px) {
+  .cm-admin-pasos {
+    grid-template-columns: 1fr;
+  }
+
+  .cm-actividad li {
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+}

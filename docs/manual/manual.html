@@ -78,6 +78,7 @@
   .pasos li::before { content: counter(p); position: absolute; left: 0; top: .2mm; width: 6mm; height: 6mm; border-radius: 50%; background: var(--rojo); color: #fff; font-size: 8.5pt; font-weight: 700; display: grid; place-items: center; }
 
   table { width: 100%; border-collapse: collapse; margin: 3mm 0 5mm; font-size: 9.5pt; page-break-inside: auto; }
+  thead { display: table-header-group; }
   th { text-align: left; background: var(--fondo); font-size: 8.5pt; text-transform: uppercase; letter-spacing: .04em; color: var(--texto-2); }
   th, td { padding: 2.2mm 3mm; border-bottom: 1px solid var(--borde); vertical-align: top; }
   tr { page-break-inside: avoid; }
@@ -116,7 +117,7 @@
     <li><a href="#c3">Funcionamiento general <small>Cabecera, menú y curso académico</small></a></li>
     <li><a href="#c4">Orden recomendado de configuración</a></li>
     <li><a href="#c5">Datos del centro y cursos académicos</a></li>
-    <li><a href="#c6">Grados y asignaturas</a></li>
+    <li><a href="#c6">Grados y asignaturas <small>Incluye el alta masiva con Excel, paso a paso</small></a></li>
     <li><a href="#c7">Alumnado <small>Matrícula, importación, convalidaciones y bajas</small></a></li>
     <li><a href="#c8">Asistencia <small>Registro manual y plantilla Excel</small></a></li>
     <li><a href="#c9">Documentación <small>Anexo V, Anexo I, expedientes y generación masiva</small></a></li>
@@ -125,6 +126,7 @@
     <li><a href="#c12">Buenas prácticas</a></li>
     <li><a href="#c13">Resolución de incidencias</a></li>
     <li><a href="#c14">Novedades de las versiones 1.1 y 1.2</a></li>
+    <li><a href="#c15">Anexo · Administración de la plataforma <small>Para el personal de soporte</small></a></li>
   </ol>
 </div>
 
@@ -234,7 +236,7 @@
 
   <h3>3.2 Menú lateral</h3>
   <table>
-    <tr><th style="width:32%">Opción</th><th>Para qué sirve</th></tr>
+    <thead><tr><th style="width:32%">Opción</th><th>Para qué sirve</th></tr></thead>
     <tr><td class="menu">Inicio</td><td>Acceso al manual y resumen del flujo de trabajo.</td></tr>
     <tr><td class="menu">Alumnado</td><td>Matrículas del curso, importación/exportación, convalidaciones y bajas.</td></tr>
     <tr><td class="menu">Grados y asignaturas</td><td>Estructura académica: grados, asignaturas de 1.º y 2.º y profesorado.</td></tr>
@@ -304,23 +306,73 @@
   </ul>
   <div class="nota consejo"><b>Recomendación</b>Configure por completo grados y asignaturas antes de matricular alumnos. Así no tendrá que corregir relaciones después.</div>
 
-  <h3>6.3 Alta masiva con Excel</h3>
-  <p>Para configurar muchos grados y asignaturas de una vez, use los botones de la parte superior de la pantalla:</p>
-  <ol class="pasos">
-    <li>Pulse <span class="boton sec">Exportar plantilla</span>. Se descarga un Excel con la configuración actual del centro, en filas grises, y espacio para añadir más.</li>
-    <li>Añada una fila por asignatura: <b>grado</b>, <b>curso</b> (1 o 2), <b>código</b>, <b>asignatura</b> y <b>nombre, apellidos y DNI/NIE del profesor</b>. La hoja <i>PROFESORADO</i> muestra los profesores ya registrados.</li>
-    <li>Pulse <span class="boton">Importar Excel</span>, seleccione el archivo y confirme.</li>
-  </ol>
+  <h3>6.3 Alta masiva de grados, asignaturas y profesorado con Excel</h3>
+  <p>Al empezar el curso, o cuando el centro tiene muchos módulos, es más rápido cargar toda la estructura con una plantilla Excel que darla de alta pantalla a pantalla. <b>Una sola plantilla sirve para todo:</b> los grados, sus asignaturas y el profesorado responsable. Los profesores se dan de alta automáticamente a partir de las filas.</p>
+
+  <div class="nota consejo"><b>Antes de empezar, tenga a mano</b>La denominación de cada grado, los módulos de 1.º y 2.º curso con su código y, para cada módulo, el nombre, los apellidos y el DNI/NIE del profesor responsable.</div>
+
+  <h3>Paso 1 · Descargar la plantilla</h3>
+  <p>En <span class="menu">Grados y asignaturas</span>, pulse <span class="boton sec">Exportar plantilla</span> y guarde el archivo en su equipo. Ábralo con Microsoft Excel o LibreOffice Calc. Contiene dos hojas:</p>
+  <ul>
+    <li><b>ASIGNATURAS</b>: la que se rellena. Ya incluye, en <b>filas grises</b>, los grados y asignaturas que tiene el centro.</li>
+    <li><b>PROFESORADO</b>: solo de consulta. Lista los profesores ya registrados con su DNI/NIE.</li>
+  </ul>
+
+  <h3>Paso 2 · Rellenar una fila por asignatura</h3>
+  <figure>
+    <img src="img/15-plantilla-grados.jpg" alt="">
+    <figcaption><b>Figura 9.</b> Plantilla con la configuración actual (filas grises) y cuatro asignaturas nuevas de otro grado (filas blancas).</figcaption>
+  </figure>
+  <p>Escriba a continuación de las filas grises, <b>una fila por cada asignatura</b>:</p>
   <table>
-    <tr><th style="width:34%">En la plantilla…</th><th>Al importar…</th></tr>
-    <tr><td>Un grado que no existe</td><td>Se crea. Si se había eliminado, se recupera.</td></tr>
-    <tr><td>Un profesor con DNI/NIE nuevo</td><td>Se da de alta. El DNI/NIE debe ser válido (formato y letra).</td></tr>
-    <tr><td>Un DNI/NIE ya registrado</td><td>Se usa ese profesor. El nombre debe coincidir con el registrado.</td></tr>
-    <tr><td>Una asignatura nueva</td><td>Se crea en su grado y curso.</td></tr>
-    <tr><td>Una asignatura existente</td><td>Se actualizan su código y su profesor, si han cambiado.</td></tr>
-    <tr><td>Una fila que se borra del Excel</td><td><b>No se elimina nada.</b> Para eliminar use los botones de la pantalla.</td></tr>
+    <thead><tr><th style="width:22%">Columna</th><th>Qué escribir</th><th style="width:27%">Ejemplo</th></tr></thead>
+    <tr><td><b>GRADO</b></td><td>Denominación del grado. Si ya existe, elíjalo en el desplegable o escríbalo igual (no importan mayúsculas ni tildes). Si no existe, <b>se crea</b>.</td><td>Técnico en Sistemas Microinformáticos y Redes</td></tr>
+    <tr><td><b>CURSO</b></td><td><code>1</code> o <code>2</code> (desplegable).</td><td>1</td></tr>
+    <tr><td><b>CÓDIGO</b></td><td>Código del módulo. Es opcional pero recomendable. No puede repetirse en el mismo grado y curso.</td><td>0221</td></tr>
+    <tr><td><b>ASIGNATURA</b></td><td>Nombre completo de la asignatura o módulo.</td><td>Montaje y mantenimiento de equipos</td></tr>
+    <tr><td><b>NOMBRE</b> y <b>APELLIDOS PROFESOR</b></td><td>Del profesor responsable. Aparecerán en el Anexo V.</td><td>Rosa · Pérez León</td></tr>
+    <tr><td><b>DNI/NIE PROFESOR</b></td><td>DNI (8 números y letra) o NIE (X, Y o Z, 7 números y letra). Se comprueba la letra. Los espacios y guiones se ignoran.</td><td>12345678Z</td></tr>
   </table>
-  <div class="nota importante"><b>Todo o nada</b>Si alguna fila tiene un error (datos incompletos, curso distinto de 1 o 2, DNI/NIE no válido, asignatura repetida, código ya usado en el mismo grado y curso…), <b>no se importa ninguna</b>. La pantalla muestra la lista de filas con su motivo para corregirlas. Solo se admite la plantilla descargada del propio centro.</div>
+
+  <div class="dos">
+    <div class="tarjeta"><h4>Un profesor con varias asignaturas</h4><p>Repita sus datos en cada fila, con el <b>mismo DNI/NIE y el mismo nombre</b>. Solo se da de alta una vez (en la figura, Rosa Pérez León en dos módulos).</p></div>
+    <div class="tarjeta"><h4>Un profesor ya registrado</h4><p>Copie sus datos <b>exactamente</b> como aparecen en la hoja <i>PROFESORADO</i> (en la figura, Ana Ruiz Moreno).</p></div>
+  </div>
+
+  <p style="margin-top:4mm"><b>Modificar lo que ya existe.</b> En las filas grises puede cambiar el <b>código</b> o los <b>datos del profesor</b> (cambia el responsable de la asignatura). No cambie el grado, el curso ni el nombre de una fila gris: se crearía una asignatura nueva y la antigua seguiría existiendo.</p>
+
+  <div class="nota aviso"><b>No modifique la estructura del archivo</b>No cambie el nombre de las hojas ni de las columnas, no inserte ni borre columnas y guarde siempre en formato <b>.xlsx</b>. Use solo la plantilla descargada por su centro.</div>
+
+  <h3>Paso 3 · Importar</h3>
+  <ol class="pasos">
+    <li>Pulse <span class="boton">Importar Excel</span> y elija el archivo.</li>
+    <li>Lea el mensaje de confirmación (qué se creará y que no se elimina nada) y acepte.</li>
+    <li>Revise el resultado.</li>
+  </ol>
+  <figure>
+    <img src="img/17-importacion-correcta.jpg" alt="">
+    <figcaption><b>Figura 10.</b> Importación correcta: el mensaje indica qué se ha creado o actualizado.</figcaption>
+  </figure>
+  <p>Si hay errores, <b>no se guarda nada</b> y se muestra la lista de filas con el motivo. El número de fila es el de Excel. Corrija esas filas en el mismo archivo y vuelva a importarlo.</p>
+  <figure>
+    <img src="img/16-importacion-errores.jpg" alt="">
+    <figcaption><b>Figura 11.</b> Importación con errores: no se ha guardado nada y se indica qué corregir en cada fila.</figcaption>
+  </figure>
+
+  <h3>Errores frecuentes y cómo corregirlos</h3>
+  <table>
+    <thead><tr><th style="width:40%">Mensaje</th><th>Cómo corregirlo</th></tr></thead>
+    <tr><td>«Faltan datos obligatorios: …»</td><td>Complete las columnas indicadas. Todas son obligatorias salvo CÓDIGO.</td></tr>
+    <tr><td>«El CURSO debe ser 1 o 2»</td><td>Elija 1 o 2 en el desplegable.</td></tr>
+    <tr><td>«El DNI/NIE … no es válido»</td><td>Revise los números y la letra.</td></tr>
+    <tr><td>«El DNI/NIE … ya pertenece a «…» en el centro»</td><td>Si es la misma persona, copie su nombre tal como aparece en la hoja PROFESORADO. Si es otra persona, el DNI/NIE está mal escrito.</td></tr>
+    <tr><td>«… aparece con otro nombre en la fila N»</td><td>Escriba el nombre del profesor exactamente igual en todas sus filas.</td></tr>
+    <tr><td>«La asignatura … está repetida»</td><td>Hay dos filas con la misma asignatura en el mismo grado y curso. Elimine una.</td></tr>
+    <tr><td>«El código … ya lo usa …»</td><td>Ese código ya corresponde a otra asignatura del mismo grado y curso. Revíselo.</td></tr>
+    <tr><td>«La plantilla pertenece a otro centro», «no es una plantilla…» o «columnas modificadas»</td><td>Descargue una plantilla nueva desde <span class="menu">Grados y asignaturas</span> y copie en ella sus filas.</td></tr>
+  </table>
+
+  <p>Después de importar, revise cada grado en pantalla (pestañas <b>1.º curso</b> y <b>2.º curso</b>). El siguiente paso es matricular al alumnado (capítulo 7).</p>
 </section>
 
 <!-- ===================== 7 ===================== -->
@@ -328,7 +380,7 @@
   <h2><span class="num">7</span>Alumnado</h2>
   <figure>
     <img src="img/07-alumnos.jpg" alt="">
-    <figcaption><b>Figura 9.</b> <span class="menu">Alumnado</span>: acciones, filtros y listado de matrículas.</figcaption>
+    <figcaption><b>Figura 12.</b> <span class="menu">Alumnado</span>: acciones, filtros y listado de matrículas.</figcaption>
   </figure>
   <p>La pantalla muestra las matrículas del <b>curso académico seleccionado</b> en la cabecera.</p>
 
@@ -342,7 +394,7 @@
   <h3>7.2 Matricular un alumno</h3>
   <figure>
     <img src="img/08-nuevo-alumno.jpg" alt="">
-    <figcaption><b>Figura 10.</b> Formulario de nueva matrícula.</figcaption>
+    <figcaption><b>Figura 13.</b> Formulario de nueva matrícula.</figcaption>
   </figure>
   <ol class="pasos">
     <li>Pulse <span class="boton">+ Nuevo alumno</span>.</li>
@@ -354,7 +406,7 @@
 
   <h3>7.3 Importación y exportación</h3>
   <table>
-    <tr><th style="width:32%">Botón</th><th>Función</th></tr>
+    <thead><tr><th style="width:32%">Botón</th><th>Función</th></tr></thead>
     <tr><td><span class="boton sec">Exportar plantilla</span></td><td>Descarga la plantilla Excel preparada para altas masivas, con los grados del centro.</td></tr>
     <tr><td><span class="boton">Importar Excel</span></td><td>Incorpora la plantilla cumplimentada. Si hay errores, la aplicación indica la fila y el motivo, y no importa nada hasta que se corrijan.</td></tr>
     <tr><td><span class="boton sec">Exportar listado</span></td><td>Descarga el listado de alumnos del curso en Excel.</td></tr>
@@ -364,7 +416,7 @@
   <h3>7.4 Convalidaciones</h3>
   <figure>
     <img src="img/09-convalidaciones.jpg" alt="">
-    <figcaption><b>Figura 11.</b> Selección de asignaturas convalidadas de un alumno.</figcaption>
+    <figcaption><b>Figura 14.</b> Selección de asignaturas convalidadas de un alumno.</figcaption>
   </figure>
   <p>La acción <b>Convalidaciones</b> muestra las asignaturas del grado y curso del alumno. Marque las convalidadas y pulse <span class="boton">Guardar convalidaciones</span>. En el listado, la columna «Convalidadas» indica cuáles tiene cada alumno.</p>
   <div class="nota importante"><b>Efecto de una convalidación</b>Una asignatura convalidada no admite registro de asistencia, no aparece en la plantilla Excel de asistencia y se excluye de la documentación. La convalidación no se traslada automáticamente a la matrícula de otro curso.</div>
@@ -379,7 +431,7 @@
   <p>La asistencia puede registrarse de dos formas: <b>individualmente</b> desde la pantalla, o <b>de forma masiva</b> con una plantilla Excel mensual.</p>
   <figure>
     <img src="img/10-asistencia.jpg" alt="">
-    <figcaption><b>Figura 12.</b> <span class="menu">Asistencia</span>: zona Excel (arriba) y selectores de grado, asignatura y alumno.</figcaption>
+    <figcaption><b>Figura 15.</b> <span class="menu">Asistencia</span>: zona Excel (arriba) y selectores de grado, asignatura y alumno.</figcaption>
   </figure>
 
   <h3>8.1 Selección del alumno</h3>
@@ -393,7 +445,7 @@
   <h3>8.2 Registro manual</h3>
   <figure class="media">
     <img src="img/11-asistencia-tabla.jpg" alt="">
-    <figcaption><b>Figura 13.</b> Tabla mensual de asistencia con resumen y observaciones.</figcaption>
+    <figcaption><b>Figura 16.</b> Tabla mensual de asistencia con resumen y observaciones.</figcaption>
   </figure>
   <ul>
     <li>La tabla organiza el mes por <b>semanas</b> y <b>días laborables</b> (lunes a viernes). Para cada día se anotan las horas <b>Asiste</b> y <b>No asiste</b>.</li>
@@ -421,7 +473,7 @@
   <p><span class="menu">Documentación</span> genera los documentos mensuales a partir de los datos del alumno y de la asistencia registrada.</p>
   <figure class="pequena">
     <img src="img/12-documentos.jpg" alt="">
-    <figcaption><b>Figura 14.</b> <span class="menu">Documentación</span> con el resumen del mes desplegado y las opciones de generación.</figcaption>
+    <figcaption><b>Figura 17.</b> <span class="menu">Documentación</span> con el resumen del mes desplegado y las opciones de generación.</figcaption>
   </figure>
 
   <h3>9.1 Selección y resumen</h3>
@@ -430,7 +482,7 @@
 
   <h3>9.2 Opciones de generación</h3>
   <table>
-    <tr><th style="width:30%">Opción</th><th>Resultado</th></tr>
+    <thead><tr><th style="width:30%">Opción</th><th>Resultado</th></tr></thead>
     <tr><td><b>Todos los Anexos V</b></td><td>Un Anexo V por cada asignatura del alumno, con la asistencia desde el inicio del curso hasta el mes seleccionado. Se descarga en un archivo ZIP.</td></tr>
     <tr><td><b>Anexo V individual</b></td><td>El Anexo V de la asignatura elegida en el desplegable (PDF).</td></tr>
     <tr><td><b>Anexo I</b></td><td>El Anexo I del alumno para el mes seleccionado (PDF).</td></tr>
@@ -498,7 +550,7 @@
 <section class="capitulo" id="c13">
   <h2><span class="num">13</span>Resolución de incidencias</h2>
   <table>
-    <tr><th style="width:38%">Situación</th><th>Qué hacer</th></tr>
+    <thead><tr><th style="width:38%">Situación</th><th>Qué hacer</th></tr></thead>
     <tr><td>«Email o contraseña incorrectos»</td><td>Revise el correo y la contraseña (atención a mayúsculas). Si no la recuerda, contacte con el soporte de la aplicación.</td></tr>
     <tr><td>«Demasiados intentos fallidos»</td><td>La cuenta está bloqueada temporalmente. Espere 15 minutos.</td></tr>
     <tr><td>No recuerda la contraseña</td><td>Use <b>¿Ha olvidado su contraseña?</b> en la pantalla de acceso (apartado 2.3).</td></tr>
@@ -518,7 +570,7 @@
   <h3>Versión 1.2</h3>
   <ul>
     <li><b>Alta masiva de grados y asignaturas</b> mediante plantilla Excel (apartado 6.3).</li>
-    <li><b>Restablecimiento de contraseña</b> con contraseña provisional facilitada por el servicio de soporte (apartado 2.3).</li>
+    <li><b>Restablecimiento de contraseña</b> con contraseña provisional facilitada por el servicio de soporte (apartado 2.3), que la genera desde su propio panel de administración (anexo, capítulo 15).</li>
     <li><b>Cambio de contraseña</b> desde el menú lateral (apartado 2.4). Nueva política: al menos 10 caracteres con letras y números.</li>
     <li>Al cambiar o restablecer la contraseña se cierran las sesiones abiertas con la anterior.</li>
   </ul>
@@ -537,6 +589,60 @@
     <li>Bloqueo temporal tras varios intentos fallidos de contraseña.</li>
     <li>Los documentos generados (Anexo I y Anexo V) mantienen exactamente el mismo formato y contenido que en la versión 1.0.</li>
   </ul>
+</section>
+
+<!-- ===================== 15 ===================== -->
+<section class="capitulo" id="c15">
+  <h2><span class="num">15</span>Anexo · Administración de la plataforma</h2>
+  <p><i>Este anexo está dirigido al <b>personal de soporte</b> que atiende a los centros. Los centros no necesitan leerlo.</i></p>
+
+  <h3>15.1 Acceso</h3>
+  <p>El panel de administración está en la dirección de la aplicación seguida de <code>/admin</code> (por ejemplo, <code>https://…/admin</code>). Las cuentas de administración son distintas de las de los centros. Las crea el responsable técnico (apartado 15.6).</p>
+  <figure class="pequena">
+    <img src="img/18-admin-acceso.jpg" alt="">
+    <figcaption><b>Figura 18.</b> Acceso de administración.</figcaption>
+  </figure>
+  <p>La primera vez se entra con una contraseña provisional y la aplicación pide establecer una personal, con la misma política que los centros. Desde <b>Mi contraseña</b>, en la cabecera, puede cambiarla cuando quiera.</p>
+
+  <h3>15.2 El panel</h3>
+  <figure>
+    <img src="img/19-admin-panel.jpg" alt="">
+    <figcaption><b>Figura 19.</b> Panel de administración: solicitudes pendientes, buscador y actividad.</figcaption>
+  </figure>
+  <ul>
+    <li><b>Solicitudes pendientes:</b> centros que han pulsado «¿Ha olvidado su contraseña?». Muestra la fecha, el centro, el correo de acceso y el teléfono del centro.</li>
+    <li><b>Buscar un centro:</b> por nombre, código de centro o correo. Muestra el estado de la cuenta: <i>Activa</i>, <i>Provisional hasta…</i>, <i>Provisional caducada</i> o <i>Desactivada</i>.</li>
+    <li><b>Actividad reciente:</b> quién hizo cada acción y cuándo. Todas quedan registradas.</li>
+  </ul>
+
+  <h3>15.3 Restablecer la contraseña de un centro</h3>
+  <ol class="pasos">
+    <li>Pulse <span class="boton">Generar contraseña</span> en la solicitud o en el resultado de la búsqueda.</li>
+    <li>Compruebe el centro y la cuenta, elija la validez (por defecto 3 días) y confirme.</li>
+    <li>Se muestra la contraseña provisional. Use <b>Copiar contraseña</b> si la va a pegar en otro sitio.</li>
+    <li>Comuníquela al centro y pulse <b>Hecho, cerrar</b>. Por seguridad, no se vuelve a mostrar.</li>
+  </ol>
+  <div class="dos">
+    <figure style="margin:0"><img src="img/20-admin-confirmar.jpg" alt=""><figcaption><b>Figura 20.</b> Confirmación.</figcaption></figure>
+    <figure style="margin:0"><img src="img/21-admin-resultado.jpg" alt=""><figcaption><b>Figura 21.</b> Contraseña provisional generada.</figcaption></figure>
+  </div>
+  <div class="nota importante"><b>Compruebe la identidad antes de dar la contraseña</b>Si alguien la pide por teléfono, no la dicte en esa misma llamada. Llame usted al <b>teléfono oficial del centro</b> que aparece en el panel. No envíe nunca la contraseña en el mismo mensaje que el correo de acceso.</div>
+  <p>Al generar la contraseña, la anterior deja de funcionar y se cierran las sesiones abiertas de esa cuenta. Cuando el centro entra con la provisional, la aplicación le obliga a elegir una nueva. Si la provisional caduca sin usarse, genere otra.</p>
+
+  <h3>15.4 Descartar una solicitud</h3>
+  <p><b>Descartar</b> retira una solicitud sin generar contraseña, por ejemplo si el centro ya ha recuperado el acceso. Queda anotado en la actividad.</p>
+
+  <h3>15.5 Buenas prácticas</h3>
+  <ul>
+    <li>Cada persona de soporte debe tener su propia cuenta. No comparta la suya.</li>
+    <li>Cierre la sesión al terminar y no anote las contraseñas provisionales.</li>
+    <li>Revise las solicitudes pendientes al menos una vez al día durante los periodos de cierre mensual.</li>
+  </ul>
+
+  <h3>15.6 Para el responsable técnico</h3>
+  <p>Las cuentas de administración se crean en el servidor, una sola vez por persona:</p>
+  <p><code>npm run admin:crear -- correo@madrid.org "Nombre Apellidos"</code></p>
+  <p>Si un administrador pierde su acceso: <code>npm run admin:restablecer -- correo@madrid.org</code>. Ambos comandos muestran una contraseña provisional (72 horas) que se cambia al entrar. Se recomienda permitir el acceso a <code>/admin</code> solo desde la red corporativa (configuración del servidor web).</p>
 </section>
 
 </body>

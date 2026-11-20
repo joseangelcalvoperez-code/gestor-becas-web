@@ -279,3 +279,37 @@ En **Grados y asignaturas**, *Exportar plantilla* descarga un Excel con la confi
   * Una asignatura no se puede repetir en el mismo grado y curso. Las existentes actualizan su código y su profesor.
   * Los códigos no se pueden repetir dentro del mismo grado y curso. Sí se pueden intercambiar entre asignaturas.
 * **Límites:** 5 MB y 1.500 filas por importación.
+
+## 8. Panel de administración (`/admin`) — v1.2
+
+Pantalla web para que el personal de soporte restablezca las contraseñas de los centros **sin usar la terminal**. Se explica para usuarios en el anexo del manual, capítulo 15.
+
+* **Cuentas propias**, separadas de las de los centros (tabla `administradores`). Tienen su propia cookie de sesión, marcada como de administración y con `SameSite=Strict`. Un centro no puede usar las API `/api/admin/*`, ni un administrador las de los centros; está verificado en ambos sentidos.
+* **Funciones:** solicitudes pendientes (generar o descartar), buscador de centros con el estado de cada cuenta, ventana con la contraseña provisional (copiar y validez de 24 h, 3 días o 7 días) y registro de actividad (`registro_administracion`).
+* **Seguridad:** límite de intentos de acceso, cambio obligatorio de la contraseña provisional, misma política de contraseñas y sesión validada contra la base de datos.
+
+**Puesta en marcha (una sola vez, en el servidor):**
+
+```bash
+npm run db:migrar
+```
+
+```bash
+npm run admin:crear -- soporte@madrid.org "Nombre Apellidos"
+```
+
+Muestra una contraseña provisional (72 h). Esa persona entra en `https://<dirección>/admin` y elige su contraseña. Para recuperar el acceso de un administrador: `npm run admin:restablecer -- correo`.
+
+**Recomendado:** permitir `/admin` solo desde la red corporativa. Por ejemplo, en nginx (ajuste los rangos de red):
+
+```nginx
+location ~ ^/(admin|api/admin)(/|$) {
+  allow 10.0.0.0/8;      # red corporativa
+  deny  all;
+  proxy_pass http://gestor_becas;
+}
+```
+
+Los comandos `npm run clave:solicitudes` y `npm run clave:restablecer` siguen disponibles para emergencias.
+
+**Migración:** `20261120000300_administracion` crea las tablas `administradores` y `registro_administracion`. Es aditiva.

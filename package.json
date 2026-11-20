@@ -12,7 +12,9 @@
     "clave:restablecer": "node scripts/gestion-claves.mjs restablecer",
     "db:generar": "prisma generate",
     "db:migrar": "prisma migrate deploy",
-    "db:estado": "prisma migrate status"
+    "db:estado": "prisma migrate status",
+    "admin:crear": "node scripts/gestion-claves.mjs crear-admin",
+    "admin:restablecer": "node scripts/gestion-claves.mjs restablecer-admin"
   },
   "dependencies": {
     "@prisma/adapter-mariadb": "^7.9.1",

@@ -11,6 +11,13 @@
  *     npm run clave:restablecer -- correo@centro.es
  *     npm run clave:restablecer -- correo@centro.es --horas 48 --si
  *
+ *   ADMINISTRADORES DEL PANEL WEB (/admin):
+ *     npm run admin:crear -- correo@madrid.org "Nombre Apellidos"
+ *     npm run admin:restablecer -- correo@madrid.org
+ *   Crean o restablecen la cuenta con una contraseña provisional que el
+ *   administrador cambia al entrar. Basta con crear el primero así: después,
+ *   las contraseñas de los centros se restablecen desde el panel web.
+ *
  * La contraseña provisional:
  *   - es aleatoria (generador criptográfico) y solo se muestra una vez;
  *   - caduca a las 72 horas (o las indicadas con --horas, máx. 168);
@@ -168,6 +175,55 @@ async function restablecer(conn, email, horas, sinConfirmar) {
   }
 }
 
+async function crearAdministrador(conn, email, nombre) {
+  const [existe] = await conn.query("SELECT id FROM administradores WHERE email = ?", [email]);
+
+  if (existe) {
+    console.error(`\n✖ Ya existe un administrador con el correo ${email}. Use admin:restablecer.\n`);
+    process.exitCode = 1;
+    return;
+  }
+
+  const provisional = generarClaveProvisional();
+
+  await conn.query(
+    `INSERT INTO administradores
+       (nombre, email, password_hash, activo, debe_cambiar_clave, clave_temporal_expira, clave_actualizada_at, created_at, updated_at)
+     VALUES (?, ?, ?, 1, 1, UTC_TIMESTAMP(3) + INTERVAL 72 HOUR, UTC_TIMESTAMP(), UTC_TIMESTAMP(3), UTC_TIMESTAMP(3))`,
+    [nombre, email, await bcrypt.hash(provisional, 12)]
+  );
+
+  mostrarProvisionalAdmin(email, provisional, "creado");
+}
+
+async function restablecerAdministrador(conn, email) {
+  const provisional = generarClaveProvisional();
+  const res = await conn.query(
+    `UPDATE administradores
+        SET password_hash = ?, activo = 1, debe_cambiar_clave = 1,
+            clave_temporal_expira = UTC_TIMESTAMP(3) + INTERVAL 72 HOUR,
+            clave_actualizada_at = UTC_TIMESTAMP(), updated_at = UTC_TIMESTAMP(3)
+      WHERE email = ?`,
+    [await bcrypt.hash(provisional, 12), email]
+  );
+
+  if (res.affectedRows === 0) {
+    console.error(`\n✖ No existe ningún administrador con el correo ${email}.\n`);
+    process.exitCode = 1;
+    return;
+  }
+
+  mostrarProvisionalAdmin(email, provisional, "restablecido");
+}
+
+function mostrarProvisionalAdmin(email, provisional, accion) {
+  console.log(`\n✔ Administrador ${accion}: ${email}`);
+  console.log("\n  Contraseña provisional (válida 72 h, no se volverá a mostrar):\n");
+  console.log(`      ${provisional}\n`);
+  console.log("  Acceso: https://<dirección de la aplicación>/admin");
+  console.log("  Al entrar se le pedirá una contraseña personal.\n");
+}
+
 /* ---------- Entrada ---------- */
 
 const [comando, ...resto] = process.argv.slice(2);
@@ -176,6 +232,8 @@ const ayuda = `
 Uso:
   npm run clave:solicitudes
   npm run clave:restablecer -- correo@centro.es [--horas 72] [--si]
+  npm run admin:crear -- correo@madrid.org "Nombre Apellidos"
+  npm run admin:restablecer -- correo@madrid.org
 `;
 
 let conn;
@@ -198,6 +256,21 @@ try {
     } else {
       conn = await conectar();
       await restablecer(conn, email, horas, resto.includes("--si"));
+    }
+  } else if (comando === "crear-admin" || comando === "restablecer-admin") {
+    const email = resto[0]?.trim().toLowerCase();
+    const nombre = resto.slice(1).join(" ").trim();
+
+    if (!email || !email.includes("@")) {
+      console.error("\n✖ Indique el correo del administrador." + ayuda);
+      process.exitCode = 1;
+    } else if (comando === "crear-admin" && !nombre) {
+      console.error('\n✖ Indique también el nombre: npm run admin:crear -- correo@madrid.org "Nombre Apellidos"\n');
+      process.exitCode = 1;
+    } else {
+      conn = await conectar();
+      if (comando === "crear-admin") await crearAdministrador(conn, email, nombre);
+      else await restablecerAdministrador(conn, email);
     }
   } else {
     console.log(ayuda);
