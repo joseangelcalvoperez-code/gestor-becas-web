@@ -17,18 +17,20 @@ export default function HeaderWeb({
   return (
     <header className="cm-cabecera">
       <div className="cm-marca">
-        <div className="cm-marca-institucion">
+        <div
+          className="cm-marca-institucion"
+          role="img"
+          aria-label={`${MARCA.organismo}. ${MARCA.departamento}`}
+        >
           <SimboloMarca />
 
-          <div className="cm-marca-textos">
-            <span className="cm-marca-organismo">
-              {MARCA.organismo}
-            </span>
+          <span className="cm-marca-organismo">
+            {MARCA.organismo.replace(/ de /, "\nde\u00a0")}
+          </span>
 
-            <span className="cm-marca-departamento">
-              {MARCA.departamento}
-            </span>
-          </div>
+          <span className="cm-marca-departamento">
+            {MARCA.departamento}
+          </span>
         </div>
 
         <div className="cm-marca-app">

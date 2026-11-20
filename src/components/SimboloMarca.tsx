@@ -1,25 +1,28 @@
 import { MARCA } from "@/lib/marca";
 
 /*
- * Símbolo de la cabecera. Usa el logotipo oficial solo si se
- * ha configurado (ver src/lib/marca.ts); si no, un símbolo
- * neutro en el rojo institucional.
+ * Emblema institucional (estrellas de la Comunidad de Madrid).
+ * Si el logotipo está desactivado (NEXT_PUBLIC_LOGO_INSTITUCIONAL=0)
+ * se muestra un símbolo neutro.
  */
 export default function SimboloMarca({
-  tamano = 34,
+  tamano = 40,
   invertido = false,
 }: {
   tamano?: number;
   invertido?: boolean;
 }) {
-  if (MARCA.logoInstitucional) {
+  if (MARCA.simbolo) {
     return (
       // eslint-disable-next-line @next/next/no-img-element
       <img
-        src={MARCA.logoInstitucional}
-        alt={MARCA.organismo}
+        className="cm-marca-simbolo"
+        src={MARCA.simbolo}
+        alt=""
+        aria-hidden="true"
+        width={tamano}
         height={tamano}
-        style={{ height: tamano, width: "auto" }}
+        style={{ width: tamano, height: tamano }}
       />
     );
   }
@@ -36,7 +39,6 @@ export default function SimboloMarca({
       aria-hidden="true"
     >
       <rect width="34" height="34" rx="4" fill={fondo} />
-      {/* Birrete estilizado: educación */}
       <path d="M17 9 6 14l11 5 11-5-11-5Z" fill={trazo} />
       <path
         d="M10.5 16.4v4.6c0 1.6 2.9 3.2 6.5 3.2s6.5-1.6 6.5-3.2v-4.6"

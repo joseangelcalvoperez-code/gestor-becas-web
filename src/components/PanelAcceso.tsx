@@ -1,4 +1,4 @@
-import SimboloMarca from "@/components/SimboloMarca";
+import LogotipoInstitucional from "@/components/LogotipoInstitucional";
 
 import { MARCA } from "@/lib/marca";
 
@@ -11,16 +11,8 @@ export default function PanelAcceso() {
       className="cm-acceso-lateral"
       aria-label={`${MARCA.organismo} · ${MARCA.departamento}`}
     >
-      <div className="cm-acceso-institucion">
-        <SimboloMarca
-          tamano={40}
-          invertido
-        />
-
-        <div>
-          {MARCA.organismo}
-          <small>{MARCA.departamento}</small>
-        </div>
+      <div className="cm-acceso-logotipo">
+        <LogotipoInstitucional />
       </div>
 
       <div style={{ position: "relative", zIndex: 1 }}>

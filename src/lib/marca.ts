@@ -2,17 +2,23 @@
    IDENTIDAD INSTITUCIONAL
 
    Textos de la cabecera, el pie y la pantalla de acceso.
-   Ajustar aquí la denominación oficial vigente del órgano
-   (cambia con cada estructura de Gobierno).
+   Ajustar aquí (o en .env) la denominación oficial vigente
+   del órgano: cambia con cada estructura de Gobierno.
 
-   LOGOTIPO OFICIAL: el aplicativo NO incluye el logotipo de
-   la Comunidad de Madrid. Si el órgano dispone de
-   autorización para usarlo conforme al Manual de Identidad
-   Corporativa, copiar el archivo a
-     public/marca/logo-institucional.svg
-   y poner NEXT_PUBLIC_LOGO_INSTITUCIONAL=1 en .env.
-   Mientras tanto se muestra un símbolo neutro.
+   LOGOTIPO (public/marca/):
+     - logo-comunidad-madrid.png ...... logotipo completo
+       (pantalla de acceso y registro)
+     - simbolo-comunidad-madrid.png ... emblema de las
+       estrellas (cabecera y favicon)
+   Para sustituirlo por una versión de mayor calidad (por
+   ejemplo, la vectorial del Manual de Identidad Corporativa)
+   basta con reemplazar esos archivos con el mismo nombre.
+   NEXT_PUBLIC_LOGO_INSTITUCIONAL=0 lo desactiva y muestra un
+   símbolo neutro.
    ========================================================= */
+
+const logoActivo =
+  process.env.NEXT_PUBLIC_LOGO_INSTITUCIONAL !== "0";
 
 export const MARCA = {
   organismo:
@@ -21,7 +27,7 @@ export const MARCA = {
 
   departamento:
     process.env.NEXT_PUBLIC_DEPARTAMENTO ??
-    "Consejería de Educación",
+    "Consejería de Educación, Universidades, Ciencia y Portavocía",
 
   aplicacion: "Gestor de Becas",
 
@@ -29,8 +35,13 @@ export const MARCA = {
 
   version: "1.1.0",
 
-  logoInstitucional:
-    process.env.NEXT_PUBLIC_LOGO_INSTITUCIONAL === "1"
-      ? "/marca/logo-institucional.svg"
-      : null,
+  /** Emblema (cuadrado rojo con estrellas). */
+  simbolo: logoActivo
+    ? "/marca/simbolo-comunidad-madrid.png"
+    : null,
+
+  /** Logotipo completo con la denominación de la Consejería. */
+  logotipo: logoActivo
+    ? "/marca/logo-comunidad-madrid.png"
+    : null,
 } as const;

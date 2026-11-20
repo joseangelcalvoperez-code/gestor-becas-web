@@ -204,13 +204,22 @@ Todos los colores salen de *tokens* CSS en `src/app/globals.css` (`--cm-rojo`, `
 * **Pantalla de acceso** en dos columnas: panel institucional y formulario.
 * Se han corregido columnas recortadas en *Alumnado* (acciones) y en *Asistencia* (resumen del mes).
 
-### 5.4 Logotipo oficial
-El aplicativo **no incluye** el logotipo de la Comunidad de Madrid: su uso está regulado por el Manual de Identidad Corporativa. Mientras no se configure, se muestra un símbolo neutro. Para usar el logotipo, si el órgano está autorizado:
+### 5.4 Logotipo institucional
+El logotipo de la Comunidad de Madrid con la denominación de la **Consejería de Educación, Universidades, Ciencia y Portavocía** está en `public/marca/`:
 
-1. Copiar el archivo a `public/marca/logo-institucional.svg`.
-2. Poner `NEXT_PUBLIC_LOGO_INSTITUCIONAL=1` en `.env`.
-3. Revisar en `src/lib/marca.ts` la denominación vigente de la Consejería.
-4. Recompilar con `npm run build`.
+| Archivo | Uso |
+|---|---|
+| `logo-comunidad-madrid.png` | Logotipo completo, en la pantalla de acceso y en el registro. |
+| `simbolo-comunidad-madrid.png` | Emblema de las estrellas: cabecera y favicon (`src/app/favicon.ico`, `src/app/apple-icon.png`). |
+
+En la cabecera, el emblema va acompañado de los textos «Comunidad de Madrid» y la denominación de la Consejería escritos como texto real. Se hace así porque, a 40 px de alto, la imagen completa sería ilegible. La composición sigue la del logotipo: emblema, nombre, filete vertical y Consejería. En pantallas de menos de 1280 px se oculta la línea de la Consejería.
+
+El rojo del logotipo (`#E83A39`, token `--cm-rojo-marca`) se usa solo en superficies de marca. Con texto blanco encima no alcanza el contraste AA, así que botones y textos usan `--cm-rojo` (`#C8102E`).
+
+**Cambio de denominación o de calidad**:
+* **Logotipo**: el actual procede de una imagen de 538 px. Si se dispone de la versión oficial en alta resolución del Manual de Identidad Corporativa, basta con sustituir los archivos manteniendo el nombre.
+* **Denominación**: cuando cambie la estructura de Gobierno, ajustar `NEXT_PUBLIC_DEPARTAMENTO` en `.env` o `src/lib/marca.ts`.
+* **Desactivar el logotipo**: `NEXT_PUBLIC_LOGO_INSTITUCIONAL=0` muestra un símbolo neutro.
 
 ### 5.5 Capturas
 

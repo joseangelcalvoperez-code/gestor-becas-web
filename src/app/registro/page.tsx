@@ -1,6 +1,6 @@
 "use client";
 
-import SimboloMarca from "@/components/SimboloMarca";
+import LogotipoInstitucional from "@/components/LogotipoInstitucional";
 import { MARCA } from "@/lib/marca";
 
 import {
@@ -187,15 +187,21 @@ const enviarFormulario = async (
           gap: "12px",
         }}
       >
-        <SimboloMarca />
+        <LogotipoInstitucional ancho={230} />
 
-        <div style={{ lineHeight: 1.2 }}>
+        <div
+          style={{
+            marginLeft: "auto",
+            textAlign: "right",
+            lineHeight: 1.25,
+          }}
+        >
           <div style={{ fontWeight: 700, fontSize: "15px" }}>
-            {MARCA.organismo}
+            {MARCA.aplicacion}
           </div>
 
-          <div style={{ fontSize: "13px", color: "var(--cm-texto-3)" }}>
-            {MARCA.departamento} · {MARCA.aplicacion}
+          <div style={{ fontSize: "13px", color: "var(--cm-rojo)", fontWeight: 600 }}>
+            {MARCA.programa}
           </div>
         </div>
       </div>
