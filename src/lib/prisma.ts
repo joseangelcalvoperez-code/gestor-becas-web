@@ -36,12 +36,42 @@ const globalForPrisma =
       | undefined;
   };
 
+/*
+ * MySQL 8 autentica por defecto con caching_sha2_password.
+ * Sin SSL, el conector necesita pedir la clave pública al
+ * servidor; si no se permite, TODAS las conexiones fallan y
+ * el error que se ve es "pool timeout ... active=0 idle=0".
+ *
+ * Se permite por defecto con base de datos local. En un
+ * servidor remoto se recomienda SSL; se puede forzar con
+ * DATABASE_ALLOW_PUBLIC_KEY_RETRIEVAL=1 o desactivar con =0.
+ */
+function permitirClavePublica(host: string) {
+  const valor =
+    process.env.DATABASE_ALLOW_PUBLIC_KEY_RETRIEVAL;
+
+  if (valor === "1" || valor === "true") {
+    return true;
+  }
+
+  if (valor === "0" || valor === "false") {
+    return false;
+  }
+
+  return ["127.0.0.1", "localhost", "::1"].includes(host);
+}
+
 function crearCliente() {
+  const host =
+    process.env.DATABASE_HOST ??
+    "127.0.0.1";
+
   const adapter =
     new PrismaMariaDb({
-      host:
-        process.env.DATABASE_HOST ??
-        "127.0.0.1",
+      host,
+
+      allowPublicKeyRetrieval:
+        permitirClavePublica(host),
 
       port: enteroEntorno(
         "DATABASE_PORT",

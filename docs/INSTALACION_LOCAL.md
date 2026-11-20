@@ -139,6 +139,16 @@ npx prisma migrate deploy
 
 El último comando debe terminar con `All migrations have been successfully applied`.
 
+Comprobar que la aplicación puede conectarse a MySQL:
+
+```powershell
+npm run probar:bd
+```
+
+Debe aparecer `✔ Conexión correcta`. Si aparece un error, el propio comando indica la causa.
+
+> **Si PowerShell dice que `npm` o `npx` no se reconocen** (aunque `node --version` funcione), usar `npm.cmd` y `npx.cmd` en todos los comandos de esta guía: `npm.cmd ci`, `npx.cmd prisma generate`, `npm.cmd run dev`…
+
 ---
 
 ## Paso 6. Arrancar la aplicación
@@ -221,6 +231,8 @@ npm run dev
 | `Cannot resolve environment variable: DATABASE_URL` | No existe el archivo `.env` o está en otra carpeta. Repetir el paso 4 en la carpeta del proyecto. |
 | `Access denied for user 'gestor'` | La contraseña del `.env` no coincide con la del paso 2. |
 | `Can't reach database server` / `ECONNREFUSED 3306` | MySQL no está arrancado. Abrir *Servicios* de Windows → **MySQL80** → *Iniciar*. |
+| `pool timeout: failed to retrieve a connection from pool … active=0 idle=0` | La aplicación no logra conectar con MySQL. Ejecutar `npm run probar:bd` para ver la causa real. Con MySQL 8 se debía a la autenticación `caching_sha2_password`; está resuelto desde la v1.1 (actualizar con `git pull`). |
+| `npm` / `npx` no se reconocen, pero `node` sí | Usar `npm.cmd` y `npx.cmd`. |
 | `Falta AUTH_SECRET` | Falta la línea `AUTH_SECRET` en el `.env`. |
 | El login no hace nada o vuelve a pedir la contraseña | Se está entrando por IP en lugar de `localhost` (ver paso 6). |
 | `Port 3000 is in use` | Hay otra copia de la aplicación abierta. Cerrarla o usar `npm run dev -- -p 3001`. |
