@@ -125,5 +125,29 @@ export async function procesarConConcurrencia<E, R>(
   return resultados;
 }
 
+/*
+ * Cola de generaciones masivas (un centro completo cada una).
+ * Sin límite, con muchos centros a la vez el proceso reparte la CPU
+ * entre todos: todos terminan al final y la memoria acumula los
+ * resultados parciales de todos. Con la cola, la CPU se dedica a pocos
+ * centros cada vez: la memoria queda acotada y los centros reciben sus
+ * documentos de forma escalonada (el tiempo total es el mismo).
+ */
+const globalMasivos =
+  globalThis as unknown as {
+    semaforoMasivos?: Semaforo;
+  };
+
+export const semaforoMasivos =
+  globalMasivos.semaforoMasivos ??
+  new Semaforo(
+    enteroEntorno(
+      "MASIVOS_CONCURRENTES",
+      2
+    )
+  );
+
+globalMasivos.semaforoMasivos = semaforoMasivos;
+
 export const CONCURRENCIA_EXPEDIENTES =
   enteroEntorno("EXPEDIENTES_CONCURRENCIA", 3);

@@ -7,6 +7,7 @@ import {
 } from "@/lib/prisma";
 
 import {
+  semaforoMasivos,
   semaforoPdf,
 } from "@/lib/limitador";
 
@@ -39,6 +40,14 @@ export async function GET() {
 
           enCola:
             semaforoPdf.enCola,
+        },
+
+        generacionesMasivas: {
+          enEjecucion:
+            semaforoMasivos.enEjecucion,
+
+          enCola:
+            semaforoMasivos.enCola,
         },
       },
       {

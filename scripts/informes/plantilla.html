@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Gestor de Becas · {{TITULO}}</title>
+<style>
+  @page { size: A4; margin: 18mm 17mm 20mm 17mm; }
+  @page :first { margin: 0; }
+  :root { --rojo:#c8102e; --rojo-marca:#e83a39; --rojo-claro:#fdf1f2; --rojo-borde:#f1b9c0; --texto:#1d2733; --texto-2:#3d4a5c; --texto-3:#5f6b7a;
+          --borde:#dde2e8; --fondo:#f3f5f8; --exito:#1e7a3c; --exito-claro:#edf7f0; --aviso:#8a5a00; --aviso-claro:#fff8e6; --aviso-borde:#f0d189;
+          --info:#1f5f99; --info-claro:#eef5fb; --info-borde:#bcd5ec; }
+  * { box-sizing: border-box; }
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body { margin:0; font-family:"Segoe UI",Inter,Roboto,"Helvetica Neue",Arial,sans-serif; color:var(--texto); font-size:10pt; line-height:1.5; }
+  body.solo-portada > :not(.portada) { display:none !important; }
+  body.sin-portada > .portada { display:none !important; }
+
+  .portada { height:297mm; width:210mm; position:relative; overflow:hidden; display:flex; flex-direction:column; page-break-after:always; }
+  .portada-franja { height:9mm; background:var(--rojo-marca); }
+  .portada-logo { padding:22mm 22mm 0; } .portada-logo img { width:92mm; }
+  .portada-titulo { margin:auto 22mm 0; padding-bottom:12mm; }
+  .portada-titulo .etiqueta { display:inline-block; font-size:10pt; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--rojo); border-bottom:2px solid var(--rojo); padding-bottom:2mm; margin-bottom:6mm; }
+  .portada-titulo h1 { font-size:30pt; line-height:1.1; margin:0; }
+  .portada-titulo h1 span { color:var(--rojo); display:block; font-size:20pt; margin-top:2mm; }
+  .portada-titulo p { font-size:12pt; color:var(--texto-2); margin:5mm 0 0; max-width:150mm; }
+  .portada-pie { background:var(--fondo); border-top:1px solid var(--borde); padding:9mm 22mm; display:grid; grid-template-columns:repeat(3,1fr); gap:6mm; font-size:9.5pt; }
+  .portada-pie b { display:block; font-size:8pt; letter-spacing:.08em; text-transform:uppercase; color:var(--texto-3); margin-bottom:1mm; }
+  .portada-banda { position:absolute; right:-40mm; top:70mm; width:120mm; height:120mm; border:18mm solid var(--rojo-claro); border-radius:50%; }
+
+  h2 { font-size:16pt; margin:0 0 3mm; page-break-after:avoid; }
+  h2 .num { color:var(--rojo); margin-right:2mm; }
+  section { margin-bottom:6mm; }
+  section.salto { page-break-before:always; }
+  section.salto::before { content:""; display:block; width:14mm; height:1.3mm; background:var(--rojo); margin-bottom:5mm; }
+  h3 { font-size:11.5pt; margin:5mm 0 2mm; page-break-after:avoid; }
+  p { margin:0 0 2.6mm; } ul,ol { margin:0 0 3mm; padding-left:6mm; } li { margin-bottom:1mm; }
+  code { font-family:Consolas,"Liberation Mono",monospace; font-size:8.8pt; background:var(--fondo); padding:0 1mm; border-radius:1mm; }
+
+  .cifras { display:grid; grid-template-columns:repeat(4,1fr); gap:3mm; margin:3mm 0 5mm; }
+  .cifra { border:1px solid var(--borde); border-radius:1.5mm; padding:3mm 3.5mm; page-break-inside:avoid; }
+  .cifra b { display:block; font-size:18pt; line-height:1.1; color:var(--texto); }
+  .cifra span { font-size:8.5pt; color:var(--texto-3); }
+  .cifra.buena { border-left:1.2mm solid var(--exito); } .cifra.alerta { border-left:1.2mm solid var(--aviso); }
+
+  figure { margin:3mm 0 5mm; page-break-inside:avoid; }
+  figure .lienzo { border:1px solid var(--borde); border-radius:1.5mm; padding:3mm 3mm 1mm; }
+  figcaption { font-size:8.5pt; color:var(--texto-3); margin-top:1.6mm; } figcaption b { color:var(--texto-2); }
+
+  table { width:100%; border-collapse:collapse; margin:2mm 0 4mm; font-size:9pt; }
+  thead { display:table-header-group; }
+  th { text-align:left; background:var(--fondo); font-size:8pt; text-transform:uppercase; letter-spacing:.03em; color:var(--texto-2); }
+  th,td { padding:1.8mm 2.4mm; border-bottom:1px solid var(--borde); vertical-align:top; }
+  td.n, th.n { text-align:right; white-space:nowrap; } td.nowrap { white-space:nowrap; } tr { page-break-inside:avoid; }
+  .muestra { display:inline-block; width:3mm; height:3mm; border-radius:.8mm; margin-right:1.5mm; vertical-align:-.3mm; }
+
+  .nota { border:1px solid; border-left-width:1.3mm; border-radius:1.2mm; padding:2.6mm 3.5mm; margin:3mm 0; page-break-inside:avoid; font-size:9.5pt; }
+  .nota b:first-child { display:block; margin-bottom:.8mm; }
+  .nota.importante { background:var(--rojo-claro); border-color:var(--rojo-borde); border-left-color:var(--rojo); }
+  .nota.aviso { background:var(--aviso-claro); border-color:var(--aviso-borde); border-left-color:var(--aviso); }
+  .nota.consejo { background:var(--info-claro); border-color:var(--info-borde); border-left-color:var(--info); }
+  .nota.bien { background:var(--exito-claro); border-color:#b6dcc2; border-left-color:var(--exito); }
+  .dos { display:grid; grid-template-columns:1fr 1fr; gap:4mm; }
+</style>
+</head>
+<body>
+<div class="portada">
+  <div class="portada-franja"></div>
+  <div class="portada-banda"></div>
+  <div class="portada-logo"><img src="{{LOGO}}" alt="Comunidad de Madrid"></div>
+  {{CUERPO}}
+</body>
+</html>

@@ -1,6 +1,7 @@
 import {
   CONCURRENCIA_EXPEDIENTES,
   procesarConConcurrencia,
+  semaforoMasivos,
 } from "@/lib/limitador";
 
 import {
@@ -34,7 +35,7 @@ export const runtime =
    GENERACIÓN MASIVA DEL CENTRO
    ========================================================= */
 
-export async function POST(
+async function generarMasivo(
   request: Request
 ) {
   try {
@@ -788,5 +789,35 @@ function nombreMesPorNumero(
     String(
       mes
     )
+  );
+}
+
+/* =========================================================
+   POST
+   Las generaciones masivas pasan por una cola por proceso
+   (MASIVOS_CONCURRENTES). La sesión se comprueba antes de
+   entrar en la cola para no hacer esperar peticiones inválidas.
+   ========================================================= */
+
+export async function POST(
+  request: Request
+) {
+  if (
+    !(await obtenerSesion())
+  ) {
+    return NextResponse.json(
+      {
+        ok: false,
+        error:
+          "No hay una sesión activa.",
+      },
+      {
+        status: 401,
+      }
+    );
+  }
+
+  return semaforoMasivos.ejecutar(
+    () => generarMasivo(request)
   );
 }

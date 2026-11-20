@@ -1,0 +1,43 @@
+{
+ "version": "1.2.0",
+ "fecha": "20 de noviembre de 2026",
+ "destinatario": "Consejería de Educación, Universidades, Ciencia y Portavocía",
+ "nucleos": 4,
+ "cpuModelo": "Intel Xeon a 2,3 GHz (4 vCPU)",
+ "servidor": "Máquina virtual de 4 vCPU (Intel Xeon 2,3 GHz) y 15 GB de RAM. Aplicación, base de datos y generador de carga en la misma máquina",
+ "software": "Gestor de Becas v1.2.0 compilado para producción (next start), Node.js 22, Next.js 16.3",
+ "bd": "MariaDB 10.11 (compatible con MySQL 8) en la misma máquina, sin ajustes especiales",
+ "bdVersion": "10.11",
+ "datos": {
+  "minAlumnos": 4,
+  "maxAlumnos": 76,
+  "mediaAlumnos": 17.2,
+  "asignaturas": 5126,
+  "dias": 560326,
+  "asistencias": 65805,
+  "bdMB": 82
+ },
+ "escenarios": [
+  {
+   "archivo": "A-sin-cola-1-proceso.json",
+   "corto": "A · sin cola",
+   "nombre": "A · Sin cola · 1 proceso",
+   "procesos": 1,
+   "descripcion": "Versión 1.2 tal como estaba: un proceso de la aplicación y todas las generaciones masivas en paralelo."
+  },
+  {
+   "archivo": "B-con-cola-1-proceso.json",
+   "corto": "B · con cola",
+   "nombre": "B · Con cola · 1 proceso",
+   "procesos": 1,
+   "descripcion": "Con la cola de generaciones masivas añadida tras la ronda A (2 a la vez por proceso). Un proceso."
+  },
+  {
+   "archivo": "C-con-cola-4-procesos.json",
+   "corto": "C · 4 procesos",
+   "nombre": "C · Con cola · 4 procesos",
+   "procesos": 4,
+   "descripcion": "Con cola y 4 procesos de la aplicación (uno por vCPU), repartiendo los centros entre ellos como haría el balanceador (PM2 + nginx)."
+  }
+ ]
+}
